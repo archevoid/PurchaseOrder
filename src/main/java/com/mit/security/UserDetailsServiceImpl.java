@@ -1,22 +1,27 @@
 package com.mit.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.mit.model.UserDAO;
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 	
-	/* 삭제 예정 */
+	@Autowired
 	UserDetailsImpl user;
+	
+	@Autowired
+	UserDAO userDAO;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		/* DAO 생성 후 활성화 예정 */
-//		UserDetailsImpl user = userDAO.getUserById(username);
+		user.setUserDTO(userDAO.getUserById(username));
 		
-		return user;
+		return this.user;
 	}
 
 	
