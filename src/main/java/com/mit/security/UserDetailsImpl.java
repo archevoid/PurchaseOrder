@@ -8,17 +8,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 
 import com.mit.model.UserDTO;
 
 import lombok.Setter;
 
 
-/* 
- * UserDAO에서 getUserByID(String)로 생성: 
- * getUserByID(String)에서 autowired로 생성한 후
- * user값 변경한 후 반환
-*/
+@Component
 public class UserDetailsImpl implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
@@ -39,12 +36,12 @@ public class UserDetailsImpl implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		return bcryptPasswordEncoder.encode(userDTO.getPassword());
+		return bcryptPasswordEncoder.encode(userDTO.getPassword()); // 나중에 encode 제거 (db에 bcrypt된 비밀번호가 저장될 때)
 	}
 
 	@Override
 	public String getUsername() {
-		return userDTO.getId();
+		return userDTO.getUsername();
 	}
 
 	@Override
