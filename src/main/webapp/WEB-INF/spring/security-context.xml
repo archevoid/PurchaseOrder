@@ -12,7 +12,7 @@
 
 	
 	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
-	<bean id="userDetailsServiceImpl" class="com.mit.security.UserDetailsServiceImpl" />
+	<bean id="userDetailsServiceImpl" class="com.mit.security.UserDetailsServiceImpl" autowire="constructor" />
 	
 	
 	
