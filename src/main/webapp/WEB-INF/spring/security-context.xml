@@ -12,21 +12,22 @@
 
 	
 	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
-	<bean id="userDetailsServiceImpl" class="com.mit.security.UserDetailsServiceImpl" autowire="constructor" />
+	<bean id="customUserDetailsService" class="com.mit.security.CustomUserDetailsService" autowire="constructor" />
+	<bean id="customLoginSuccessHandler" class="com.mit.security.CustomLoginSuccessHandler" />
 	
 	
 	
 	<security:http>
-		<security:intercept-url pattern="/po/bashboard" access="hasRole('ROLE_PTN')" />
+		<security:intercept-url pattern="/po/bashboard" access="hasAnyRole('ROLE_PTN', 'ROLE_PD')" />
 		<security:intercept-url pattern="/po/partner" access="hasRole('ROLE_PTN')" />
 		<security:intercept-url pattern="/po/*" access="hasRole('ROLE_PD')" />
 			
-		<security:form-login login-page="/login" default-target-url="/po/dashboard" always-use-default-target="true" />
+		<security:form-login login-page="/login" authentication-success-handler-ref="customLoginSuccessHandler"/>
 		
-		<security:logout logout-url="/logout" logout-success-url="/login" delete-cookies="true" />
+		<security:logout logout-url="/logout" invalidate-session="true" />
 	</security:http>
 	<security:authentication-manager>
-		<security:authentication-provider user-service-ref="userDetailsServiceImpl">
+		<security:authentication-provider user-service-ref="customUserDetailsService">
 			<security:password-encoder hash="bcrypt"/>
 		</security:authentication-provider>
 	</security:authentication-manager>
