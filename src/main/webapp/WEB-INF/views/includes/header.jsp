@@ -52,9 +52,12 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="index">구매발주</a>
-                <span style="float: right;">
-                	<a href="logout">로그아웃</a>
-                </span>
+               	<form action="/logout" method="post" name="logoutForm">
+	                <span style="float: right;">
+                		<input type="hidden" name="${ _csrf.parameterName }" value="${ _csrf.token }" />
+                		<a href="#" onclick="document.getElementByName('logoutForm').submit();">로그아웃</a>
+    	            </span>
+               	</form>
             </div>
             <!-- /.navbar-header -->
             <div class="navbar-default sidebar" role="navigation">

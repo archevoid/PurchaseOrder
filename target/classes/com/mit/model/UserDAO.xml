@@ -5,7 +5,19 @@
 
 
 <mapper namespace="com.mit.model.UserDAO">
-	<select id="getUserById" resultType="com.mit.model.UserDTO">
-		SELECT userid AS username, userpw AS password, authority FROM user_tbl WHERE userid=#{userid}
+	<resultMap type="com.mit.model.UserDTO" id="userMap">
+		<id property="username" column="userID" />
+		<result property="password" column="userpw" />
+		<collection property="authList" resultMap="authMap">
+		</collection>
+	</resultMap>
+	
+	<resultMap type="com.mit.model.AuthVO" id="authMap">
+		<result property="username" column="userID" />
+		<result property="auth" column="authority" />
+	</resultMap>
+
+	<select id="getUserById" resultMap="userMap">
+		SELECT userid, userpw, authority FROM user_tbl WHERE userid=#{userid}
 	</select>
 </mapper>
