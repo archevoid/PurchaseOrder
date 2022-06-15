@@ -28,14 +28,16 @@
                                             <div class="row mb-3">
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" id="inputFirstName" type="text" placeholder="Enter your first name" name="firstName" />
-                                                        <label for="inputFirstName">First name</label>
+                                                        <input class="form-control" id="name" type="text" placeholder="Enter your id" name="username" />
+                                                        <label for="inputName">ID</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="form-floating">
-                                                        <input class="form-control" id="inputLastName" type="text" placeholder="Enter your last name" name="lastName" />
-                                                        <label for="inputLastName">Last name</label>
+                                                    <div class="form-floating" style="display: inline;">
+                                                        <select class="form-control" id="dept" name="deptNum">
+                                                        	<option value="" selected>&lt;&lt;부서 선택&gt;&gt;</option>
+                                                        	<option value="1">개발부서</option> <!-- db연결 후 삭제 예정 -->
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>

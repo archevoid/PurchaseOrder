@@ -20,4 +20,13 @@
 	<select id="getUserById" resultMap="userMap">
 		SELECT userid, userpw, authority FROM user_tbl WHERE userid=#{userid}
 	</select>
+	
+	<insert id="doRegistUser">
+		<foreach collection="authList" item="authVO">
+			INSERT INTO user_tbl(userid, userpw, authority) VALUE ( #{ username }, #{ password }, #{ authVO.auth } )
+		</foreach>
+	</insert>
+	<insert id="doRegistEmpl">
+		INSERT INTO employee(deptnum, userid, email) VALUE ( #{ deptNum }, #{ username }, #{ email } )
+	</insert>
 </mapper>

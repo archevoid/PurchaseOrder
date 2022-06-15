@@ -35,13 +35,13 @@
                                             </div>
                                             <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}">
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                                <a class="small" href="password.html">Forgot Password?</a>
+                                                <a class="small" href="password">Forgot Password?</a>
                                                 <input type="submit" class="btn btn-primary" value="Login">
                                             </div>
                                         </form>
                                     </div>
                                     <div class="card-footer text-center py-3">
-                                        <div class="small"><a href="register.html">Need an account? Sign up!</a></div>
+                                        <div class="small"><a href="register">Need an account? Sign up!</a></div>
                                     </div>
                                 </div>
                             </div>
