@@ -24,4 +24,9 @@ public class PoController {
 		
 		return "/po/printPO";
 	}
+	
+	@GetMapping("dashboard")
+	public void goDashboard() {
+		
+	}
 }
