@@ -9,4 +9,4 @@
 - DB: MariaDB 10.6.8
 
 ## DB ERD
-![PO_TeamFoS drawio](https://user-images.githubusercontent.com/106382062/174196074-e922903e-86c5-4007-98f0-41192c9ec9e4.png)
+![PO_TeamFoS drawio](https://user-images.githubusercontent.com/106382062/174196332-7ae52d4a-65c4-4865-be76-21e37d652f74.png)
