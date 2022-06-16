@@ -5,5 +5,5 @@
 ## 개발 환경
 - OS: Windows
 - IDE: Eclipse 2020-06 (4.16.0) (STS 3.9.15.RELEASE)
-- JDK: Oracle SE jdk-14.0.2
+- JDK: Oracle jdk1.8.0_202
 - DB: MariaDB 10.6.8
