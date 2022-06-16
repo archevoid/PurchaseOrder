@@ -55,7 +55,7 @@ div#company tbody th {
 }
 
 div#company tbody td {
-	width: 6.71cm;
+	width: 6.68cm;
 }
 
 th, td {
