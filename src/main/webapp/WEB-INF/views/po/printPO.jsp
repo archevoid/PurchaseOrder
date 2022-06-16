@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
+<%
+	/* 사명, 참조, 전화번호, 팩스번호 */
+	String[] aboutUs = new String[] { "Team FoS", "", "010-4242-4242", "031-4242-4242" };
+%>
 
 <!DOCTYPE html>
 <html>
@@ -55,7 +60,7 @@ div#company tbody th {
 }
 
 div#company tbody td {
-	width: 6.71cm;
+	width: 6.68cm;
 }
 
 th, td {
@@ -112,7 +117,7 @@ td#etc {
 				<tbody>
 					<tr>
 						<th>상호</th>
-						<td></td>
+						<td><%= aboutUs[0] %></td>
 					</tr>
 					<tr>
 						<th>참조</th>
@@ -120,11 +125,11 @@ td#etc {
 					</tr>
 					<tr>
 						<th>전화</th>
-						<td></td>
+						<td><%= aboutUs[2] %></td>
 					</tr>
 					<tr>
 						<th>팩스</th>
-						<td></td>
+						<td><%= aboutUs[3] %></td>
 					</tr>
 				</tbody>
 			</table>
