@@ -10,3 +10,16 @@
 
 ## DB ERD
 ![PO_TeamFoS drawio](https://user-images.githubusercontent.com/106382062/174196332-7ae52d4a-65c4-4865-be76-21e37d652f74.png)
+
+## Coding Style
+### Naming
+- Class Name: UpperCamelCase
+- Method Name: lowerCamelCase
+- Non-Final Variable: lowerCamelCase
+- Final Variable: SCREAMING_SNAKE_CASE
+- Declaration
+  + One Declaration in One Line
+    * int x; /* Good */
+    * int x, y; /* Bad */
+  + Array: Type[] name
+
