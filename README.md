@@ -41,7 +41,7 @@
   - nav.jsp
     + 사이드 navigation 바
   
-  ### po (_P_roduct _O_rder)
+  ### po (__P__roduct _O_rder)
   설명: 구매 발주에 관련된 디렉토리
   - dashboard.jsp
     + po의 프론트 페이지
