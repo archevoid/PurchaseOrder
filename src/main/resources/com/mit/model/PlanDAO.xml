@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.mit.model.PlanDAO">
+	<select id="getPlanNumList" resultType="long">
+		SELECT plan_num FROM plan
+	</select>
+	
+	<select id="getPlanByPlanNum" resultType="com.mit.model.PlanDTO">
+		SELECT 
+			pd.product_name AS productName, pl.quantity AS quantity
+			, pl.due_date AS dueDate, 
+			(SELECT ptn_name FROM partner p WHERE p.ptn_num = pd.ptn_num) AS partnerName
+			, pd.product_price AS productPrice
+		FROM plan AS pl INNER JOIN product AS pd
+		WHERE plan_num = #{ planNum }
+	</select>
+</mapper>
