@@ -6,27 +6,27 @@
 
 <mapper namespace="com.mit.model.UserDAO">
 	<resultMap type="com.mit.model.UserDTO" id="userMap">
-		<id property="username" column="userID" />
-		<result property="password" column="userpw" />
+		<id property="username" column="member_id" />
+		<result property="password" column="member_pw" />
 		<collection property="authList" resultMap="authMap">
 		</collection>
 	</resultMap>
 	
 	<resultMap type="com.mit.model.AuthVO" id="authMap">
-		<result property="username" column="userID" />
+		<result property="username" column="member_id" />
 		<result property="auth" column="authority" />
 	</resultMap>
 
 	<select id="getUserById" resultMap="userMap">
-		SELECT userid, userpw, authority FROM user_tbl WHERE userid=#{userid}
+		SELECT member_id, member_pw, authority FROM member WHERE member_id=#{ userid }
 	</select>
 	
 	<insert id="doRegistUser">
 		<foreach collection="authList" item="authVO">
-			INSERT INTO user_tbl(userid, userpw, authority) VALUE ( #{ username }, #{ password }, #{ authVO.auth } )
+			INSERT INTO member(member_id, member_pw, authority) VALUE ( #{ username }, #{ password }, #{ authVO.auth } )
 		</foreach>
 	</insert>
 	<insert id="doRegistEmpl">
-		INSERT INTO employee(deptnum, userid, email) VALUE ( #{ deptNum }, #{ username }, #{ email } )
+		INSERT INTO employee(dept_num, member_id, email) VALUE ( #{ deptNum }, #{ username }, #{ email } )
 	</insert>
 </mapper>
