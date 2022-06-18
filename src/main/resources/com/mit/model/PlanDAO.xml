@@ -28,4 +28,9 @@
 			, product_price AS productPrice
 		FROM product
 	</select>
+	
+	<insert id="insertPlan">
+		INSERT INTO plan(product_num, quantity, due_date)
+			VALUE (#{ productNum }, #{ quantity }, #{ dueDate })
+	</insert>
 </mapper>

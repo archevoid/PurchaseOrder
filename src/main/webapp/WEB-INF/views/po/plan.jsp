@@ -32,7 +32,7 @@
                                		<tr>
                                			<th>품목명</th>
                                 		<td>
-                                			<select name="productName" class="form-control">
+                                			<select name="productNum" class="form-control">
                                 				<option value="0">품목 명</option>
                                 				<c:forEach items="${ productList }" var="product">
                                 					<option value="${ product.productNum }">${ product.productName }</option>
@@ -73,7 +73,7 @@
 	                        			type: "POST",
 	                        			data: "planNum=" + $('select[name=planNum]').val(),
 	                        			success: function(data) {
-	                        				$("select[name=productName]").val(data.productNum).attr("selected", "selected");
+	                        				$("select[name=productNum]").val(data.productNum).attr("selected", "selected");
 	                        				$("input[name=quantity]").val(data.quantity);
 	                        				$("input[name=dueDate]").val(data.dueDate);
 	                        				$("input[name=partnerName]").val(data.partnerName);
