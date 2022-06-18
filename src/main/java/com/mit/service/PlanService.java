@@ -30,4 +30,8 @@ public class PlanService extends com.mit.service.Service {
 	public List<ProductDTO> getProductList() {
 		return planDao.getProductList();
 	}
+	
+	public Long insertPlan(PlanDTO planDto) {
+		return planDao.insertPlan(planDto);
+	}
 }

@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.mit.model.PlanDAO;
 import com.mit.model.PlanDTO;
 import com.mit.service.PlanService;
 
@@ -56,6 +56,13 @@ public class PoController {
 		m.addAttribute("planNumList", ps.getPlanNumsList());
 		
 		m.addAttribute("productList", ps.getProductList());
+	}
+	
+	@PostMapping("inputpo")
+	public String inputPlan(PlanDTO planDto, RedirectAttributes rttr) {
+		rttr.addFlashAttribute("insertNumber", ps.insertPlan(planDto));
+		
+		return "redirect:/po/plan";
 	}
 	
 	/* plan.jsp에서 ajax를 이용해 접근 */
