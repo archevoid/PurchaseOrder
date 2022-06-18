@@ -1,0 +1,4 @@
+@charset "UTF-8";
+
+/* nav.jsp */
+form[name=logoutForm] { position: absolute; left: 95%; top: 30%; }
