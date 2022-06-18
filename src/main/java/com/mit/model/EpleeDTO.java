@@ -10,5 +10,4 @@ public class EpleeDTO extends UserDTO {
 	private String email;
 	private Integer deptNum;
 	
-	
 }
