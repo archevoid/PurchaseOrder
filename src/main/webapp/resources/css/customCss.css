@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 /* Common */
-input { width: 200px; }
+input { text-align: center; }
 select { width: 200px; text-align: center; }
 
 /* nav.jsp */

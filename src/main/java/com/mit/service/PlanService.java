@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.mit.model.PlanDAO;
 import com.mit.model.PlanDTO;
+import com.mit.model.ProductDTO;
 
 import lombok.AllArgsConstructor;
 
@@ -24,5 +25,9 @@ public class PlanService extends com.mit.service.Service {
 	
 	public PlanDTO getPlanByPlanNum(String planNum) {
 		return planDao.getPlanByPlanNum(planNum);
+	}
+	
+	public List<ProductDTO> getProductList() {
+		return planDao.getProductList();
 	}
 }

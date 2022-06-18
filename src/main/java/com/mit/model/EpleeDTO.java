@@ -8,6 +8,6 @@ import lombok.Setter;
 public class EpleeDTO extends UserDTO {
 	
 	private String email;
-	private Integer deptNum;
+	private Long deptNum;
 	
 }
