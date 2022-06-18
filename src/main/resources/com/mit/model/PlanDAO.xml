@@ -9,12 +9,23 @@
 	</select>
 	
 	<select id="getPlanByPlanNum" resultType="com.mit.model.PlanDTO">
-		SELECT 
-			pd.product_name AS productName, pl.quantity AS quantity
-			, pl.due_date AS dueDate, 
-			(SELECT ptn_name FROM partner p WHERE p.ptn_num = pd.ptn_num) AS partnerName
+		SELECT
+			pd.product_num AS productNum 
+			, pd.product_name AS productName
+			, pl.quantity AS quantity
+			, pl.due_date AS dueDate
+			, (SELECT ptn_name FROM partner p WHERE p.ptn_num = pd.ptn_num) AS partnerName
 			, pd.product_price AS productPrice
 		FROM plan AS pl INNER JOIN product AS pd
 		WHERE plan_num = #{ planNum }
+	</select>
+	
+	<select id="getProductList" resultType="com.mit.model.ProductDTO">
+		SELECT
+			product_num AS productNum
+			, ptn_num AS ptnNum
+			, product_name AS productName
+			, product_price AS productPrice
+		FROM product
 	</select>
 </mapper>

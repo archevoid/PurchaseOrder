@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mit.model.PlanDAO;
 import com.mit.model.PlanDTO;
 import com.mit.service.PlanService;
 
@@ -51,9 +52,10 @@ public class PoController {
 	}
 	
 	@GetMapping("plan")
-	public void goPlan(String planNum, Model m) {
+	public void goPlan(Model m) {
 		m.addAttribute("planNumList", ps.getPlanNumsList());
-		m.addAttribute("plan", ps.getPlanByPlanNum(planNum));
+		
+		m.addAttribute("productList", ps.getProductList());
 	}
 	
 	/* plan.jsp에서 ajax를 이용해 접근 */

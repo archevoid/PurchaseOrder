@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class PlanDTO {
 	Long planNum;
-	Integer eplNum;
+	Long eplNum;
 	Long productNum;
 	Long quantity;
 	java.sql.Date dueDate;
@@ -15,6 +15,6 @@ public class PlanDTO {
 	
 	String productName;
 	String partnerName;
-	Integer productPrice;
+	Long productPrice;
 	
 }
