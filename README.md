@@ -18,6 +18,7 @@
 
 ### Naming
 - Class Name: `UpperCamelCase`
+  + 단, DAO/DTO 등 두문자어는 대문자 가능
 - Method Name: `lowerCamelCase`
 - Non-Final Variable: `lowerCamelCase`
 - Final Variable: `SCREAMING_SNAKE_CASE`
