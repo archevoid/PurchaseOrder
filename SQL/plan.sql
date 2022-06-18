@@ -4,7 +4,6 @@ CREATE TABLE `plan` (
 	`product_num` INT(11) NOT NULL,
 	`quantity` INT(11) NOT NULL,
 	`due_date` DATE NOT NULL,
-	`current_quantity` INT(11) NOT NULL DEFAULT '0',
 	PRIMARY KEY (`plan_num`) USING BTREE,
 	INDEX `FK_plan_employee` (`epl_num`) USING BTREE,
 	INDEX `FK_plan_product` (`product_num`) USING BTREE,
