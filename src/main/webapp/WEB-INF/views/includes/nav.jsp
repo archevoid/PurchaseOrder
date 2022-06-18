@@ -23,7 +23,7 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav in" id="side-menu">
                         <li>
-                            <a href="index"><i class="fa fa-dashboard fa-fw"></i>대시보드</a>
+                            <a href="dashboard"><i class="fa fa-dashboard fa-fw"></i>대시보드</a>
                         </li>
                         
                         <li>
