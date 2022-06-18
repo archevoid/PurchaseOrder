@@ -20,13 +20,23 @@ public class PoController {
 	public String printpo(HttpServletRequest request /* post로 받을 값(DTO) */) {
 		String referer = (String)request.getHeader("REFERER");
 		
-		/* 이전페이지 확인하는 코드 */
+		String url = request.getRequestURL().toString().replace(request.getRequestURI(), "");
+		String prevUri = "/po/plan";
+		
+		if(!referer.equals(url + prevUri)) {
+			return "/po/dashboard";
+		}
 		
 		return "/po/printPO";
 	}
 	
 	@GetMapping("dashboard")
 	public void goDashboard() {
+		
+	}
+	
+	@GetMapping("plan")
+	public void goPlan() {
 		
 	}
 }

@@ -1,4 +1,8 @@
 @charset "UTF-8";
 
+/* Common */
+input { width: 200px; }
+select { width: 200px; text-align: center; }
+
 /* nav.jsp */
 form[name=logoutForm] { position: absolute; left: 95%; top: 30%; }
