@@ -24,4 +24,10 @@ public class PlanDTO {
 	/* partner 테이블 */
 	String ptnName;
 	
+	/* employee 테이블 */
+	String memberId;
+	String email;
+	
+	/* Other */
+	boolean undertaken;
 }

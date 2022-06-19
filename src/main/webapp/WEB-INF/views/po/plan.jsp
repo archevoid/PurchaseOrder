@@ -1,3 +1,5 @@
+<%@page import="com.fasterxml.jackson.databind.ObjectMapper"%>
+<%@page import="java.util.HashMap"%>
 <%@page import="com.mit.model.ProductDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -41,6 +43,39 @@
                                 		</td>
                                		</tr>
                                		<tr>
+                               			<th>담당자 ID</th>
+                               			<% 
+                       						HashMap<String, String> emailMap = new HashMap<String, String>();
+											pageContext.setAttribute("emailMap", emailMap);
+                       					%>
+                               			<td>
+                               				<select name="eplNum" class="form-control">
+                               					<option value="0" class="basicOption">담당자</option>
+                               				
+                               					<c:forEach items="${ eplList }" var="epl">
+                               						<c:choose>
+                               							<c:when test="${ epl.undertaken }">
+                               								<option value="${ epl.eplNum }" class="undertaken">${ epl.memberId }</option>
+                               							</c:when>
+                               							<c:when test="${ not epl.undertaken }">
+                               								<option value="${ epl.eplNum }" class="free">${ epl.memberId }</option>
+                               							</c:when>
+                               						</c:choose>
+                               						<c:set property="${ epl.eplNum }" value="${ epl.email }" target="${ emailMap }" />
+                               					</c:forEach>
+                               				</select>
+                           				</td>
+                           				<%
+	                           				pageContext.setAttribute("emails", new ObjectMapper().writeValueAsString(pageContext.getAttribute("emailMap")));
+                           				%>
+                       				</tr>
+                       				<tr>
+                               			<th>담당자 Email</th>
+                               			<td>
+                               				<span id="email" class="showInfo"></span>
+                           				</td>
+                       				</tr>
+                               		<tr>
                                			<th>수량</th>
                                			<td>
                                				<input type="number" name="quantity" class="form-control">
@@ -50,6 +85,12 @@
                                			<th>조달 납기</th>
                                			<td>
                                				<input type="date" name="dueDate" class="form-control">
+                           				</td>
+                       				</tr>
+                       				<tr>
+                               			<th>협력 회사</th>
+                               			<td>
+                               				<span id="ptnName" class="showInfo"></span>
                            				</td>
                        				</tr>
                        				<tr>
@@ -80,10 +121,21 @@
 	                        			data: "planNum=" + $('select[name=planNum]').val(),
 	                        			success: function(data) {
 	                        				$("select[name=productNum]").val(data.productNum).attr("selected", "selected");
+	                        				
 	                        				$("input[name=quantity]").val(data.quantity);
 	                        				$("input[name=dueDate]").val(data.dueDate);
+	                        				
+	                        				$("select[name=eplNum]").val(data.eplNum).attr("selected", "selected");
+	                        				
+	                        				$("span#email").text("");
+	                        				$("span#email").text(data.email);
+	                        				
+	                        				
 	                        				$("span#ptnName").text(data.ptnName);
 	                        				$("span#productPrice").text(Number(data.productPrice).toLocaleString('ko-KR'));
+	                        				
+	                        				$("span#totalPrice").text("");
+	                        				$("span#totalPrice").text(Number($("select[name=eplNum]").val() * $("span#productPrice").text().replace(',', '')).toLocaleString('ko-KR'));
 	                        			},
 	                        			error: function() {
 	                        				alert("에러가 발생했습니다. 다시 시도해주세요.");
@@ -104,6 +156,12 @@
 	                        				alert("에러가 발생했습니다. 다시 시도해주세요.");
 	                        			}
 	                        		});
+	                        	});
+	                        	
+	                        	const emails = JSON.parse( '${ emails }' );
+	                        	$("select[name=eplNum]").on("change", function() {
+	                        		$("span#email").text("");
+                    				$("span#email").text(emails[$("select[name=eplNum]").val()]);
 	                        	});
 	                        	
 	                        	$("input[name=quantity]").on("focus keyup change", function() {
