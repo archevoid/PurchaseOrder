@@ -11,7 +11,9 @@ public interface PlanDAO {
 	
 	List<PlanDTO> getEmployeeList();
 	
-	long insertPlan(PlanDTO dto);
+	Boolean isEmplInPlan(String eplNum);
 	
-	long updatePlan(PlanDTO dto);
+	Long insertPlan(PlanDTO dto);
+	
+	Long updatePlan(PlanDTO dto);
 }

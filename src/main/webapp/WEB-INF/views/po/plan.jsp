@@ -50,7 +50,7 @@
                        					%>
                                			<td>
                                				<select name="eplNum" class="form-control">
-                               					<option value="0" class="basicOption">담당자</option>
+                               					<option value="" class="basicOption">담당자</option>
                                				
                                					<c:forEach items="${ eplList }" var="epl">
                                						<c:choose>
