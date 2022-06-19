@@ -14,9 +14,8 @@
 	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 	<bean id="customUserDetailsService" class="com.mit.security.CustomUserDetailsService" autowire="constructor" />
 	<bean id="customLoginSuccessHandler" class="com.mit.security.CustomLoginSuccessHandler" />
-	
-	
-	
+
+
 	<security:http>
 		<security:csrf disabled="true"/>
 	

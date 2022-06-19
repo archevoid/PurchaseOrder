@@ -5,18 +5,22 @@
 	
 <mapper namespace="com.mit.model.PlanDAO">
 	<select id="getPlanNumList" resultType="long">
-		SELECT plan_num FROM plan
+		SELECT plan_num FROM plan ORDER BY plan_num DESC
 	</select>
 	
 	<select id="getPlanByPlanNum" resultType="com.mit.model.PlanDTO">
 		SELECT
-			pd.product_num AS productNum 
+			pd.product_num AS productNum
 			, pd.product_name AS productName
+			, pl.epl_num AS eplNum
 			, pl.quantity AS quantity
 			, pl.due_date AS dueDate
 			, (SELECT ptn_name FROM partner p WHERE p.ptn_num = pd.ptn_num) AS ptnName
 			, pd.product_price AS productPrice
-		FROM plan AS pl INNER JOIN product AS pd
+			, e.member_id AS memberId
+			, e.email AS email
+		FROM (plan AS pl INNER JOIN product AS pd ON pl.product_num = pd.product_num)
+			LEFT JOIN employee AS e ON pl.epl_num = e.epl_num
 		WHERE plan_num = #{ planNum }
 	</select>
 	
@@ -38,6 +42,15 @@
 			, product_price AS productPrice
 		FROM product AS pd
 		WHERE product_num = #{ productNum }
+	</select>
+	
+	<select id="getEmployeeList" resultType="com.mit.model.PlanDTO">
+		SELECT
+			epl_num AS eplNum
+			, member_id AS memberId
+			, email AS email
+			, IF((SELECT COUNT(*) FROM plan AS p WHERE p.epl_num = e.epl_num) != 0, TRUE, FALSE) AS undertaken
+		FROM employee AS e;
 	</select>
 	
 	<insert id="insertPlan">

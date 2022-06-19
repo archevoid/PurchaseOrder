@@ -56,6 +56,8 @@ public class PoController {
 		m.addAttribute("planNumList", ps.getPlanNumsList());
 		
 		m.addAttribute("productList", ps.getProductList());
+		
+		m.addAttribute("eplList", ps.getEplList());
 	}
 	
 	@PostMapping("inputpo")

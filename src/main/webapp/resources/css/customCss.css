@@ -8,3 +8,7 @@ option.basicOption { font-weight: bold; background-color: #E9E9E9 }
 
 /* nav.jsp */
 form[name=logoutForm] { position: absolute; left: 95%; top: 30%; }
+
+/* plan.jsp */
+option.undertaken { background-color: pink; }
+option.free { background-color: lightgreen; }
