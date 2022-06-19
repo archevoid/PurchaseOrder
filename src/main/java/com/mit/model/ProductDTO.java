@@ -8,4 +8,7 @@ public class ProductDTO {
 	Long ptnNum;
 	String productName;
 	String productPrice;
+	
+	/* partner table */
+	String ptnName;
 }

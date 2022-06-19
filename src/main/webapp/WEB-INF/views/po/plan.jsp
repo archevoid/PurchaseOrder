@@ -22,7 +22,7 @@
 	                                	<th>계획번호</th>
 	                                	<td>
 	                                		<select name="planNum" class="form-control">
-	                                			<option value="0">계획 번호</option>
+	                                			<option value="0" class="basicOption">계획 번호</option>
 	                                			<c:forEach items="${ planNumList }" var="planNum">
 	                                				<option value="${ planNum }"><c:out value="${ planNum }" /></option>
 	                                			</c:forEach>
@@ -33,7 +33,7 @@
                                			<th>품목명</th>
                                 		<td>
                                 			<select name="productNum" class="form-control">
-                                				<option value="0">품목 명</option>
+                                				<option value="0" class="basicOption">품목 명</option>
                                 				<c:forEach items="${ productList }" var="product">
                                 					<option value="${ product.productNum }">${ product.productName }</option>
                                 				</c:forEach>
@@ -43,25 +43,31 @@
                                		<tr>
                                			<th>수량</th>
                                			<td>
-                               				<input type="number" name="quantity" class="form-control" value="${ plan.quantity }">
+                               				<input type="number" name="quantity" class="form-control">
                            				</td>
                        				</tr>
                        				<tr>
                                			<th>조달 납기</th>
                                			<td>
-                               				<input type="date" name="dueDate" class="form-control" value="${ plan.dueDate }">
+                               				<input type="date" name="dueDate" class="form-control">
                            				</td>
                        				</tr>
                        				<tr>
                                			<th>협력 회사</th>
                                			<td>
-                               				<input type="text" name="partnerName" class="form-control" value="${ plan.partnerName }">
+                               				<span id="ptnName" class="showInfo"></span>
                            				</td>
                        				</tr>
                        				<tr>
                                			<th>공급 가격</th>
                                			<td>
-                               				<input type="number" name="productPrice" class="form-control" value="${ plan.productPrice }">
+                               				<span id="productPrice" class="showInfo"></span>
+                           				</td>
+                       				</tr>
+                       				<tr>
+                               			<th>총 가격</th>
+                               			<td>
+                               				<span id="totalPrice"></span>
                            				</td>
                        				</tr>
 	                            </tbody>
@@ -76,13 +82,32 @@
 	                        				$("select[name=productNum]").val(data.productNum).attr("selected", "selected");
 	                        				$("input[name=quantity]").val(data.quantity);
 	                        				$("input[name=dueDate]").val(data.dueDate);
-	                        				$("input[name=partnerName]").val(data.partnerName);
-	                        				$("input[name=productPrice]").val(data.productPrice);
+	                        				$("span#ptnName").text(data.ptnName);
+	                        				$("span#productPrice").text(data.productPrice);
 	                        			},
 	                        			error: function() {
 	                        				alert("에러가 발생했습니다. 다시 시도해주세요.");
 	                        			}
 	                        		});
+	                        	});
+	                        	
+	                        	$("select[name=productNum]").on("change", function() {
+	                        		$.ajax({
+	                        			url: "ajaxproduct",
+	                        			type: "POST",
+	                        			data: "productNum=" + $('select[name=productNum]').val(),
+	                        			success: function(data) {
+	                        				$("span#ptnName").text(data.ptnName);
+	                        				$("span#productPrice").text(data.productPrice);
+	                        			},
+	                        			error: function() {
+	                        				alert("에러가 발생했습니다. 다시 시도해주세요.");
+	                        			}
+	                        		});
+	                        	});
+	                        	
+	                        	$("input[name=quantity]").on("focus keyup", function() {
+	                        		$("span#totalPrice").text(Number($("input[name=quantity]").val() * $("span#productPrice").text()));
 	                        	});
 	                        
 	                        	var elem = document.getElementById("planForm");

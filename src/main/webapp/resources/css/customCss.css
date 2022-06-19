@@ -3,6 +3,8 @@
 /* Common */
 input { text-align: center; }
 select { width: 200px; text-align: center; }
+th, td { vertical-align: middle; text-align: center; }
+option.basicOption { font-weight: bold; background-color: #E9E9E9 }
 
 /* nav.jsp */
 form[name=logoutForm] { position: absolute; left: 95%; top: 30%; }

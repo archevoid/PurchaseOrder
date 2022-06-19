@@ -1,6 +1,8 @@
 package com.mit.model;
 
 
+import java.sql.Date;
+
 import lombok.Data;
 
 
@@ -10,11 +12,16 @@ public class PlanDTO {
 	Long eplNum;
 	Long productNum;
 	Long quantity;
-	java.sql.Date dueDate;
+	Date dueDate;
+	
+	/* progress 테이블 */
 	Long currentQuantity;
 	
+	/* product 테이블 */
 	String productName;
-	String partnerName;
 	Long productPrice;
+	
+	/* partner 테이블 */
+	String ptnName;
 	
 }

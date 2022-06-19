@@ -74,11 +74,30 @@ public class PoController {
 			return null;
 		}
 		
-		PlanDTO planDto = ps.getPlanByPlanNum(planNum);
+		HashMap<String, String> map = this.getNotNullFields(ps.getPlanByPlanNum(planNum));
+		
+		return map;
+	}
+	
+	@ResponseBody
+	@PostMapping("ajaxproduct")
+	public Object getProduct(String productNum) {
+		
+		if(productNum.equals("0")) {
+			return null;
+		}
+		
+		HashMap<String, String> map = this.getNotNullFields(ps.getProductByProductNum(productNum));
+		
+		return map;
+	}
+	
+	private <DTO> HashMap<String, String> getNotNullFields(DTO dto) {
 		
 		HashMap<String, String> map = new HashMap<String, String>();
+		
 		try {
-			Class<?> cls = Class.forName(planDto.getClass().getName());
+			Class<?> cls = Class.forName(dto.getClass().getName());
 			
 			Field[] fields = cls.getDeclaredFields();
 			Method[] methods = cls.getDeclaredMethods();
@@ -91,10 +110,9 @@ public class PoController {
 				for(Field f : fields) {
 					
 					if(m.getName().replace("get", "").equalsIgnoreCase(f.getName())) {
-						Object result = m.invoke(planDto);
+						Object result = m.invoke(dto);
 						
 						if(result != null) {
-							map.put(f.getName(), result.toString());
 							map.put(f.getName(), result.toString());
 						}
 					}
