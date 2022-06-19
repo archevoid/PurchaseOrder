@@ -83,7 +83,7 @@
 	                        				$("input[name=quantity]").val(data.quantity);
 	                        				$("input[name=dueDate]").val(data.dueDate);
 	                        				$("span#ptnName").text(data.ptnName);
-	                        				$("span#productPrice").text(data.productPrice);
+	                        				$("span#productPrice").text(Number(data.productPrice).toLocaleString('ko-KR'));
 	                        			},
 	                        			error: function() {
 	                        				alert("에러가 발생했습니다. 다시 시도해주세요.");
@@ -98,7 +98,7 @@
 	                        			data: "productNum=" + $('select[name=productNum]').val(),
 	                        			success: function(data) {
 	                        				$("span#ptnName").text(data.ptnName);
-	                        				$("span#productPrice").text(data.productPrice);
+	                        				$("span#productPrice").text(Number(data.productPrice).toLocaleString('ko-KR'));
 	                        			},
 	                        			error: function() {
 	                        				alert("에러가 발생했습니다. 다시 시도해주세요.");
@@ -106,8 +106,8 @@
 	                        		});
 	                        	});
 	                        	
-	                        	$("input[name=quantity]").on("focus keyup", function() {
-	                        		$("span#totalPrice").text(Number($("input[name=quantity]").val() * $("span#productPrice").text()));
+	                        	$("input[name=quantity]").on("focus keyup change", function() {
+	                        		$("span#totalPrice").text(Number($(this).val() * $("span#productPrice").text().replace(',', '')).toLocaleString('ko-KR'));
 	                        	});
 	                        
 	                        	var elem = document.getElementById("planForm");
