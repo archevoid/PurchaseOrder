@@ -33,7 +33,7 @@
   - **context는 루트(/)컨텍스트로 고정 (컨텍스트 변경시 오류 발생 가능)**
   - 페이지 출처
     + **로그인: https://startbootstrap.com/template/sb-admin**
-    + **po디렉토리 모든 페이지: 확인 후 추가 예정**
+    + **po디렉토리 모든 페이지: https://github.com/shahriar15/startbootstrap-sb-admin-2**
   - Authory List
     + ROLE_PD
       * 구매 개발 부서의 권한
