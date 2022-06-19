@@ -61,6 +61,12 @@
 	
 	<insert id="insertPlan">
 		INSERT INTO plan(epl_num, product_num, quantity, due_date)
-			VALUE (#{ eplNum }, #{ productNum }, #{ quantity }, #{ dueDate })
+		VALUE (#{ eplNum }, #{ productNum }, #{ quantity }, #{ dueDate })
 	</insert>
+	
+	<update id="updatePlan">
+		UPDATE plan
+		SET epl_num = #{ eplNum }, quantity = #{ quantity }, due_date = #{ dueDate }
+		WHERE plan_num = #{ planNum }
+	</update>
 </mapper>
