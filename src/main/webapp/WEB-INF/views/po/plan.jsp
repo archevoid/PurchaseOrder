@@ -35,7 +35,7 @@
                                			<th>품목명</th>
                                 		<td>
                                 			<select name="productNum" class="form-control">
-                                				<option value="0" class="basicOption">품목 명</option>
+                                				<option value="0" class="basicOption">품목명</option>
                                 				<c:forEach items="${ productList }" var="product">
                                 					<option value="${ product.productNum }">${ product.productName }</option>
                                 				</c:forEach>
@@ -135,7 +135,7 @@
 	                        				$("span#productPrice").text(Number(data.productPrice).toLocaleString('ko-KR'));
 	                        				
 	                        				$("span#totalPrice").text("");
-	                        				$("span#totalPrice").text(Number($("select[name=eplNum]").val() * $("span#productPrice").text().replace(',', '')).toLocaleString('ko-KR'));
+	                        				$("span#totalPrice").text((data.quantity * data.productPrice).toLocaleString('ko-KR'));
 	                        			},
 	                        			error: function() {
 	                        				alert("에러가 발생했습니다. 다시 시도해주세요.");
