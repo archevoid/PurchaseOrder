@@ -5,7 +5,6 @@ CREATE TABLE `plan` (
 	`quantity` INT(11) NOT NULL,
 	`due_date` DATE NOT NULL,
 	PRIMARY KEY (`plan_num`) USING BTREE,
-	UNIQUE INDEX `epl_num` (`epl_num`) USING BTREE,
 	INDEX `FK_plan_employee` (`epl_num`) USING BTREE,
 	INDEX `FK_plan_product` (`product_num`) USING BTREE,
 	CONSTRAINT `FK_plan_employee` FOREIGN KEY (`epl_num`) REFERENCES `purchaseorder`.`employee` (`epl_num`) ON UPDATE NO ACTION ON DELETE NO ACTION,
@@ -13,5 +12,5 @@ CREATE TABLE `plan` (
 )
 COLLATE='utf8mb3_general_ci'
 ENGINE=InnoDB
-AUTO_INCREMENT=4
+AUTO_INCREMENT=7
 ;
