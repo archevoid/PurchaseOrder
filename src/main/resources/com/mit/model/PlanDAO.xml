@@ -49,14 +49,22 @@
 			epl_num AS eplNum
 			, member_id AS memberId
 			, email AS email
-			, IF((SELECT COUNT(*) FROM plan AS p WHERE p.epl_num = e.epl_num) != 0, TRUE, FALSE) AS undertaken
-		FROM employee AS e;
+			, (SELECT COUNT(epl_num)
+				FROM (SELECT pl.epl_num
+						FROM plan AS pl INNER JOIN product AS pd ON pl.product_num = pd.product_num 
+						GROUP BY pl.epl_num, pl.due_date, pd.ptn_num
+					) AS grp
+				WHERE grp.epl_num = e.epl_num
+				) AS undertaken
+		FROM employee AS e
 	</select>
 	
-	<select id="isEmplInPlan" resultType="boolean">
+	<select id="getCountEmplInPlan" resultType="long">
 		SELECT
-			EXISTS (SELECT * FROM plan WHERE epl_num = #{ eplNum }) AS existance
-		FROM dual;
+			COUNT(*)
+		FROM plan
+		WHERE epl_num = #{ eplNum }
+		GROUP BY epl_num;
 	</select>
 	
 	<insert id="insertPlan">
