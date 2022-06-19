@@ -53,8 +53,14 @@
 		FROM employee AS e;
 	</select>
 	
+	<select id="isEmplInPlan" resultType="boolean">
+		SELECT
+			EXISTS (SELECT * FROM plan WHERE epl_num = #{ eplNum }) AS existance
+		FROM dual;
+	</select>
+	
 	<insert id="insertPlan">
-		INSERT INTO plan(product_num, quantity, due_date)
-			VALUE (#{ productNum }, #{ quantity }, #{ dueDate })
+		INSERT INTO plan(epl_num, product_num, quantity, due_date)
+			VALUE (#{ eplNum }, #{ productNum }, #{ quantity }, #{ dueDate })
 	</insert>
 </mapper>

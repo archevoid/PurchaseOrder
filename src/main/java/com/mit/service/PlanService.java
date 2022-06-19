@@ -42,4 +42,8 @@ public class PlanService extends com.mit.service.Service {
 	public ProductDTO getProductByProductNum(String productNum) {
 		return planDao.getProductByProductNum(productNum);
 	}
+	
+	public Boolean isEmplInPlan(String eplNum) {
+		return planDao.isEmplInPlan(eplNum);
+	}
 }

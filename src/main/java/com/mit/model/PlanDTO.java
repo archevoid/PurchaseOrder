@@ -26,6 +26,7 @@ public class PlanDTO {
 	
 	/* employee 테이블 */
 	String memberId;
+	String deptNum;
 	String email;
 	
 	/* Other */
