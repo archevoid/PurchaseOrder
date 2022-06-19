@@ -27,7 +27,7 @@
 				<tbody>
 					<tr>
 						<th>상호</th>
-						<td><%= aboutUs[0] %></td>
+						<td></td>
 					</tr>
 					<tr>
 						<th>참조</th>
@@ -35,11 +35,11 @@
 					</tr>
 					<tr>
 						<th>전화</th>
-						<td><%= aboutUs[2] %></td>
+						<td></td>
 					</tr>
 					<tr>
 						<th>팩스</th>
-						<td><%= aboutUs[3] %></td>
+						<td></td>
 					</tr>
 				</tbody>
 			</table>
@@ -52,7 +52,7 @@
 				<tbody>
 					<tr>
 						<th>상호</th>
-						<td></td>
+						<td><%= aboutUs[0] %></td>
 					</tr>
 					<tr>
 						<th>담당자</th>
@@ -60,11 +60,11 @@
 					</tr>
 					<tr>
 						<th>전화</th>
-						<td></td>
+						<td><%= aboutUs[2] %></td>
 					</tr>
 					<tr>
 						<th>팩스</th>
-						<td></td>
+						<td><%= aboutUs[3] %></td>
 
 					</tr>
 				</tbody>
