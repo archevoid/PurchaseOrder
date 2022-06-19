@@ -62,11 +62,6 @@ public class PoController {
 	
 	@PostMapping("inputpo")
 	public String inputPlan(PlanDTO planDto, RedirectAttributes rttr) {
-		if(ps.isEmplInPlan(planDto.getEplNum() + "")) {
-			rttr.addAttribute("err", "해당 ID는 이미 하나의 계획의 담당자입니다.");
-			
-			return "redirect:/po/plan";
-		}
 		
 		rttr.addFlashAttribute("success", ps.insertPlan(planDto));
 		
@@ -75,11 +70,6 @@ public class PoController {
 	
 	@PostMapping("updatepo")
 	public String updatePlan(PlanDTO planDto, RedirectAttributes rttr) {
-		if(ps.isEmplInPlan(planDto.getEplNum() + "")) {
-			rttr.addAttribute("err", "해당 ID는 이미 하나의 계획의 담당자입니다.");
-			
-			return "redirect:/po/plan";
-		}
 		
 		rttr.addFlashAttribute("success", ps.updatePlan(planDto));
 		

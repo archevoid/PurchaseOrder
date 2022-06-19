@@ -30,5 +30,5 @@ public class PlanDTO {
 	String email;
 	
 	/* Other */
-	boolean undertaken;
+	Long undertaken;
 }

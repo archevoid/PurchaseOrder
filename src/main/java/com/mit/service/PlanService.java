@@ -47,7 +47,7 @@ public class PlanService extends com.mit.service.Service {
 		return planDao.getProductByProductNum(productNum);
 	}
 	
-	public Boolean isEmplInPlan(String eplNum) {
-		return planDao.isEmplInPlan(eplNum);
+	public Long getCountEmplInPlan(String eplNum) {
+		return planDao.getCountEmplInPlan(eplNum);
 	}
 }

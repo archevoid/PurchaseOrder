@@ -54,11 +54,17 @@
                                				
                                					<c:forEach items="${ eplList }" var="epl">
                                						<c:choose>
-                               							<c:when test="${ epl.undertaken }">
-                               								<option value="${ epl.eplNum }" class="undertaken">${ epl.memberId }</option>
-                               							</c:when>
-                               							<c:when test="${ not epl.undertaken }">
+                               							<c:when test="${ epl.undertaken eq 0 }">
                                								<option value="${ epl.eplNum }" class="free">${ epl.memberId }</option>
+                               							</c:when>
+                               							<c:when test="${ epl.undertaken eq 1 }">
+                               								<option value="${ epl.eplNum }" class="undertake">${ epl.memberId }</option>
+                               							</c:when>
+                               							<c:when test="${ epl.undertaken eq 2 }">
+                               								<option value="${ epl.eplNum }" class="overwork">${ epl.memberId }</option>
+                               							</c:when>
+                               							<c:when test="${ epl.undertaken ge 3 }">
+                               								<option value="${ epl.eplNum }" class="stop">${ epl.memberId }</option>
                                							</c:when>
                                						</c:choose>
                                						<c:set property="${ epl.eplNum }" value="${ epl.email }" target="${ emailMap }" />
