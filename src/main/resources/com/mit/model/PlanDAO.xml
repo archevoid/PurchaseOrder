@@ -14,7 +14,7 @@
 			, pd.product_name AS productName
 			, pl.quantity AS quantity
 			, pl.due_date AS dueDate
-			, (SELECT ptn_name FROM partner p WHERE p.ptn_num = pd.ptn_num) AS partnerName
+			, (SELECT ptn_name FROM partner p WHERE p.ptn_num = pd.ptn_num) AS ptnName
 			, pd.product_price AS productPrice
 		FROM plan AS pl INNER JOIN product AS pd
 		WHERE plan_num = #{ planNum }
@@ -27,6 +27,17 @@
 			, product_name AS productName
 			, product_price AS productPrice
 		FROM product
+	</select>
+	
+	<select id="getProductByProductNum" resultType="com.mit.model.ProductDTO">
+		SELECT 
+			product_num AS productNum
+			, ptn_num AS ptnNum
+			, (SELECT ptn_name FROM partner p WHERE p.ptn_num = pd.ptn_num) AS ptnName
+			, product_name AS productName
+			, product_price AS productPrice
+		FROM product AS pd
+		WHERE product_num = #{ productNum }
 	</select>
 	
 	<insert id="insertPlan">

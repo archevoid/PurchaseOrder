@@ -34,4 +34,8 @@ public class PlanService extends com.mit.service.Service {
 	public Long insertPlan(PlanDTO planDto) {
 		return planDao.insertPlan(planDto);
 	}
+	
+	public ProductDTO getProductByProductNum(String productNum) {
+		return planDao.getProductByProductNum(productNum);
+	}
 }
