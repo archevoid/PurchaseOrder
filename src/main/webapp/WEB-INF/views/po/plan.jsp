@@ -8,6 +8,9 @@
 <%@ include file="../includes/header.jsp"%>
 
 <body>
+<%-- 구매 부서의 부서 번호 --%>
+<% pageContext.setAttribute("pdCode", 1); %>
+
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<div id="wrapper">
 		<%@ include file="../includes/nav.jsp"%>
@@ -53,20 +56,22 @@
                                					<option value="" class="basicOption">담당자</option>
                                				
                                					<c:forEach items="${ eplList }" var="epl">
-                               						<c:choose>
-                               							<c:when test="${ epl.undertaken eq 0 }">
-                               								<option value="${ epl.eplNum }" class="free">${ epl.memberId }</option>
-                               							</c:when>
-                               							<c:when test="${ epl.undertaken eq 1 }">
-                               								<option value="${ epl.eplNum }" class="undertake">${ epl.memberId }</option>
-                               							</c:when>
-                               							<c:when test="${ epl.undertaken eq 2 }">
-                               								<option value="${ epl.eplNum }" class="overwork">${ epl.memberId }</option>
-                               							</c:when>
-                               							<c:when test="${ epl.undertaken ge 3 }">
-                               								<option value="${ epl.eplNum }" class="stop">${ epl.memberId }</option>
-                               							</c:when>
-                               						</c:choose>
+                               						<c:if test="${ epl.deptNum eq pdCode }">
+	                               						<c:choose>
+	                               							<c:when test="${ epl.undertaken eq 0 }">
+	                               								<option value="${ epl.eplNum }" class="free">${ epl.memberId }</option>
+	                               							</c:when>
+	                               							<c:when test="${ epl.undertaken eq 1 }">
+	                               								<option value="${ epl.eplNum }" class="undertake">${ epl.memberId }</option>
+	                               							</c:when>
+	                               							<c:when test="${ epl.undertaken eq 2 }">
+	                               								<option value="${ epl.eplNum }" class="overwork">${ epl.memberId }</option>
+	                               							</c:when>
+	                               							<c:when test="${ epl.undertaken ge 3 }">
+	                               								<option value="${ epl.eplNum }" class="stop">${ epl.memberId }</option>
+	                               							</c:when>
+	                               						</c:choose>
+                               						</c:if>
                                						<c:set property="${ epl.eplNum }" value="${ epl.email }" target="${ emailMap }" />
                                					</c:forEach>
                                				</select>

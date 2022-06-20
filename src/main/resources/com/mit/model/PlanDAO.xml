@@ -80,6 +80,7 @@
 					) AS grp
 				WHERE grp.epl_num = e.epl_num
 				) AS undertaken
+			, dept_num AS deptNum
 		FROM employee AS e
 	</select>
 	
