@@ -33,7 +33,7 @@ public class PoController {
 	}
 	
 	@PostMapping("printpo")
-	public String printpo(HttpServletRequest request /* post로 받을 값(DTO) */) {
+	public String printpo(PlanDTO planDto, HttpServletRequest request, Model m) {
 		String referer = (String)request.getHeader("REFERER");
 		
 		String url = request.getRequestURL().toString().replace(request.getRequestURI(), "");
@@ -42,6 +42,8 @@ public class PoController {
 		if(!referer.equals(url + prevUri)) {
 			return "/po/dashboard";
 		}
+		
+		m.addAttribute("planData", ps.getPlanByEplNumAndDueDate(planDto.getEplNum() + "", planDto.getPtnNum() + "", planDto.getDueDate().toString()));
 		
 		return "/po/printPO";
 	}

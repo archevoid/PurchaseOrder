@@ -1,10 +1,12 @@
 package com.mit.model;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface PlanDAO {
 	List<Long> getPlanNumList();
-	PlanDTO getPlanByPlanNum(String planNum);
+	
+	List<PlanDTO> getPlanByInputType(HashMap<String, String> map);
 	
 	List<ProductDTO> getProductList();
 	ProductDTO getProductByProductNum(String productNum);

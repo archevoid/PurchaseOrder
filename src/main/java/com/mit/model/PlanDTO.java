@@ -22,7 +22,10 @@ public class PlanDTO {
 	Long productPrice;
 	
 	/* partner 테이블 */
+	Long ptnNum;
 	String ptnName;
+	String ptnTel;
+	String ptnFax;
 	
 	/* employee 테이블 */
 	String memberId;

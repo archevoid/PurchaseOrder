@@ -97,12 +97,8 @@
                                			<th>협력 회사</th>
                                			<td>
                                				<span id="ptnName" class="showInfo"></span>
-                           				</td>
-                       				</tr>
-                       				<tr>
-                               			<th>협력 회사</th>
-                               			<td>
-                               				<span id="ptnName" class="showInfo"></span>
+                               				<input type="hidden" name="ptnNum">
+                               				<input type="hidden" name="ptnName">
                            				</td>
                        				</tr>
                        				<tr>
@@ -142,6 +138,9 @@
 	                        				
 	                        				$("span#totalPrice").text("");
 	                        				$("span#totalPrice").text((data.quantity * data.productPrice).toLocaleString('ko-KR'));
+	                        				
+	                        				$("input[name=ptnNum]").val(data.ptnNum);
+	                        				$("input[name=ptnName]").val(data.ptnName);
 	                        			},
 	                        			error: function() {
 	                        				alert("에러가 발생했습니다. 다시 시도해주세요.");
@@ -157,6 +156,9 @@
 	                        			success: function(data) {
 	                        				$("span#ptnName").text(data.ptnName);
 	                        				$("span#productPrice").text(Number(data.productPrice).toLocaleString('ko-KR'));
+	                        				
+	                        				$("input[name=ptnNum]").val(data.ptnNum);
+	                        				$("input[name=ptnName]").val(data.ptnName);
 	                        			},
 	                        			error: function() {
 	                        				alert("에러가 발생했습니다. 다시 시도해주세요.");

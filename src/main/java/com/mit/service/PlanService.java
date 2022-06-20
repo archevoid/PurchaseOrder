@@ -1,6 +1,7 @@
 package com.mit.service;
 
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -24,7 +25,23 @@ public class PlanService extends com.mit.service.Service {
 	}
 	
 	public PlanDTO getPlanByPlanNum(String planNum) {
-		return planDao.getPlanByPlanNum(planNum);
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("type", "planNum");
+		map.put("planNum", planNum);
+		
+		List<PlanDTO> result =  planDao.getPlanByInputType(map);
+		
+		return result.size() != 0 ? planDao.getPlanByInputType(map).get(0) : null;
+	}
+	
+	public List<PlanDTO> getPlanByEplNumAndDueDate(String eplNum, String ptnNum, String dueDate) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("type", "eplNum dueDate ptnNum");
+		map.put("eplNum", eplNum);
+		map.put("dueDate", dueDate);
+		map.put("ptnNum", ptnNum);
+		
+		return planDao.getPlanByInputType(map);
 	}
 	
 	public List<ProductDTO> getProductList() {
