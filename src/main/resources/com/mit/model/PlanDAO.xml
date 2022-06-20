@@ -8,29 +8,53 @@
 		SELECT plan_num FROM plan ORDER BY plan_num DESC
 	</select>
 	
-	<select id="getPlanByPlanNum" resultType="com.mit.model.PlanDTO">
+	<select id="getPlanByInputType" resultType="com.mit.model.PlanDTO" parameterType="map">
 		SELECT
-			pd.product_num AS productNum
+			pl.plan_num AS planNum
+			, pd.product_num AS productNum
 			, pd.product_name AS productName
 			, pl.epl_num AS eplNum
 			, pl.quantity AS quantity
 			, pl.due_date AS dueDate
-			, (SELECT ptn_name FROM partner p WHERE p.ptn_num = pd.ptn_num) AS ptnName
+			, p.ptn_num AS ptnNum
+			, p.ptn_name AS ptnName
+			, p.ptn_tel AS ptnTel
+			, p.ptn_fax AS ptnFax
 			, pd.product_price AS productPrice
 			, e.member_id AS memberId
 			, e.email AS email
-		FROM (plan AS pl INNER JOIN product AS pd ON pl.product_num = pd.product_num)
-			LEFT JOIN employee AS e ON pl.epl_num = e.epl_num
-		WHERE plan_num = #{ planNum }
+		FROM ((plan AS pl INNER JOIN product AS pd ON pl.product_num = pd.product_num)
+			LEFT JOIN employee AS e ON pl.epl_num = e.epl_num)
+			INNER JOIN partner AS p ON p.ptn_num = pd.ptn_num
+			
+		<where>
+			<trim prefixOverrides="and">
+				<choose>
+					<when test='type == "planNum"'>
+						and pl.plan_num = #{ planNum }
+					</when>
+					<when test='type == "eplNum"'>
+						and pl.epl_num = #{ eplNum }
+					</when>
+					<when test='type == "dueDate"'>
+						and pl.due_date = #{ dueDate }
+					</when>
+					<when test='type == "ptn_num"'>
+						and pd.ptn_num = #{ ptnNum }
+					</when>
+				</choose>
+			</trim>
+		</where>
 	</select>
 	
 	<select id="getProductList" resultType="com.mit.model.ProductDTO">
 		SELECT
-			product_num AS productNum
-			, ptn_num AS ptnNum
-			, product_name AS productName
-			, product_price AS productPrice
-		FROM product
+			p.product_num AS productNum
+			, p.ptn_num AS ptnNum
+			, (SELECT ptn_name FROM partner ptn WHERE ptn.ptn_num = p.ptn_num) AS ptnName
+			, p.product_name AS productName
+			, p.product_price AS productPrice
+		FROM product AS p
 	</select>
 	
 	<select id="getProductByProductNum" resultType="com.mit.model.ProductDTO">
