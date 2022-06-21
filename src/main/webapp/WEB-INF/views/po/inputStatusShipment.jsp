@@ -28,7 +28,7 @@
 									<tbody>
 										<tr class="odd grad">
 											<td class="centered">품목명</td>
-											<td class="centered"><select name="product">
+											<td class="centered"><select name="productName">
 													<option>1</option>
 													<option>2</option>
 													<option>3</option>
@@ -38,7 +38,7 @@
 										</tr>
 										<tr class="odd grad">
 											<td class="centered">제작상태</td>
-											<td class="centered"><select name="productStatus">
+											<td class="centered"><select name="currentQuantity">
 													<option>1</option>
 													<option>2</option>
 													<option>3</option>
@@ -58,7 +58,7 @@
 											<td class="centered">수량</td>
 											<td class="centered">
 												<div class="form-group">
-													<input type="number" name="numberOfProducts">
+													<input type="number" name="quantity">
 												</div>
 											</td>
 										</tr>

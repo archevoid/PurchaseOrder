@@ -1,5 +1,11 @@
 @charset "UTF-8";
 
+:root {
+	--border-style: 1px solid;
+	--border-outer: 2px solid;
+}
+
+
 /* printPO.jsp */
 * {
 	-moz-box-sizing: border-box;
@@ -33,11 +39,35 @@ table {
 }
 
 table#companyTable {
-	display: inline;
+	display: inline-block;
+	margin: 0;
 }
 
 div#company {
 	margin-bottom: 0.5cm;
+}
+
+div#planContent {
+	height: 80%;
+	width: 100%;
+}
+
+div#companyInfo {
+	display: inline-block;
+    width: 49.6%;
+    height: 25%;
+}
+
+div#planInfo {
+	display: inline-block;
+    width: 100%;
+    height: 25%;
+}
+
+div#productInfo {
+	display: inline-block;
+    width: 100%%;
+    height: 50%;
 }
 
 div#company thead th {
@@ -50,12 +80,33 @@ div#company tbody th {
 }
 
 div#company tbody td {
-	width: 6.68cm;
+	width: 6.65cm;
 }
 
 th, td {
-	border: 0.5px solid;
+	border-top: var(--border-style);
+	border-right: var(--border-style);
 	height: 1cm;
+}
+
+tr:first-child th, tr:first-child td {
+	border-top: var(--border-outer);
+}
+
+tbody tr:last-child th, tr:last-child td {
+	border-bottom: var(--border-outer);
+}
+
+th:first-child, td:first-child {
+	border-left: var(--border-outer);
+}
+
+th:last-child, td:last-child {
+	border-right: var(--border-outer);
+}
+
+#productTable tr:nth-last-child(2) th, #productTable tr:nth-last-child(2) td {
+	border-top: 3px double;
 }
 
 thead th {
