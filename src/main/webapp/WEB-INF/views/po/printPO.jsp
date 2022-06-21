@@ -102,17 +102,20 @@
 			</thead>
 			<tbody>
 				<% int num = 1; %>
-				<c:forEach items="${ planData }" var="plan">
+				<c:forEach begin="0" end="9" var="i">
 					<tr>
-						<td><%= num++ %></td>
-						<td><c:out value="${ plan.productName }" /></td>
-						<td><c:out value="${ plan.quantity }" /></td>
-						<td><c:out value="${ plan.productPrice }" /></td>
-						<td class="totalPrice"><c:out value="${ plan.quantity * plan.productPrice }" /></td>
+						<td>${ i + 1 }</td>
+						<td><c:out value="${ planData[i].productName }" /></td>
+						<td><c:out value="${ planData[i].quantity }" /></td>
+						<td><c:out value="${ planData[i].productPrice }" /></td>
+						<td class="totalPrice">
+							<c:if test="${ (planData[i].quantity ne null) or (planData[i].productPrice ne null) }">
+								<c:out value="${ planData[i].quantity * planData[i].productPrice }" />
+							</c:if>
+						</td>
 						<td></td>
 					</tr>	
 				</c:forEach>
-				
 				
 				<tr>
 					<td>합계</td>
@@ -131,7 +134,7 @@
 		$(document).ready(function() {
 			let sum = 0;
 			$(".totalPrice").each(function() {
-				if(!isNaN($(this).text())) {
+				if((!isNaN($(this).text()) && (!$(this).text().trim() == ""))) {
 					sum += parseInt($(this).text());
 				}
 			});
