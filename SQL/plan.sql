@@ -12,5 +12,4 @@ CREATE TABLE `plan` (
 )
 COLLATE='utf8mb3_general_ci'
 ENGINE=InnoDB
-AUTO_INCREMENT=7
 ;

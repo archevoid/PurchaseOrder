@@ -11,7 +11,7 @@
 <br>
 
 ## DB ERD
-![PO_TeamFoS drawio](https://user-images.githubusercontent.com/106382062/174472241-7615df46-07d6-4a4d-b614-bd157b03f2e3.png)
+![PO_TeamFoS drawio](https://user-images.githubusercontent.com/106382062/174935671-7f969a14-b447-4c94-b2d9-40cc937dc8c3.png)
 <br>
 
 ## Coding Style
@@ -22,11 +22,25 @@
 - Method Name: `lowerCamelCase`
 - Non-Final Variable: `lowerCamelCase`
 - Final Variable: `SCREAMING_SNAKE_CASE`
-- Declaration
-  + One Declaration in One Line
-    * `int x; // Good`
-    * `int x, y; // Bad`
-  + `Array: Type[] name`
+
+### Declaration
+  - One Declaration in One Line
+    + `int x; // Good`
+    + `int x, y; // Bad`
+  - `Array: Type[] name`
+  
+### Brace
+  - K&R
+  	+ 예시
+  	```java
+  	
+  	if(foo) {
+  	
+  	} else {
+  	
+  	}
+  	
+  	```
 <br>
 
 ## Pages
