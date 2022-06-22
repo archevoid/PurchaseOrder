@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.mit.model.FileDTO;
 import com.mit.model.PlanDAO;
 import com.mit.model.PlanDTO;
 import com.mit.model.ProductDTO;
@@ -66,5 +67,13 @@ public class PlanService extends com.mit.service.Service {
 	
 	public Long getCountEmplInPlan(String eplNum) {
 		return planDao.getCountEmplInPlan(eplNum);
+	}
+	
+	public List<FileDTO> getOrdinalByPlanNum(String planNum) {
+		return planDao.getOrdinalByPlanNum(planNum);
+	}
+	
+	public FileDTO getMaxOrdinalByPlanNum(String planNum) {
+		return planDao.getMaxOrdinalByPlanNum(planNum);
 	}
 }

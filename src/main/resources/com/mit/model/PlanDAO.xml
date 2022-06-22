@@ -102,4 +102,18 @@
 		SET epl_num = #{ eplNum }, quantity = #{ quantity }, due_date = #{ dueDate }
 		WHERE plan_num = #{ planNum }
 	</update>
+	
+	<select id="getOrdinalByPlanNum" resultType="com.mit.model.FileDTO">
+		SELECT
+			ordinal AS ordinal,
+		FROM file
+		WHERE plan_num = #{ planNum }
+	</select>
+	
+	<select id="getMaxOrdinalByPlanNum" resultType="com.mit.model.FileDTO">
+		SELECT
+			IFNULL(MAX(ordinal), 0) AS maxOrdinal
+		FROM file
+		WHERE plan_num = #{ planNum }
+	</select>
 </mapper>
