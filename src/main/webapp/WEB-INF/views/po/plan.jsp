@@ -192,6 +192,15 @@
                     <!-- /.col-lg-12 -->
                 </div>
                 <!-- /.row -->
+                <div id="inspection">
+                   	<form action="inputFile" method="post" name="inspectionFile" enctype="multipart/form-data">
+                   		<fieldset>
+	                   		<label for="fileInput">검수 파일 입력</label>
+	       	        		<input type="file" name="inspectionFile" id="fileInput">
+	       	        		<button>등록</button>
+       	        		</fieldset>
+                   	</form>
+                </div>
             </div>
             <!-- /.container-fluid -->
         </div>

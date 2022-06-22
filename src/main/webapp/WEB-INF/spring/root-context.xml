@@ -11,6 +11,14 @@
 	<context:component-scan base-package="com.mit.model" />
 	<context:component-scan base-package="com.mit.service" />
 	
+	
+	<!-- 검수 파일 저장 경로 -->
+	<bean id="pathOfInspectionFile" class="java.lang.String">
+		<constructor-arg value="/InspectionFile" />
+	</bean>
+	
+	
+	
 		<!-- 스프링에서 관리되는 hikariConfig 객체 -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<property name="driverClassName" value="org.mariadb.jdbc.Driver"></property>
@@ -34,6 +42,12 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	
+	<!-- 파일 업로드 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 50MB -->
+		<property name="maxUploadSize" value="52428800"/>
+		<property name="defaultEncoding" value="UTF-8"></property>
+	</bean>
 	
 	<mybatis-spring:scan base-package="com.mit.model" />
 </beans>

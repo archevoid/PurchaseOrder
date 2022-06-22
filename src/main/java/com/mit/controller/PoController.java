@@ -1,19 +1,24 @@
 package com.mit.controller;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.mit.model.FileDTO;
 import com.mit.model.PlanDTO;
 import com.mit.service.PlanService;
 
@@ -25,6 +30,10 @@ import lombok.AllArgsConstructor;
 public class PoController {
 	
 	PlanService ps;
+	
+	/* 파일 저장 경로 (root-context에 선언) */
+	@Resource(name = "pathOfInspectionFile")
+	String pathOfInspectionFile;
 	
 	
 	@GetMapping("partner")
@@ -78,6 +87,39 @@ public class PoController {
 		return "redirect:/po/plan";
 	}
 	
+	@PostMapping("inputFile")
+	public String inputFile(String planNum, MultipartFile inspectionFile) {
+		
+		if(inspectionFile != null) {
+			
+			FileDTO fileDto = ps.getMaxOrdinalByPlanNum(planNum);
+			
+			String[] identity = inspectionFile.getOriginalFilename().split("\\.(?=[^.]+$)");
+			
+			fileDto.setOrdinal(fileDto.getMaxOrdinal() + 1L);
+			fileDto.setFileName(identity[0]);
+			fileDto.setFileFormat(identity[1]);
+			fileDto.setSavedName(planNum + "_" + fileDto.getOrdinal());
+			
+			File file = new File(this.pathOfInspectionFile, fileDto.getSavedName() + "." + fileDto.getFileFormat());
+			
+			File forMkdir = new File(this.pathOfInspectionFile);
+			
+			if(!forMkdir.exists()) {
+				forMkdir.mkdirs();
+			}
+			
+			try {
+				FileCopyUtils.copy(inspectionFile.getBytes(), file);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		return "redirect: /po/plan";
+	}
+	
 	/* plan.jsp에서 ajax를 이용해 접근 */
 	@ResponseBody
 	@PostMapping("ajaxplan")
@@ -103,6 +145,16 @@ public class PoController {
 		HashMap<String, String> map = this.getNotNullFields(ps.getProductByProductNum(productNum));
 		
 		return map;
+	}
+	
+	@ResponseBody
+	@PostMapping("ajaxinspection")
+	public Object getInspection(String planNum) {
+		if(planNum.trim().equals("0")) {
+			return null;
+		} else {
+			return ps.getOrdinalByPlanNum(planNum);
+		}
 	}
 	
 	private <DTO> HashMap<String, String> getNotNullFields(DTO dto) {

@@ -18,4 +18,8 @@ public interface PlanDAO {
 	Long insertPlan(PlanDTO dto);
 	
 	Long updatePlan(PlanDTO dto);
+	
+	List<FileDTO> getOrdinalByPlanNum(String planNum);
+	
+	FileDTO getMaxOrdinalByPlanNum(String planNum);
 }

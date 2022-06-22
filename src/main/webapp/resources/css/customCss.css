@@ -14,3 +14,4 @@ option.free { background-color: lightgreen; }
 option.undertake { background-color: lightyellow; }
 option.overwork { background-color: pink; }
 option.stop { background-color: red; }
+form#fileInput { display: inline; }
