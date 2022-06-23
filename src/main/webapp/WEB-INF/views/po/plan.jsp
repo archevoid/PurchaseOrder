@@ -193,11 +193,32 @@
                 </div>
                 <!-- /.row -->
                 <div id="inspection">
+                	<h1 class="page-header">검수</h1><%-- 검수 버튼 클릭시 표시, 포커싱 --%>
                    	<form action="inputFile" method="post" name="inspectionFile" enctype="multipart/form-data">
                    		<fieldset>
-	                   		<label for="fileInput">검수 파일 입력</label>
-	       	        		<input type="file" name="inspectionFile" id="fileInput">
-	       	        		<button>등록</button>
+                   			<table id="inspectionFile">
+                   				<tr>
+                   					<td>
+		                   				검수 파일 업로드
+	                   				</td>
+	                   				<td>
+		       	        				<input type="file" name="inspectionFile" id="fileInput">
+	       	        				</td>
+       	        				</tr>
+       	        				<tr>
+       	        					<td colspan="2">
+		       	        				<button>등록</button>
+	       	        				</td>
+       	        				</tr>
+       	        				<tr>
+       	        					<td>
+       	        						검수 파일 다운로드
+   	        						</td>
+   	        						<td>
+   	        							<a href="#"><%-- ajax로 파일 이름 입력 --%></a>
+        							</td>
+        						</tr>
+	       	        		</table>
        	        		</fieldset>
                    	</form>
                 </div>
