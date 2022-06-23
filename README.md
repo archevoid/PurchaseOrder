@@ -152,6 +152,17 @@
       * 권한이 없는 사용자가 접근시 사용됨
     + URL Mapping: 미정(\[/error/401, /401, /error/accessError, /accessError]
 
+  ### /admin
+  설명: 관리자 페지이
+  - employee.jsp
+    + 사원을 등록하기 위한 페이지
+    + 사원은 사원명없이 ID로 관리됨
+    + 권한을 부여할 수 있음
+<br>
+  - partner.jsp
+    + 업체를 등록하기 위한 페이지
+    + 전화번호, 팩스 번호 등록
+
   ### /basic
   설명: 페이지 확인용 디렉토리  
     **삭제 예정**
