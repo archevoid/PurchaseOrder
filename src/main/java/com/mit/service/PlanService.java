@@ -76,4 +76,8 @@ public class PlanService extends com.mit.service.Service {
 	public FileDTO getMaxOrdinalByPlanNum(String planNum) {
 		return planDao.getMaxOrdinalByPlanNum(planNum);
 	}
+	
+	public Long insertFileInfo(FileDTO fileDto) {
+		return planDao.insertFileInfo(fileDto);
+	}
 }

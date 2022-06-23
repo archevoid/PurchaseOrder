@@ -105,7 +105,7 @@
 	
 	<select id="getOrdinalByPlanNum" resultType="com.mit.model.FileDTO">
 		SELECT
-			ordinal AS ordinal,
+			ordinal AS ordinal
 		FROM file
 		WHERE plan_num = #{ planNum }
 	</select>
@@ -116,4 +116,24 @@
 		FROM file
 		WHERE plan_num = #{ planNum }
 	</select>
+	
+	<insert id="insertFileInfo">
+		INSERT INTO file(
+			plan_num
+			, ordinal
+			, process
+			, saved_name
+			, file_name
+			, file_format
+			, input_date)
+		VALUE (
+			#{ planNum }
+			, #{ ordinal }
+			, #{ process }
+			, #{ savedName }
+			, #{ fileName }
+			, #{ fileFormat }
+			, NOW()
+		)
+	</insert>
 </mapper>
