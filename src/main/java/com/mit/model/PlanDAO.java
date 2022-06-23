@@ -22,4 +22,6 @@ public interface PlanDAO {
 	List<FileDTO> getOrdinalByPlanNum(String planNum);
 	
 	FileDTO getMaxOrdinalByPlanNum(String planNum);
+	
+	Long insertFileInfo(FileDTO fileDto);
 }

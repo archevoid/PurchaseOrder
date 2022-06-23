@@ -88,7 +88,7 @@ public class PoController {
 	}
 	
 	@PostMapping("inputFile")
-	public String inputFile(String planNum, MultipartFile inspectionFile) {
+	public String inputFile(String planNum, String process, MultipartFile inspectionFile) {
 		
 		if(inspectionFile != null) {
 			
@@ -96,10 +96,12 @@ public class PoController {
 			
 			String[] identity = inspectionFile.getOriginalFilename().split("\\.(?=[^.]+$)");
 			
+			fileDto.setPlanNum(Long.parseLong(planNum));
 			fileDto.setOrdinal(fileDto.getMaxOrdinal() + 1L);
 			fileDto.setFileName(identity[0]);
 			fileDto.setFileFormat(identity[1]);
 			fileDto.setSavedName(planNum + "_" + fileDto.getOrdinal());
+			fileDto.setProcess(Long.parseLong(process));
 			
 			File file = new File(this.pathOfInspectionFile, fileDto.getSavedName() + "." + fileDto.getFileFormat());
 			
@@ -110,7 +112,11 @@ public class PoController {
 			}
 			
 			try {
+				
 				FileCopyUtils.copy(inspectionFile.getBytes(), file);
+				
+				ps.insertFileInfo(fileDto);
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -148,8 +154,8 @@ public class PoController {
 	}
 	
 	@ResponseBody
-	@PostMapping("ajaxinspection")
-	public Object getInspection(String planNum) {
+	@PostMapping("ajaxOrdinal")
+	public Object getOrdinalByPlanNum(String planNum) {
 		if(planNum.trim().equals("0")) {
 			return null;
 		} else {
