@@ -120,69 +120,6 @@
                        				</tr>
 	                            </tbody>
 	                        </table>
-	                        <script>
-	                        	$("select[name=planNum]").on("change", function() {
-	                        		$.ajax({
-	                        			url: "ajaxplan",
-	                        			type: "POST",
-	                        			data: "planNum=" + $('select[name=planNum]').val(),
-	                        			success: function(data) {
-	                        				$("select[name=productNum]").val(data.productNum).attr("selected", "selected");
-	                        				
-	                        				$("input[name=quantity]").val(data.quantity);
-	                        				$("input[name=dueDate]").val(data.dueDate);
-	                        				
-	                        				$("select[name=eplNum]").val(data.eplNum).attr("selected", "selected");
-	                        				
-	                        				$("span#email").text("");
-	                        				$("span#email").text(data.email);
-	                        				
-	                        				
-	                        				$("span#ptnName").text(data.ptnName);
-	                        				$("span#productPrice").text(Number(data.productPrice).toLocaleString('ko-KR'));
-	                        				
-	                        				$("span#totalPrice").text("");
-	                        				$("span#totalPrice").text((data.quantity * data.productPrice).toLocaleString('ko-KR'));
-	                        				
-	                        				$("input[name=ptnNum]").val(data.ptnNum);
-	                        				$("input[name=ptnName]").val(data.ptnName);
-	                        			},
-	                        			error: function() {
-	                        				alert("에러가 발생했습니다. 다시 시도해주세요.");
-	                        			}
-	                        		});
-	                        	});
-	                        	
-	                        	$("select[name=productNum]").on("change", function() {
-	                        		$.ajax({
-	                        			url: "ajaxproduct",
-	                        			type: "POST",
-	                        			data: "productNum=" + $('select[name=productNum]').val(),
-	                        			success: function(data) {
-	                        				$("span#ptnName").text(data.ptnName);
-	                        				$("span#productPrice").text(Number(data.productPrice).toLocaleString('ko-KR'));
-	                        				
-	                        				$("input[name=ptnNum]").val(data.ptnNum);
-	                        				$("input[name=ptnName]").val(data.ptnName);
-	                        			},
-	                        			error: function() {
-	                        				alert("에러가 발생했습니다. 다시 시도해주세요.");
-	                        			}
-	                        		});
-	                        	});
-	                        	
-	                        	const emails = JSON.parse( '${ emails }' );
-	                        	$("select[name=eplNum]").on("change", function() {
-	                        		$("span#email").text("");
-                    				$("span#email").text(emails[$("select[name=eplNum]").val()]);
-	                        	});
-	                        	
-	                        	$("input[name=quantity]").on("focus keyup change", function() {
-	                        		$("span#totalPrice").text(Number($(this).val() * $("span#productPrice").text().replace(',', '')).toLocaleString('ko-KR'));
-	                        	});
-	                        
-	                        	var elem = document.getElementById("planForm");
-	                        </script>
 	                        <button type="button" class="btn btn-primary" onclick="changeActionAndSubmit(elem, 'inputpo')">입력</button>
 	                        <button type="button" class="btn btn-primary" onclick="changeActionAndSubmit(elem, 'updatepo')">수정</button>
 	                        <button type="button" class="btn btn-primary" onclick="changeActionAndSubmit(elem, 'inspection')">검수</button>
@@ -192,21 +129,49 @@
                     <!-- /.col-lg-12 -->
                 </div>
                 <!-- /.row -->
+                <% 
+                	String[] process = new String[] {
+                		"검수 일정", "검수 결과", "검수 보완사항"
+	                };
+                
+                	pageContext.setAttribute("process", process);
+                %>
                 <div id="inspection">
                 	<h1 class="page-header">검수</h1><%-- 검수 버튼 클릭시 표시, 포커싱 --%>
                    	<form action="inputFile" method="post" name="inspectionFile" enctype="multipart/form-data">
                    		<fieldset>
-                   			<table id="inspectionFile">
+                   			<input type="hidden" name="planNum">
+                   			<table id="inspectionFile" class="table table-striped table-bordered table-hover">
+                   				<tr>
+                   					<td>
+                   						차수
+                  					</td>
+                  					<td colspan="2">
+                  						<select name="ordinal" class="form-control">
+                  							<option value="0">차수 선택</option>
+                  						</select>
+               						</td>
+           						</tr>
+           						<tr>
+           							<td>
+           								Process
+        							</td>
+        							<td colspan="2">
+        								<select name="process" class="form-control">
+        									<c:forEach items="${ process }" var="step" varStatus="status">
+        										<option value=${ status.index }>${ step }</option>
+        									</c:forEach>
+        								</select>
+       								</td>
+   								</tr>
                    				<tr>
                    					<td>
 		                   				검수 파일 업로드
 	                   				</td>
 	                   				<td>
-		       	        				<input type="file" name="inspectionFile" id="fileInput">
+		       	        				<input type="file" name="inspectionFile" id="fileInput" class="form-control">
 	       	        				</td>
-       	        				</tr>
-       	        				<tr>
-       	        					<td colspan="2">
+	       	        				<td>
 		       	        				<button>등록</button>
 	       	        				</td>
        	        				</tr>
@@ -214,7 +179,7 @@
        	        					<td>
        	        						검수 파일 다운로드
    	        						</td>
-   	        						<td>
+   	        						<td colspan="2">
    	        							<a href="#"><%-- ajax로 파일 이름 입력 --%></a>
         							</td>
         						</tr>
@@ -244,6 +209,84 @@
     
     <script src="../../resources/js/customScript.js" type="text/javascript"></script>
 
+	<script>
+	  	$("select[name=planNum]").on("change", function() {
+	  		$.ajax({
+	  			url: "ajaxplan",
+	  			type: "POST",
+	  			data: "planNum=" + $('select[name=planNum]').val(),
+	  			success: function(data) {
+	  				$("select[name=productNum]").val(data.productNum).attr("selected", "selected");
+	  				
+	  				$("input[name=quantity]").val(data.quantity);
+	  				$("input[name=dueDate]").val(data.dueDate);
+	  				
+	  				$("select[name=eplNum]").val(data.eplNum).attr("selected", "selected");
+	  				
+	  				$("span#email").text("");
+	  				$("span#email").text(data.email);
+	  				
+	  				
+	  				$("span#ptnName").text(data.ptnName);
+	  				$("span#productPrice").text(Number(data.productPrice).toLocaleString('ko-KR'));
+	  				
+	  				$("span#totalPrice").text("");
+	  				$("span#totalPrice").text((data.quantity * data.productPrice).toLocaleString('ko-KR'));
+	  				
+	  				$("input[name=ptnNum]").val(data.ptnNum);
+	  				$("input[name=ptnName]").val(data.ptnName);
+	  			},
+	  			error: function() {
+	  				alert("에러가 발생했습니다. 다시 시도해주세요.");
+	  			}
+	  		});
+	  		
+	  		$("input[name=planNum]").val($("select[name=planNum]").val());
+	  		
+	  		$.ajax({
+	  			url: "/po/ajaxOrdinal",
+	  			type: "POST",
+	  			data: {"planNum" : $("input[name=planNum]").val() },
+	  			success: function(data) {
+	  				data.forEach(function(datum) {
+		  				$("select[name=ordinal]").append("<option value=" + datum.ordinal + ">" + datum.ordinal + "</option>");
+	  				});
+	  			}
+	  		});
+	  	});
+	  	
+	  	$("select[name=productNum]").on("change", function() {
+	  		$.ajax({
+	  			url: "ajaxproduct",
+	  			type: "POST",
+	  			data: "productNum=" + $('select[name=productNum]').val(),
+	  			success: function(data) {
+	  				$("span#ptnName").text(data.ptnName);
+	  				$("span#productPrice").text(Number(data.productPrice).toLocaleString('ko-KR'));
+	  				
+	  				$("input[name=ptnNum]").val(data.ptnNum);
+	  				$("input[name=ptnName]").val(data.ptnName);
+	  			},
+	  			error: function() {
+	  				alert("에러가 발생했습니다. 다시 시도해주세요.");
+	  			}
+	  		});
+	  	});
+	  	
+	  	const emails = JSON.parse( '${ emails }' );
+	  	$("select[name=eplNum]").on("change", function() {
+	  		$("span#email").text("");
+		$("span#email").text(emails[$("select[name=eplNum]").val()]);
+	  	});
+	  	
+	  	$("input[name=quantity]").on("focus keyup change", function() {
+	  		$("span#totalPrice").text(Number($(this).val() * $("span#productPrice").text().replace(',', '')).toLocaleString('ko-KR'));
+	  	});
+	  
+	  	var elem = document.getElementById("planForm");
+	  	
+	  	
+	  </script>
 </body>
 
 </html>
