@@ -1,69 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@ include file="../includes/header.jsp"%>
 
 
 <body>
-
 	<div id="wrapper">
 		<%@ include file="../includes/nav.jsp"%>
 		<div id="page-wrapper" style="min-height: 868px;">
-			<div class="row">
-				<div class="col-lg-12">
-					<span style="display: inline-block; width: 45%; margin-right: 5%;">
-						<h3 class="page-header">공지사항</h3>
-						<div class="panel-body">
-							<div class="table-responsive">
-								<table class="table">
-									<thead>
-										<tr>
-											<th>글번호</th>
-											<th>제목</th>
-											<th>내용</th>
-											<th>작성일</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td><a href="">1</a></td>
-											<td>공지사항</td>
-											<td>테스트</td>
-											<td>2022-06-10</td>
-										</tr>
-										<tr>
-											<td><a href="">2</a></td>
-											<td>테스트</td>
-											<td>입니다</td>
-											<td>2022-06-09</td>
-										</tr>
-										<tr>
-											<td><a href="">3</a></td>
-											<td>TeamFOS</td>
-											<td>TEST</td>
-											<td>2022-06-08</td>
-										</tr>
-										<tr>
-											<td><a href="">4</a></td>
-											<td>공지사항</td>
-											<td>테스트</td>
-											<td>2022-06-10</td>
-										</tr>
-										<tr>
-											<td><a href="">5</a></td>
-											<td>공지사항</td>
-											<td>테스트</td>
-											<td>2022-06-10</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div> <!-- test -->
-					</span> <span style="display: inline-block; width: 45%;">
+			<div class="row"><span style="display: inline-block; width: 45%; margin-right: 2%;">
+				<h3 class="page-header">납기 진도율</h3>
+					<div class="panel-body">
+						<div class="table-responsive">
+							<table class="table">
+									 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+			  							<div id="chart_div"></div>
+									 <script src="/resources/js/chart.js"></script>
+									  
+									 <script
+									  src="https://code.jquery.com/jquery-2.2.4.min.js"
+									  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+									  crossorigin="anonymous">
+									 </script>
+						  	</table>
+						</div>
+					</div> <!-- test -->
+			</span> 
+			<span style="display: inline-block; width: 45%; margin-right: 2%;">
 						<h3 class="page-header">구매 발주서</h3>
 						<div class="panel-body">
 							<div class="table-responsive">
 								<table class="table">
-									<thead>
 									<thead>
 										<tr>
 											<th>NO</th>
@@ -114,7 +80,7 @@
 							</div>
 							<!-- /.table-responsive -->
 						</div>
-					</span> <span style="display: inline-block; width: 45%; margin-right: 5%;">
+					</span> <span style="display: inline-block; width: 45%; margin-right: 2%;">
 						<h3 class="page-header">검수 일정</h3>
 						<div class="panel-body">
 							<div class="table-responsive">
@@ -163,7 +129,7 @@
 							</div>
 							<!-- /.table-responsive -->
 						</div>
-					</span> <span style="display: inline-block; width: 45%;">
+					</span> <span style="display: inline-block; width: 45%; margin-right: 2%;">
 						<h3 class="page-header">협력회사</h3>
 						<div class="panel-body">
 							<div class="table-responsive">
@@ -250,14 +216,11 @@
 					</div>
 					</span>
 
-
 				</div>
-				<!-- /.col-lg-12 -->
 
-				<!-- /.col-lg-6 (nested) -->
-			</div>
-			<!-- /.row (nested) -->
 		</div>
+			<!-- /.row (nested) -->
+	</div>
 		<!-- /.panel-body -->
 		<!-- /#wrapper -->
 
