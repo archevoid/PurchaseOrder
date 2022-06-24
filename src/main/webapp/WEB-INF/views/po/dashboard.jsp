@@ -13,7 +13,7 @@
 						<div class="table-responsive">
 							<table class="table">
 									 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-			  							<div id="chart_div"></div>
+			  							<div id="chart_div" style="width: 700px; height: 222px;"></div>
 									 <script src="/resources/js/chart.js"></script>
 									  
 									 <script
