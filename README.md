@@ -11,7 +11,10 @@
 <br>
 
 ## DB ERD
-![PO_TeamFoS drawio](https://user-images.githubusercontent.com/106382062/175179853-c9544d28-d6f3-47c5-b7d4-cdb38fc8ae3b.png)
+![Simple_ERD_FeamFoS](https://user-images.githubusercontent.com/106382062/175458315-b842ab17-13e8-4f67-930d-1b7ef347af92.png)
+<br><br>
+
+![PO_TeamFoS drawio](https://user-images.githubusercontent.com/106382062/175458235-c7f6f56c-8a12-417a-8348-93fe1e4d52d9.png)
 <br>
 
 ## Coding Style
