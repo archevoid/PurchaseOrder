@@ -67,6 +67,10 @@ public class PoController {
 		
 	}
 	
+	@GetMapping("progress")
+	public void progress() {
+		
+	}
 	@GetMapping("plan")
 	public void goPlan(Model m) {
 		m.addAttribute("planNumList", ps.getPlanNumsList());
