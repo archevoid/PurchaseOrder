@@ -136,4 +136,17 @@
 			, NOW()
 		)
 	</insert>
+	
+	<select id="getFileInfo" resultType="com.mit.model.FileDTO">
+		SELECT 
+			plan_num AS planNum
+			, ordinal AS ordinal
+			, process AS process
+			, saved_name AS savedName
+			, file_name AS fileName
+			, file_format AS fileFormat
+			, input_date AS inputDate
+		FROM file
+		WHERE plan_num = #{ planNum } AND ordinal = #{ ordinal }
+	</select>
 </mapper>

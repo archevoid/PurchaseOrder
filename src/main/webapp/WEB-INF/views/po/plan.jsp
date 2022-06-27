@@ -180,7 +180,7 @@
        	        						검수 파일 다운로드
    	        						</td>
    	        						<td colspan="2">
-   	        							<a href="#"><%-- ajax로 파일 이름 입력 --%></a>
+   	        							<button type="button" id="download">다운로드</button>
         							</td>
         						</tr>
 	       	        		</table>
@@ -285,7 +285,9 @@
 	  
 	  	var elem = document.getElementById("planForm");
 	  	
-	  	
+	  	$("button#download").on("click", function() {
+	  		location.href='fileDownload/$("select#planNum").val()/$("select#ordinal")';
+	  	});
 	  </script>
 </body>
 

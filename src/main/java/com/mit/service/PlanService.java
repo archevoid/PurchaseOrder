@@ -80,4 +80,8 @@ public class PlanService extends com.mit.service.Service {
 	public Long insertFileInfo(FileDTO fileDto) {
 		return planDao.insertFileInfo(fileDto);
 	}
+	
+	public FileDTO getFileInfo(FileDTO fileDto) {
+		return planDao.getFileInfo(fileDto);
+	}
 }
