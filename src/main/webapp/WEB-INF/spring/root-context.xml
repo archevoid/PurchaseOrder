@@ -10,6 +10,7 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<context:component-scan base-package="com.mit.model" />
 	<context:component-scan base-package="com.mit.service" />
+	<context:component-scan base-package="com.mit.email" />
 	
 	
 	<!-- 검수 파일 저장 경로 -->
@@ -17,6 +18,21 @@
 		<constructor-arg value="/InspectionFile" />
 	</bean>
 	
+	<!-- SMTP 이메일 / 비밀번호 -->
+	<bean id="SMTP_ID" class="java.lang.String">
+		<constructor-arg value="smtpId" />
+	</bean>
+	<bean id="SMTP_PW" class="java.lang.String">
+		<constructor-arg value="smtpPw" />
+	</bean>
+	
+	<!-- Password찾기 페이지 이메일 -->
+	<bean id="FROM_PASSWORD" class="java.lang.String">
+		<constructor-arg value="email" />
+	</bean>
+	<bean id="FROM_NAME_PASSWORD" class="java.lang.String">
+		<constructor-arg value= "name" />
+	</bean>
 	
 	
 		<!-- 스프링에서 관리되는 hikariConfig 객체 -->
