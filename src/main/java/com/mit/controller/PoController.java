@@ -1,17 +1,22 @@
 package com.mit.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -160,6 +165,45 @@ public class PoController {
 			return null;
 		} else {
 			return ps.getOrdinalByPlanNum(planNum);
+		}
+	}
+	
+	@ResponseBody
+	@GetMapping("fileDownload/{planNum}/{ordinal}")
+	public void getFile(@PathVariable("planNum") String planNum, @PathVariable("ordinal") String ordinal, HttpServletResponse response) {
+		
+		
+		FileDTO fileDto = new FileDTO();
+		
+		fileDto.setPlanNum(Long.parseLong(planNum));
+		fileDto.setOrdinal(Long.parseLong(ordinal));
+		
+		fileDto = ps.getFileInfo(fileDto);
+		
+		if(fileDto.getFileName() == null) {
+			return;
+		}
+		
+		String path = pathOfInspectionFile + "/" + fileDto.getSavedName() + "." + fileDto.getFileFormat();
+		
+		File file = new File(path);
+		
+		response.setHeader("Content-Disposition", "attachment;filename=" + file.getName());
+		
+		try (FileInputStream fis = new FileInputStream(path);) {
+			
+			OutputStream out = response.getOutputStream();
+			
+			int read = 0;
+			
+            byte[] buffer = new byte[1024];
+            
+            while ((read = fis.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
+            }
+            
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
