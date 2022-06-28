@@ -5,4 +5,6 @@ public interface UserDAO {
 	
 	int doRegistUser(UserDTO userDTO);
 	int doRegistEmpl(UserDTO userDTO);
+	
+	int updatePasswordByEmail(UserDTO userDto);
 }

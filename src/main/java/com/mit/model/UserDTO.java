@@ -9,4 +9,8 @@ public class UserDTO {
 	private String username;
 	private String password;
 	private List<AuthVO> authList;
+	
+	
+	/* employee */
+	private String email;
 }
