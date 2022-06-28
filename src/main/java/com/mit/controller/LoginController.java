@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.mit.model.AuthVO;
 import com.mit.model.EpleeDTO;
 import com.mit.service.RegisterService;
+import com.mit.service.UserService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -24,6 +25,8 @@ import lombok.extern.log4j.Log4j;
 public class LoginController {
 	
 	RegisterService rs;
+	
+	UserService us;
 	
 	
 	@PostMapping("/register")
@@ -51,6 +54,14 @@ public class LoginController {
 		rs.doRegist(eDTO);
 		
 		return "redirect:/login";
+	}
+	
+	@PostMapping("/password")
+	public String resetPassword(String email) {
+		
+		us.setPassword(email);
+		
+		return "redirect:/password";
 	}
 	
 	@GetMapping("/*")

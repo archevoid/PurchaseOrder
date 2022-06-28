@@ -10,7 +10,6 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<context:component-scan base-package="com.mit.model" />
 	<context:component-scan base-package="com.mit.service" />
-	<context:component-scan base-package="com.mit.email" />
 	
 	
 	<!-- 검수 파일 저장 경로 -->
@@ -20,10 +19,10 @@
 	
 	<!-- SMTP 이메일 / 비밀번호 -->
 	<bean id="SMTP_ID" class="java.lang.String">
-		<constructor-arg value="smtpId" />
+		<constructor-arg value="id" />
 	</bean>
 	<bean id="SMTP_PW" class="java.lang.String">
-		<constructor-arg value="smtpPw" />
+		<constructor-arg value="pw" />
 	</bean>
 	
 	<!-- Password찾기 페이지 이메일 -->

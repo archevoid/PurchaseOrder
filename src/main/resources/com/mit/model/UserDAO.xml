@@ -29,4 +29,10 @@
 	<insert id="doRegistEmpl">
 		INSERT INTO employee(dept_num, member_id, email) VALUE ( #{ deptNum }, #{ username }, #{ email } )
 	</insert>
+	<update id="updatePasswordByEmail">
+		UPDATE member m SET member_pw = #{ password }
+		WHERE member_id = 
+			(SELECT member_id FROM employee AS e
+				WHERE e.email = #{ email })
+	</update>
 </mapper>

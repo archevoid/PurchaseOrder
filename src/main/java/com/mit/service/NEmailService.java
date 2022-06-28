@@ -1,4 +1,4 @@
-package com.mit.email;
+package com.mit.service;
 
 import java.util.Properties;
 
