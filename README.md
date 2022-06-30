@@ -7,14 +7,11 @@
 - OS: Windows
 - IDE: Eclipse 2020-06 (4.16.0) (STS 3.9.15.RELEASE)
 - JDK: Oracle jdk1.8.0_202
-- DB: MariaDB 10.6.8
+- DB: oracle 11g
 <br>
 
 ## DB ERD
-![Simple_ERD_FeamFoS](https://user-images.githubusercontent.com/106382062/175458315-b842ab17-13e8-4f67-930d-1b7ef347af92.png)
-<br><br>
-
-![PO_TeamFoS drawio](https://user-images.githubusercontent.com/106382062/175458235-c7f6f56c-8a12-417a-8348-93fe1e4d52d9.png)
+![erd](https://user-images.githubusercontent.com/106382062/176569381-9e593f08-e08a-418f-8908-3837da476a5c.PNG)
 <br>
 
 ## Coding Style
