@@ -1,5 +1,0 @@
-CREATE DATABASE PurchaseOrder DEFAULT CHARACTER SET utf8;
-
-CREATE USER teamfos@localhost IDENTIFIED BY 'teamfos1234';
-
-GRANT ALL PRIVILEGES ON PurchaseOrder.* TO teamfos@localhost WITH GRANT OPTION;
