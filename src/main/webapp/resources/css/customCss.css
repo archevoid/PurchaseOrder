@@ -7,6 +7,10 @@ form[name=logoutForm] { position: absolute; left: 95%; top: 30%; }
 
 /* common */
 
+div.panel-heading {
+	cursor: move;
+}
+
 div.in-panel-heading {
 	background-color: white;
 }

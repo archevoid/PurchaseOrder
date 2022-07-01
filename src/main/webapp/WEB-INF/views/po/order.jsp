@@ -8,8 +8,11 @@
 <%@ include file="../includes/header.jsp"%>
 
 
-<style>
-</style>
+<script>
+	var today = new Date();
+	var curYear = today.getFullYear();
+	var curMonth = today.getMonth() + 1;
+</script>
 
 <body>
 	<div id="wrapper">
@@ -26,7 +29,7 @@
 					<!-- /.col-lg-12 -->
 				</div>
 				<!-- /.row -->
-				<form action="searchPlan" method="post">
+				<form action="printpo" method="post">
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<select class="form-control setPanelHeader">
@@ -35,18 +38,14 @@
 								name="orderDate">
 							<div class="pull-right">
 								<div class="btn-group in-panel-heading">
-									<button type="button" class="btn btn-outline btn-primary">발행</button>
+									<button class="btn btn-outline btn-primary">발행</button>
 									<button type="reset" class="btn btn-outline btn-danger">초기화</button>
 								</div>
 							</div>
 						</div>
 						<div class="panel-body">
 
-							<script>
-								var today = new Date();
-								var curYear = today.getFullYear();
-								var curMonth = today.getMonth() + 1;
-							</script>
+							
 
 							<table class="table table-hover" id="calendar">
 								<caption

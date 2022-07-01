@@ -4,6 +4,9 @@ function changeActionAndSubmit(formElem, strUrl) {
 	formElem.submit();
 }
 
+$(function() {
+    $("div.panel").draggable();
+});
 
 function drawCalendarSpace() {
     for(var n = 0; n < 6; n++) {
