@@ -1,17 +1,89 @@
 @charset "UTF-8";
 
-/* Common */
-input { text-align: center; }
-select { width: 200px; text-align: center; }
-th, td { vertical-align: middle; text-align: center; }
-option.basicOption { font-weight: bold; background-color: #E9E9E9 }
 
 /* nav.jsp */
 form[name=logoutForm] { position: absolute; left: 95%; top: 30%; }
 
+
+/* common */
+
+div.in-panel-heading {
+	background-color: white;
+}
+
+b {
+    color: #333333;
+}
+
+.panel-default {
+    box-shadow: 1px 1px silver;
+}
+
+.centerAll * {
+	text-align: center !important;
+	vertical-align: middle !important;
+}
+
+.middle {
+    width: 100px;
+    margin: auto;
+}
+
+.setPanelHeader {
+	width: auto !important;
+	display: inline-block;
+	height: 34px;
+	vertical-align: middle;
+	line-height: 34px;
+}
+
+th, td {
+	font-size: 15px;
+}
+
 /* plan.jsp */
-option.free { background-color: lightgreen; }
-option.undertake { background-color: lightyellow; }
-option.overwork { background-color: pink; }
-option.stop { background-color: red; }
-form#fileInput { display: inline; }
+
+
+/* order.jsp */
+
+table#calendar th, table#calendar td {
+    text-align: center;
+    font-size: 15px;
+    height: 100px;
+}
+
+table#calendar td div.date {
+    float: left;
+}
+
+table#calendar td:active {
+    background-color: grey;
+}
+
+.sun {
+    color: red;
+}
+
+.sat {
+    color: blue;
+}
+
+span#prev {
+    margin-right: 30px;
+}
+span#prev:active {
+    background-color: gray;
+}
+
+span#next {
+    margin-left: 30px;
+}
+span#next:active {
+    background-color: gray;
+}
+
+#prev, #next {
+    border: 0px;
+    background-color: white;
+    width: 10%;
+}

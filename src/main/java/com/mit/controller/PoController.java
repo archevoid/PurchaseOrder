@@ -59,7 +59,7 @@ public class PoController {
 		
 		m.addAttribute("planData", ps.getPlanByEplNumAndDueDate(planDto.getEplNum() + "", planDto.getPtnNum() + "", planDto.getDueDate().toString()));
 		
-		return "/po/printPO";
+		return "/po/printpo";
 	}
 	
 	@GetMapping("dashboard")
@@ -133,6 +133,11 @@ public class PoController {
 		
 		
 		return "redirect: /po/plan";
+	}
+	
+	@GetMapping("order")
+	public void goOrder() {
+		
 	}
 	
 	/* plan.jsp에서 ajax를 이용해 접근 */
