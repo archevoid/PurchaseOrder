@@ -11,7 +11,7 @@
 				<h3 class="page-header">납기 진도율</h3>
 					<div class="panel-body">
 						<div class="table-responsive">
-							<table class="table">
+							<table class="table centerAll">
 									 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 			  							<div id="chart_div" style="width: 700px; height: 222px;"></div>
 									 <script src="/resources/js/chart.js"></script>
@@ -29,7 +29,7 @@
 						<h3 class="page-header">구매 발주서</h3>
 						<div class="panel-body">
 							<div class="table-responsive">
-								<table class="table">
+								<table class="table centerAll">
 									<thead>
 										<tr>
 											<th>NO</th>
@@ -84,7 +84,7 @@
 						<h3 class="page-header">검수 일정</h3>
 						<div class="panel-body">
 							<div class="table-responsive">
-								<table class="table">
+								<table class="table centerAll">
 									<thead>
 										<tr>
 											<th>제품명</th>
@@ -133,7 +133,7 @@
 						<h3 class="page-header">협력회사</h3>
 						<div class="panel-body">
 							<div class="table-responsive">
-								<table class="table">
+								<table class="table centerAll">
 									<thead>
 										<tr>
 											<th>회사명</th>
@@ -189,7 +189,7 @@
 					<h4 class="page-header">관련 프로젝트</h4>
 					<div class="panel-body">
 						<div class="table-responsive">
-							<table class="table">
+							<table class="table centerAll">
 								<thead>
 									<tr>
 										<th>프로세스</th>
