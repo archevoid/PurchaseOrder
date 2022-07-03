@@ -36,8 +36,8 @@
 	
 		<!-- 스프링에서 관리되는 hikariConfig 객체 -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-		<property name="driverClassName" value="org.mariadb.jdbc.Driver"></property>
-		<property name="jdbcUrl" value="jdbc:mariadb://localhost:3306/purchaseorder"></property>
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:xe"></property>
 
 		<!-- log4jdbc -->
 <!-- 		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property> -->

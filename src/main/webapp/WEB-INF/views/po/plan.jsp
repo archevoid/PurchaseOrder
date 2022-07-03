@@ -7,11 +7,6 @@
 
 <%@ include file="../includes/header.jsp"%>
 
-
-<style>
-	
-</style>
-
 <body>
 	<div id="wrapper">
 		<%@ include file="../includes/nav.jsp"%>
