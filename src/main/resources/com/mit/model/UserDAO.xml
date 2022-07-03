@@ -6,19 +6,19 @@
 
 <mapper namespace="com.mit.model.UserDAO">
 	<resultMap type="com.mit.model.UserDTO" id="userMap">
-		<id property="username" column="member_id" />
-		<result property="password" column="member_pw" />
+		<id property="username" column="empl_num" />
+		<result property="password" column="empl_password" />
 		<collection property="authList" resultMap="authMap">
 		</collection>
 	</resultMap>
 	
 	<resultMap type="com.mit.model.AuthVO" id="authMap">
-		<result property="username" column="member_id" />
+		<result property="username" column="empl_num" />
 		<result property="auth" column="authority" />
 	</resultMap>
 
 	<select id="getUserById" resultMap="userMap">
-		SELECT member_id, member_pw, authority FROM member WHERE member_id=#{ userid }
+		SELECT empl_num, empl_password, authority FROM employee WHERE empl_num=#{ userid }
 	</select>
 	
 	<insert id="doRegistUser">
