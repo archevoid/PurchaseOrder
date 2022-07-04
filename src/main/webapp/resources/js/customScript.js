@@ -68,3 +68,49 @@ function clearCalendar() {
 function inputDay(fullDay) {
     $("input[name=orderDate]").val(fullDay);
 }
+
+function makeCompanyPanel(contractNum, data) {
+
+	var upper =
+		`<form action="plan" method="post" id="orderInputForm">
+					<div class="panel panel-default" id="inputForm">
+						<div class="panel-heading">
+							<span class="setPanelHeader">
+								<b>` + contractNum + "번 계약" + `</b>
+							</span>
+							<div class="pull-right">
+								<div class="btn-group in-panel-heading">
+									<button type="button" class="btn btn-outline btn-primary" id="showInputForm">입력</button>
+									<button type="reset" class="btn btn-outline btn-danger">초기화</button>
+								</div>
+							</div>
+						</div>
+						<div class="panel-body">
+							<table class="table table-hover centerAll" id="companyInfo">
+								<thead>
+									<tr>
+										<th>협력회사</th>
+										<th>발주일자</th>
+										<th>공급가격</th>
+										<th>수량</th>
+										<th>소계</th>
+									</tr>
+								</thead>
+								<tbody>`;
+										
+	var lower = 
+		`						</tbody>
+							</table>
+						</div>
+					</div>
+				</form>`;
+				
+	var companyName = "<td>" + data.companyName + "</td>";
+	var dateInput = "<td><input type='date' name='orderDate' class='form-control'></td>";
+	var unitPrice = "<td>" + data.unitPrice + "</td>";
+	var quantityInput = "<td><input type='number' name='orderQuantity' class='form-control'></td>";
+	
+	var middle = companyName + "\n" + dateInput + "\n" + unitPrice + "\n" + quantityInput + "\n";
+	
+	return upper + middle + lower;
+}
