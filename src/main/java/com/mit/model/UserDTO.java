@@ -8,6 +8,8 @@ import lombok.Data;
 public class UserDTO {
 	private String username;
 	private String password;
+	private Long deptNum;
+	private String emplName;
 	private List<AuthVO> authList;
 	
 	

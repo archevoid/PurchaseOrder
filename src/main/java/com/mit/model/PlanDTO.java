@@ -3,35 +3,22 @@ package com.mit.model;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 
 
 @Data
 public class PlanDTO {
-	Long planNum;
-	Long eplNum;
-	Long productNum;
-	Long quantity;
-	Date dueDate;
+	Long supportNum;
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
+	Date deliveryDate;
+	Long requirement;
+	Long partCode;
+	String partName;
 	
-	/* progress 테이블 */
-	Long currentQuantity;
-	
-	/* product 테이블 */
-	String productName;
-	Long productPrice;
-	
-	/* partner 테이블 */
-	Long ptnNum;
-	String ptnName;
-	String ptnTel;
-	String ptnFax;
-	
-	/* employee 테이블 */
-	String memberId;
-	String deptNum;
-	String email;
-	
-	/* Other */
-	Long undertaken;
+	/* TBL_Contract */
+	Long contractNo;
+	Long unitPrice;
+	String code;
 }

@@ -57,7 +57,7 @@ public class PoController {
 			return "/po/dashboard";
 		}
 		
-		m.addAttribute("planData", ps.getPlanByEplNumAndDueDate(planDto.getEplNum() + "", planDto.getPtnNum() + "", planDto.getDueDate().toString()));
+//		m.addAttribute("planData", ps.getPlanByEplNumAndDueDate(planDto.getEplNum() + "", planDto.getPtnNum() + "", planDto.getDueDate().toString()));
 		
 		return "/po/printpo";
 	}
@@ -69,21 +69,17 @@ public class PoController {
 	
 	@GetMapping("progress")
 	public void progress(Model m) {
-		m.addAttribute("planNumList", ps.getPlanNumsList());
+//		m.addAttribute("planNumList", ps.getPlanNumsList());
 	}
 	@GetMapping("plan")
 	public void goPlan(Model m) {
-		m.addAttribute("planNumList", ps.getPlanNumsList());
-		
-		m.addAttribute("productList", ps.getProductList());
-		
-		m.addAttribute("eplList", ps.getEplList());
+		m.addAttribute("planNum", ps.getAllPlanNum());
 	}
 	
 	@PostMapping("inputpo")
 	public String inputPlan(PlanDTO planDto, RedirectAttributes rttr) {
 		
-		rttr.addFlashAttribute("success", ps.insertPlan(planDto));
+//		rttr.addFlashAttribute("success", ps.insertPlan(planDto));
 		
 		return "redirect:/po/plan";
 	}
@@ -91,48 +87,9 @@ public class PoController {
 	@PostMapping("updatepo")
 	public String updatePlan(PlanDTO planDto, RedirectAttributes rttr) {
 		
-		rttr.addFlashAttribute("success", ps.updatePlan(planDto));
+//		rttr.addFlashAttribute("success", ps.updatePlan(planDto));
 		
 		return "redirect:/po/plan";
-	}
-	
-	@PostMapping("inputFile")
-	public String inputFile(String planNum, String process, MultipartFile inspectionFile) {
-		
-		if(inspectionFile != null) {
-			
-			FileDTO fileDto = ps.getMaxOrdinalByPlanNum(planNum);
-			
-			String[] identity = inspectionFile.getOriginalFilename().split("\\.(?=[^.]+$)");
-			
-			fileDto.setPlanNum(Long.parseLong(planNum));
-			fileDto.setOrdinal(fileDto.getMaxOrdinal() + 1L);
-			fileDto.setFileName(identity[0]);
-			fileDto.setFileFormat(identity[1]);
-			fileDto.setSavedName(planNum + "_" + fileDto.getOrdinal());
-			fileDto.setProcess(Long.parseLong(process));
-			
-			File file = new File(this.pathOfInspectionFile, fileDto.getSavedName() + "." + fileDto.getFileFormat());
-			
-			File forMkdir = new File(this.pathOfInspectionFile);
-			
-			if(!forMkdir.exists()) {
-				forMkdir.mkdirs();
-			}
-			
-			try {
-				
-				FileCopyUtils.copy(inspectionFile.getBytes(), file);
-				
-				ps.insertFileInfo(fileDto);
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		
-		
-		return "redirect: /po/plan";
 	}
 	
 	@GetMapping("order")
@@ -140,82 +97,101 @@ public class PoController {
 		
 	}
 	
-	/* plan.jsp에서 ajax를 이용해 접근 */
-	@ResponseBody
-	@PostMapping("ajaxplan")
-	public Object getPlan(String planNum) {
-		
-		if(planNum.equals("0")) {
-			return null;
-		}
-		
-		HashMap<String, String> map = this.getNotNullFields(ps.getPlanByPlanNum(planNum));
-		
-		return map;
-	}
-	
-	@ResponseBody
-	@PostMapping("ajaxproduct")
-	public Object getProduct(String productNum) {
-		
-		if(productNum.equals("0")) {
-			return null;
-		}
-		
-		HashMap<String, String> map = this.getNotNullFields(ps.getProductByProductNum(productNum));
-		
-		return map;
-	}
-	
-	@ResponseBody
-	@PostMapping("ajaxOrdinal")
-	public Object getOrdinalByPlanNum(String planNum) {
-		if(planNum.trim().equals("0")) {
-			return null;
-		} else {
-			return ps.getOrdinalByPlanNum(planNum);
-		}
-	}
-	
-	@ResponseBody
-	@GetMapping("fileDownload/{planNum}/{ordinal}")
-	public void getFile(@PathVariable("planNum") String planNum, @PathVariable("ordinal") String ordinal, HttpServletResponse response) {
-		
-		
-		FileDTO fileDto = new FileDTO();
-		
-		fileDto.setPlanNum(Long.parseLong(planNum));
-		fileDto.setOrdinal(Long.parseLong(ordinal));
-		
-		fileDto = ps.getFileInfo(fileDto);
-		
-		if(fileDto.getFileName() == null) {
-			return;
-		}
-		
-		String path = pathOfInspectionFile + "/" + fileDto.getSavedName() + "." + fileDto.getFileFormat();
-		
-		File file = new File(path);
-		
-		response.setHeader("Content-Disposition", "attachment;filename=" + file.getName());
-		
-		try (FileInputStream fis = new FileInputStream(path);) {
-			
-			OutputStream out = response.getOutputStream();
-			
-			int read = 0;
-			
-            byte[] buffer = new byte[1024];
-            
-            while ((read = fis.read(buffer)) != -1) {
-                out.write(buffer, 0, read);
-            }
-            
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
+//	@PostMapping("inputFile")
+//	public String inputFile(String planNum, String process, MultipartFile inspectionFile) {
+//		
+//		if(inspectionFile != null) {
+//			
+//			FileDTO fileDto = ps.getMaxOrdinalByPlanNum(planNum);
+//			
+//			String[] identity = inspectionFile.getOriginalFilename().split("\\.(?=[^.]+$)");
+//			
+//			fileDto.setPlanNum(Long.parseLong(planNum));
+//			fileDto.setOrdinal(fileDto.getMaxOrdinal() + 1L);
+//			fileDto.setFileName(identity[0]);
+//			fileDto.setFileFormat(identity[1]);
+//			fileDto.setSavedName(planNum + "_" + fileDto.getOrdinal());
+//			fileDto.setProcess(Long.parseLong(process));
+//			
+//			File file = new File(this.pathOfInspectionFile, fileDto.getSavedName() + "." + fileDto.getFileFormat());
+//			
+//			File forMkdir = new File(this.pathOfInspectionFile);
+//			
+//			if(!forMkdir.exists()) {
+//				forMkdir.mkdirs();
+//			}
+//			
+//			try {
+//				
+//				FileCopyUtils.copy(inspectionFile.getBytes(), file);
+//				
+//				ps.insertFileInfo(fileDto);
+//				
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		
+//		
+//		return "redirect: /po/plan";
+//	}
+//	
+
+//	
+//	/* plan.jsp에서 ajax를 이용해 접근 */
+//	@ResponseBody
+//	@PostMapping("ajaxplan")
+//	public Object getPlan(String planNum) {
+//		
+//		if(planNum.equals("0")) {
+//			return null;
+//		}
+//		
+//		HashMap<String, String> map = this.getNotNullFields(ps.getPlanByPlanNum(planNum));
+//		
+//		return map;
+//	}
+//	
+//	
+//	@ResponseBody
+//	@GetMapping("fileDownload/{planNum}/{ordinal}")
+//	public void getFile(@PathVariable("planNum") String planNum, @PathVariable("ordinal") String ordinal, HttpServletResponse response) {
+//		
+//		
+//		FileDTO fileDto = new FileDTO();
+//		
+//		fileDto.setPlanNum(Long.parseLong(planNum));
+//		fileDto.setOrdinal(Long.parseLong(ordinal));
+//		
+//		fileDto = ps.getFileInfo(fileDto);
+//		
+//		if(fileDto.getFileName() == null) {
+//			return;
+//		}
+//		
+//		String path = pathOfInspectionFile + "/" + fileDto.getSavedName() + "." + fileDto.getFileFormat();
+//		
+//		File file = new File(path);
+//		
+//		response.setHeader("Content-Disposition", "attachment;filename=" + file.getName());
+//		
+//		try (FileInputStream fis = new FileInputStream(path);) {
+//			
+//			OutputStream out = response.getOutputStream();
+//			
+//			int read = 0;
+//			
+//            byte[] buffer = new byte[1024];
+//            
+//            while ((read = fis.read(buffer)) != -1) {
+//                out.write(buffer, 0, read);
+//            }
+//            
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
+//	
 	private <DTO> HashMap<String, String> getNotNullFields(DTO dto) {
 		
 		HashMap<String, String> map = new HashMap<String, String>();

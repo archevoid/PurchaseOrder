@@ -24,90 +24,58 @@
 				<form action="searchPlan" method="post">
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<select class="form-control setPanelHeader">
+							<select class="form-control setPanelHeader" name="planNum">
 								<option value="0">계획번호</option>
+								<c:forEach items="${ planNum }" var="num">
+									<option value="${ num }">${ num }</option>
+								</c:forEach>
 							</select>
 							<div class="pull-right">
 								<div class="btn-group in-panel-heading">
-									<button type="button" class="btn btn-outline btn-primary">조회</button>
+									<button type="button" class="btn btn-outline btn-primary" id="showInputForm">조회</button>
 									<button type="reset" class="btn btn-outline btn-danger">초기화</button>
 								</div>
 							</div>
 						</div>
 						<div class="panel-body">
 							
-								<table class="table table-hover centerAll">
-									<thead>
+							<table class="table table-hover centerAll" id="planInfo">
+								<thead>
+								<tr>
+									<th>품목명</th>
+									<th>총 개수</th>
+									<th>조달납기</th>
+									<th>담당자 이름</th>
+									<th>이메일</th>
+									<th>총가격</th>
+								</tr>
+								</thead>
+								<tbody>
 									<tr>
-										<th>품목명</th>
-										<th>조달납기</th>
-										<th>담당자 이름</th>
-										<th>이메일</th>
-										<th>총가격</th>
+										<td id="partName"></td>
+										<td id="requirement"></td>
+										<td id="deliveryDate"></td>
+										<td id="empl_num"></td>
+										<td id="empl_email"></td>
+										<td id="total_price"></td>
 									</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>컴퓨터</td>
-											<td>2022-06-01</td>
-											<td>홍길동</td>
-											<td>hong@hong.com</td>
-											<td>100,000</td>
-										</tr>
-									</tbody>
-								</table>
+								</tbody>
+							</table>
 							
 						</div>
 					</div>
 				</form>
-				<form action="plan" method="post">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<span class="setPanelHeader">
-								<b>발주 계획 입력</b>
-							</span>
-							<div class="pull-right">
-								<div class="btn-group in-panel-heading">
-									<button type="button" class="btn btn-outline btn-primary">입력</button>
-									<button type="reset" class="btn btn-outline btn-danger">초기화</button>
-								</div>
-							</div>
-						</div>
-						<div class="panel-body">
-								<table class="table table-hover centerAll">
-									<thead>
-										<tr>
-											<th>협력회사</th>
-											<th>발주일자</th>
-											<th>공급가격</th>
-											<th>수량</th>
-											<th>소계</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>Amazon</td>
-											<td>2022-06-14</td>
-											<td>1000</td>
-											<td><input type="number" name="orderQuantity"
-												class="form-control middle"></td>
-											<td>1000</td>
-										</tr>
-									</tbody>
-								</table>
-						</div>
-					</div>
-				</form>
-
-
 			</div>
 			<!-- /.container-fluid -->
 		</div>
 		<!-- /#page-wrapper -->
 	</div>
 
+	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+	<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+
 	<!-- jQuery -->
-	<script src="/resources/vendor/jquery/jquery.min.js"></script>
+	
 
 	<!-- Bootstrap Core JavaScript -->
 	<script src="/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -117,8 +85,53 @@
 
 	<!-- Custom Theme JavaScript -->
 	<script src="/resources/dist/js/sb-admin-2.js"></script>
-
 	<script src="/resources/js/customScript.js" type="text/javascript"></script>
+
+	<script>
+		$("select[name=planNum]").on("change", function() {
+			$.ajax({
+				url: "/api/plan",
+				type: "GET",
+				data: { "planNum" : + $("select[name=planNum]").val() },
+				success: function(data) {
+					$("#orderInputForm").remove();
+					
+					if(data == null) {
+						$("#partName").text("");
+						$("#deliveryDate").text("");
+					}
+					
+					$("#partName").text(data.partName);
+					$("#deliveryDate").text(data.deliveryDate);
+					$("#requirement").text(data.requirement);
+				}
+			})
+		});
+		
+		$("button#showInputForm").on("click", function() {
+			if($("#orderInputForm").length > 0) {
+				return;
+			} else {
+				$.ajax({
+					url: "/api/companyInfo",
+					type: "GET",
+					data: { "partName" : $("td#partName").text()},
+					success: function(data) {
+						for(var i = 0; i < Object.keys(data).length; i++) {
+							var elem = makeCompanyPanel($(data)[i].contractNum, $(data)[i]);
+							
+							$("form[action=searchPlan]").after(elem);
+							
+							
+							$("div.panel").draggable();
+						}
+						
+					}
+				});
+			}
+		});
+	</script>
+
 </body>
 
 </html>

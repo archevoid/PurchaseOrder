@@ -23,16 +23,14 @@
 	
 	<insert id="doRegistUser">
 		<foreach collection="authList" item="authVO">
-			INSERT INTO member(member_id, member_pw, authority) VALUE ( #{ username }, #{ password }, #{ authVO.auth } )
+			INSERT INTO employee(empl_num, dept_num, empl_name, empl_email, empl_password, authority) 
+				VALUE (#{ username }, #{ deptNum }, #{ emplName }, #{ email }, #{ password }, #{ authVO.auth } )
 		</foreach>
 	</insert>
-	<insert id="doRegistEmpl">
-		INSERT INTO employee(dept_num, member_id, email) VALUE ( #{ deptNum }, #{ username }, #{ email } )
-	</insert>
 	<update id="updatePasswordByEmail">
-		UPDATE member m SET member_pw = #{ password }
-		WHERE member_id = 
-			(SELECT member_id FROM employee AS e
-				WHERE e.email = #{ email })
+		UPDATE employee m SET empl_password = #{ password }
+		WHERE empl_num = 
+			(SELECT empl_num FROM employee AS e
+				WHERE e.empl_email = #{ email })
 	</update>
 </mapper>
