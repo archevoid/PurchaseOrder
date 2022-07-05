@@ -28,7 +28,7 @@
                                             <div class="row mb-3">
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" id="name" type="text" placeholder="Enter your id" name="username" />
+                                                        <input class="form-control" id="name" type="text" placeholder="Enter your id" name="emplNum" />
                                                         <label for="inputName">ID</label>
                                                     </div>
                                                 </div>

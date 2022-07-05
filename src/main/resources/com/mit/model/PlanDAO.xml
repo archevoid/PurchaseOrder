@@ -5,12 +5,12 @@
 	
 <mapper namespace="com.mit.model.PlanDAO">
 	<select id="getAllPlanNum" resultType="long">
-		SELECT supportNo AS supportNum
+		SELECT supportNo AS planNum
 		FROM tbl_support
 	</select>
 	
 	<select id="getPlanByPlanNum" resultType="com.mit.model.PlanDTO">
-		SELECT s.supportNo AS supportNum
+		SELECT s.supportNo AS planNum
 			, s.requirement AS requirement
 			, s.deliverydate AS deliveryDate
 			, (SELECT PartName FROM tbl_part p WHERE p.partcode = s.partcode) AS partname
@@ -22,10 +22,54 @@
 		SELECT ct.contractNo AS contractNum
 			, ct.unitprice AS unitPrice
 			, cp.name AS companyName
+			, cp.code AS companyCode
 			, cp.currency AS contractCurrency
 			, cp.account AS companyAccount
 			, cp.business_number AS businessNum
 		FROM tbl_contract ct INNER JOIN company cp ON ct.code = cp.code
 		WHERE ct.partcode = (SELECT partcode FROM tbl_part p WHERE p.partName = #{ partName })
+	</select>
+	
+	<insert id="insertOrder">
+		<selectKey keyProperty="orderNum" order="BEFORE" resultType="long">
+			SELECT order_num_seq.NEXTVAL FROM dual
+		</selectKey>
+		INSERT INTO purchase_order(order_num, order_date, order_quantity, empl_num, support_num, contract_num)
+		VALUES (#{ orderNum }, #{ orderDate }, #{ orderQuantity }, #{ emplNum }, #{ planNum }, #{ contractNum })
+	</insert>
+	
+	<select id="getEmpl" resultType="com.mit.model.UserDTO">
+		SELECT DISTINCT e.empl_num AS emplNum
+			, e.empl_name AS emplName
+		    , e.empl_email AS email
+		    , (SELECT COUNT(DISTINCT p.order_date) FROM purchase_order o WHERE o.empl_num = e.empl_num) AS sameDay
+		    , (SELECT COUNT(*) FROM company c WHERE c.code IN (SELECT ct.code FROM tbl_contract ct WHERE ct.contractno IN (SELECT po.contract_num FROM purchase_order po WHERE po.empl_num = p.empl_num))) AS sameCompany
+		    
+	    <if test="orderDate != null">
+		    , (SELECT COUNT(*) 
+		        FROM company c 
+		        WHERE c.code IN 
+		            (SELECT ct.code FROM tbl_contract ct WHERE ct.contractno IN 
+		                (SELECT po.contract_num FROM purchase_order po WHERE po.empl_num = p.empl_num AND po.order_date = #{ orderDate }
+		                ))) AS sameCompanyAtSameDay
+		</if>
+		FROM employee e LEFT JOIN purchase_order p ON e.empl_num = p.empl_num
+	</select>
+	
+	<select id="getEmailByEmplNum" resultType="com.mit.model.UserDTO">
+		SELECT e.empl_email AS email FROM employee e WHERE empl_num = #{ emplNum }
+	</select>
+	
+	<select id="getTotalPrice" resultType="long">
+		SELECT SUM(p.order_quantity * (SELECT ct.unitprice FROM tbl_contract ct WHERE ct.contractno = p.contract_num)) AS totalPrice
+		FROM purchase_order p
+		WHERE p.support_num = #{ planNum }
+		GROUP BY p.support_num
+	</select>
+	
+	<select id="getRemainQuantity" resultType="long">
+		SELECT sp.requirement - (SELECT SUM(p.order_quantity) FROM purchase_order p GROUP BY p.support_num)
+		FROM tbl_support sp
+		WHERE supportno = #{ planNum }
 	</select>
 </mapper>

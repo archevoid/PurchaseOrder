@@ -72,45 +72,79 @@ function inputDay(fullDay) {
 function makeCompanyPanel(contractNum, data) {
 
 	var upper =
-		`<form action="plan" method="post" id="orderInputForm">
-					<div class="panel panel-default" id="inputForm">
-						<div class="panel-heading">
-							<span class="setPanelHeader">
-								<b>` + contractNum + "번 계약" + `</b>
-							</span>
-							<div class="pull-right">
-								<div class="btn-group in-panel-heading">
-									<button type="button" class="btn btn-outline btn-primary" id="showInputForm">입력</button>
-									<button type="reset" class="btn btn-outline btn-danger">초기화</button>
-								</div>
-							</div>
-						</div>
-						<div class="panel-body">
-							<table class="table table-hover centerAll" id="companyInfo">
-								<thead>
-									<tr>
-										<th>협력회사</th>
-										<th>발주일자</th>
-										<th>공급가격</th>
-										<th>수량</th>
-										<th>소계</th>
-									</tr>
-								</thead>
-								<tbody>`;
-										
-	var lower = 
-		`						</tbody>
-							</table>
+		`<form action="inputOrder" method="post" id="orderInputForm">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<span class="setPanelHeader">
+						<b><span id='contractNum'>` + contractNum + `</span>번 계약</b>` + 
+					`</span>
+					<div class="pull-right">
+						<div class="btn-group in-panel-heading">
+							<button type="button" class="btn btn-outline btn-primary" id="inputOrder">입력</button>
+							<button type="reset" class="btn btn-outline btn-danger">초기화</button>
 						</div>
 					</div>
-				</form>`;
+				</div>
+				<div class="panel-body">
+					<table class="table table-hover centerAll" id="companyInfo">
+						<thead>
+							<tr>
+								<th>협력회사</th>
+								<th>발주일자</th>
+								<th>담당자 이름</th>
+								<th>이메일</th>
+								<th>공급가격</th>
+								<th>수량</th>
+								<th>소계</th>
+							</tr>
+						</thead>
+						<tbody>`;
+										
+	var lower = 
+`						</tbody>
+					</table>
+				</div>
+			</div>
+		</form>`;
 				
-	var companyName = "<td>" + data.companyName + "</td>";
+	var companyName = "<td id='companyName'>" + data.companyName + "</td><input type='hidden' name='companyCode' value='" + data.companyCode + "'>";
 	var dateInput = "<td><input type='date' name='orderDate' class='form-control'></td>";
-	var unitPrice = "<td>" + data.unitPrice + "</td>";
+	var unitPrice = "<td id='unitPrice'>" + data.unitPrice + "</td>";
+	var emplNum = "<td><select name='emplNum' class='form-control'><option value='0'>담당자 선택</option></select></td>";
+	var email = "<td id='email'></td>";
 	var quantityInput = "<td><input type='number' name='orderQuantity' class='form-control'></td>";
+	var sum = "<td id='sum'></td>";
 	
-	var middle = companyName + "\n" + dateInput + "\n" + unitPrice + "\n" + quantityInput + "\n";
+	var middle = companyName + "\n"
+				 + dateInput + "\n" 
+				 + emplNum + "\n"
+				 + email + "\n" 
+				 + unitPrice + "\n"
+				 + quantityInput + "\n"
+				 + sum + "\n";
 	
 	return upper + middle + lower;
+}
+
+
+function refreshTotalPrice() {
+	$.ajax({
+		url: "/api/totalPrice",
+		type: "POST",
+		data: { "planNum" : $("select[name=planNum]").val() },
+		success: function(data) {
+			$("td#total_price").text(data);
+		}
+	});
+}
+
+function remainQuantity() {
+	$.ajax({
+		url: "/api/remainQuantity",
+		type: "POST",
+		data: { "planNum" : $("select[name=planNum]").val() },
+		success: function(data) {
+			$("td#remainQuantity").text(data);
+		}
+	});
 }

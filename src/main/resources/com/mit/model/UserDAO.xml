@@ -6,14 +6,14 @@
 
 <mapper namespace="com.mit.model.UserDAO">
 	<resultMap type="com.mit.model.UserDTO" id="userMap">
-		<id property="username" column="empl_num" />
+		<id property="emplNum" column="empl_num" />
 		<result property="password" column="empl_password" />
 		<collection property="authList" resultMap="authMap">
 		</collection>
 	</resultMap>
 	
 	<resultMap type="com.mit.model.AuthVO" id="authMap">
-		<result property="username" column="empl_num" />
+		<result property="emplNum" column="empl_num" />
 		<result property="auth" column="authority" />
 	</resultMap>
 
@@ -24,7 +24,7 @@
 	<insert id="doRegistUser">
 		<foreach collection="authList" item="authVO">
 			INSERT INTO employee(empl_num, dept_num, empl_name, empl_email, empl_password, authority) 
-				VALUE (#{ username }, #{ deptNum }, #{ emplName }, #{ email }, #{ password }, #{ authVO.auth } )
+				VALUE (#{ emplNum }, #{ deptNum }, #{ emplName }, #{ email }, #{ password }, #{ authVO.auth } )
 		</foreach>
 	</insert>
 	<update id="updatePasswordByEmail">

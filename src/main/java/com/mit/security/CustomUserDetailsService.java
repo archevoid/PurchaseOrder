@@ -20,10 +20,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 	
 	
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		log.warn("Load User By UserName: " + username);
+	public UserDetails loadUserByUsername(String emplNum) throws UsernameNotFoundException {
+		log.warn("Load User By UserName: " + emplNum);
 		
-		UserDTO userDTO = userDAO.getUserById(username);
+		UserDTO userDTO = userDAO.getUserById(emplNum);
 		
 		log.warn("queried by userDAO: " + userDTO);
 		

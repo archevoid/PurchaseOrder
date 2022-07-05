@@ -10,15 +10,18 @@ import lombok.Data;
 
 @Data
 public class PlanDTO {
-	Long supportNum;
+	// planNum: support_num or supportNo를 위한 변수
+	private String planNum;
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
-	Date deliveryDate;
-	Long requirement;
-	Long partCode;
-	String partName;
+	private Date deliveryDate;
+	private Long requirement;
+	private Long partCode;
+	private String partName;
 	
 	/* TBL_Contract */
-	Long contractNo;
-	Long unitPrice;
-	String code;
+	private Long contractNo;
+	private Long unitPrice;
+	private String code;
+	
+	private Long contractNum;
 }

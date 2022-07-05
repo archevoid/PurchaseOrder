@@ -41,6 +41,21 @@ public class PoController {
 	String pathOfInspectionFile;
 	
 	
+	@GetMapping("dashboard")
+	public void goDashboard() {
+		
+	}
+	
+	@GetMapping("plan")
+	public void goPlan(Model m) {
+		m.addAttribute("planNum", ps.getAllPlanNum());
+	}
+	
+	@PostMapping("inputOrder")
+	public void inputOrder() {
+		
+	}
+	
 	@GetMapping("partner")
 	public String partner() {
 		return "/po/inputStatusShipment";
@@ -62,18 +77,10 @@ public class PoController {
 		return "/po/printpo";
 	}
 	
-	@GetMapping("dashboard")
-	public void goDashboard() {
-		
-	}
 	
 	@GetMapping("progress")
 	public void progress(Model m) {
 //		m.addAttribute("planNumList", ps.getPlanNumsList());
-	}
-	@GetMapping("plan")
-	public void goPlan(Model m) {
-		m.addAttribute("planNum", ps.getAllPlanNum());
 	}
 	
 	@PostMapping("inputpo")

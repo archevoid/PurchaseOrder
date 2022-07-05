@@ -46,7 +46,33 @@ th, td {
 }
 
 /* plan.jsp */
+input[name=orderQuantity] { 
+    width: 100px;
+    margin: auto;
+}
 
+input[name=orderDate] {
+	width: 120px;
+    margin: auto;
+}
+
+select[name=emplNum] {
+	width: 130px;
+	margin: auto;
+}
+
+#white {
+	background-color: white;
+}
+#red {
+	background-color: red;
+}
+#blue {
+	background-color: blue;
+}
+#green {
+	background-color: green;
+}
 
 /* order.jsp */
 
