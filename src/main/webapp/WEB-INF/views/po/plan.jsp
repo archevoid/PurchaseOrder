@@ -43,20 +43,18 @@
 								<thead>
 								<tr>
 									<th>품목명</th>
+									<th>남은 개수</th>
 									<th>총 개수</th>
 									<th>조달납기</th>
-									<th>담당자 이름</th>
-									<th>이메일</th>
-									<th>총가격</th>
+									<th>입력가격</th>
 								</tr>
 								</thead>
 								<tbody>
 									<tr>
 										<td id="partName"></td>
+										<td id="remainQuantity"></td>
 										<td id="requirement"></td>
 										<td id="deliveryDate"></td>
-										<td id="empl_num"></td>
-										<td id="empl_email"></td>
 										<td id="total_price"></td>
 									</tr>
 								</tbody>
@@ -104,6 +102,9 @@
 					$("#partName").text(data.partName);
 					$("#deliveryDate").text(data.deliveryDate);
 					$("#requirement").text(data.requirement);
+					
+					remainQuantity();
+					refreshTotalPrice();
 				}
 			})
 		});
@@ -122,9 +123,100 @@
 							
 							$("form[action=searchPlan]").after(elem);
 							
-							
 							$("div.panel").draggable();
+							
+							$("input[name=contractNum]").val($("select[name=planNum]").val());
 						}
+						
+						$("select[name=emplNum]").on("change", function() {
+							if($("select[name=emplNum]").val() != '0') {
+								$.ajax({
+									url: "/api/emplEmail",
+									type: "POST",
+									data: { "emplNum" : $("select[name=emplNum]").val() },
+									success: function(data) {
+										$("td#email").text(data);
+									}
+								});
+							}
+						});
+						
+						$("button#inputOrder").on("click", function() {
+							$.ajax({
+								url: "/api/inputOrder",
+								type: "POST",
+								data: {
+									"planNum" : $("select[name=planNum]").val()
+									, "contractNum" : $("span#contractNum").text()
+									, "orderDate" : $("input[name=orderDate]").val()
+									, "orderQuantity" : $("input[name=orderQuantity]").val()
+									, "emplNum" : $("select[name=emplNum]").val()
+								},
+								success: function(data) {
+									remainQuantity();
+									refreshTotalPrice();
+								}
+							});
+						});
+						
+						$("input[name=orderDate]").on("change", function() {
+							$.ajax({
+								url: "/api/empl",
+								type: "POST",
+								data: { "orderDate" : $("input[name=orderDate]").val() },
+								success: function(data) {
+									for(var i = 0; i < Object.keys(data).length; i++) {
+										$("td#email").text("");
+										
+										var id = "white";
+										
+										if(data[i].sameCompanyAtSameDay > 0) {
+											id = "green";
+										} else if(data[i].sameDay > 0) {
+											id = "red";
+										} else if(data[i].sameCompany > 0) {
+											id = "blue";
+										}
+										
+										var elem = "<option " + "id=" + id + " value='" + data[i].emplNum + "'>" + data[i].emplName + "(" + data[i].emplNum + ")</option>";
+										
+										$("select[name=emplNum] option:not([value=0])").remove();
+										
+										$("select[name=emplNum]").each(function() {
+											for(var i = 0; i < Object.keys(data).length; i++) {
+												
+												var id = "white";
+												
+												var elem = "<option " + "id=" + id + " value='" + data[i].emplNum + "'>" + data[i].emplName + "(" + data[i].emplNum + ")</option>";
+												
+												$("select[name=emplNum]").append(elem);
+											}
+										});
+									}
+								}
+							});
+						});
+						
+						$("input[name=orderQuantity]").on("focus keyup change", function() {
+							$("td#sum").text($("td#unitPrice").text() * $("input[name=orderQuantity]").val());
+						});
+						
+						$.ajax({
+							url: "/api/empl",
+							type: "POST",
+							success: function(data) {
+								$("select[name=emplNum]").each(function() {
+									for(var i = 0; i < Object.keys(data).length; i++) {
+										
+										var id = "white";
+										
+										var elem = "<option " + "id=" + id + " value='" + data[i].emplNum + "'>" + data[i].emplName + "(" + data[i].emplNum + ")</option>";
+										
+										$("select[name=emplNum]").append(elem);
+									}
+								});
+							}
+						});
 						
 					}
 				});

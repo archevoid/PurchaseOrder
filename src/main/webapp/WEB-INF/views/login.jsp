@@ -26,7 +26,7 @@
                                     <div class="card-body">
                                         <form action="/login" method="post">
                                             <div class="form-floating mb-3">
-                                                <input name="username" class="form-control" id="inputEmail" type="text" placeholder="아이디를 입력하세요" />
+                                                <input name="emplNum" class="form-control" id="inputEmail" type="text" placeholder="아이디를 입력하세요" />
                                                 <label for="inputEmail">ID</label>
                                             </div>
                                             <div class="form-floating mb-3">

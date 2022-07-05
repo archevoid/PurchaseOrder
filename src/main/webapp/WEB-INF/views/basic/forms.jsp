@@ -535,7 +535,7 @@
                                     <form role="form">
                                         <div class="form-group input-group">
                                             <span class="input-group-addon">@</span>
-                                            <input type="text" class="form-control" placeholder="Username">
+                                            <input type="text" class="form-control" placeholder="사원번호">
                                         </div>
                                         <div class="form-group input-group">
                                             <input type="text" class="form-control">

@@ -19,12 +19,12 @@ public class CustomUser extends User {
 	private UserDTO userDTO;
 
 	
-	public CustomUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
-		super(username, password, authorities);
+	public CustomUser(String emplNum, String password, Collection<? extends GrantedAuthority> authorities) {
+		super(emplNum, password, authorities);
 	}
 	
 	public CustomUser(UserDTO userDTO) {
-		super(userDTO.getUsername(), userDTO.getPassword(),  
+		super(userDTO.getEmplNum(), userDTO.getPassword(),  
 				userDTO.getAuthList().stream().map(auth -> new SimpleGrantedAuthority(auth.getAuth())).collect(Collectors.toList()));
 		
 		this.userDTO = userDTO;

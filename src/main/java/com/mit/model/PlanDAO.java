@@ -8,4 +8,14 @@ public interface PlanDAO {
 	PlanDTO getPlanByPlanNum(String planNum);
 	
 	List<CompanyDTO> getCompanyInfoByPartName(String partCode);
+	
+	int insertOrder(OrderDTO orderDto);
+	
+	List<UserDTO> getEmpl(UserDTO userDto);
+	
+	UserDTO getEmailByEmplNum(UserDTO userDto);
+	
+	long getTotalPrice(PlanDTO planDto);
+	
+	long getRemainQuantity(PlanDTO planDto);
 }

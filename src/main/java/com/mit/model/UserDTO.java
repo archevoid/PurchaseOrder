@@ -1,18 +1,22 @@
 package com.mit.model;
 
+import java.sql.Date;
 import java.util.List;
 
 import lombok.Data;
 
 @Data
 public class UserDTO {
-	private String username;
+	private String emplNum;
 	private String password;
 	private Long deptNum;
 	private String emplName;
 	private List<AuthVO> authList;
-	
-	
-	/* employee */
 	private String email;
+	
+	/* getEmpl() */
+	private Long sameDay;
+	private Long sameCompany;
+	private Date orderDate;
+	private Long sameCompanyAtSameDay;
 }
