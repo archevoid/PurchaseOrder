@@ -87,26 +87,30 @@
 
 	<script>
 		$("select[name=planNum]").on("change", function() {
-			$.ajax({
-				url: "/api/plan",
-				type: "GET",
-				data: { "planNum" : + $("select[name=planNum]").val() },
-				success: function(data) {
-					$("#orderInputForm").remove();
-					
-					if(data == null) {
-						$("#partName").text("");
-						$("#deliveryDate").text("");
+			$("form#orderInputForm").each(function(index, value) {
+				$(value).remove();
+			});
+			
+			if($("select[name=planNum]").val() != 0) {
+				$.ajax({
+					url: "/api/plan",
+					type: "GET",
+					data: { "planNum" : + $("select[name=planNum]").val() },
+					success: function(data) {
+						if(data == null) {
+							$("#partName").text("");
+							$("#deliveryDate").text("");
+						}
+						
+						$("#partName").text(data.partName);
+						$("#deliveryDate").text(data.deliveryDate);
+						$("#requirement").text(data.requirement);
+						
+						remainQuantity();
+						refreshTotalPrice();
 					}
-					
-					$("#partName").text(data.partName);
-					$("#deliveryDate").text(data.deliveryDate);
-					$("#requirement").text(data.requirement);
-					
-					remainQuantity();
-					refreshTotalPrice();
-				}
-			})
+				})
+			}
 		});
 		
 		$("button#showInputForm").on("click", function() {
@@ -119,7 +123,8 @@
 					data: { "partName" : $("td#partName").text()},
 					success: function(data) {
 						for(var i = 0; i < Object.keys(data).length; i++) {
-							var elem = makeCompanyPanel($(data)[i].contractNum, $(data)[i]);
+							
+							var elem = makeCompanyPanel(data[i].contractNum, data[i]);
 							
 							$("form[action=searchPlan]").after(elem);
 							
@@ -128,29 +133,30 @@
 							$("input[name=contractNum]").val($("select[name=planNum]").val());
 						}
 						
-						$("select[name=emplNum]").on("change", function() {
-							if($("select[name=emplNum]").val() != '0') {
+						$("select[name=emplNum]").on("change", function(event) {
+							if($(event.target).val() != '0') {
 								$.ajax({
 									url: "/api/emplEmail",
 									type: "POST",
-									data: { "emplNum" : $("select[name=emplNum]").val() },
+									data: { "emplNum" : $(this).val() },
 									success: function(data) {
-										$("td#email").text(data);
+										$(event.target).closest("div.panel").find("td#email").text(data);
 									}
 								});
 							}
 						});
 						
 						$("button#inputOrder").on("click", function() {
+							var panel = $(this).closest("div.panel");
 							$.ajax({
 								url: "/api/inputOrder",
 								type: "POST",
 								data: {
 									"planNum" : $("select[name=planNum]").val()
-									, "contractNum" : $("span#contractNum").text()
-									, "orderDate" : $("input[name=orderDate]").val()
-									, "orderQuantity" : $("input[name=orderQuantity]").val()
-									, "emplNum" : $("select[name=emplNum]").val()
+									, "contractNum" : panel.find("span#contractNum").text()
+									, "orderDate" : panel.find("input[name=orderDate]").val()
+									, "orderQuantity" : panel.find("input[name=orderQuantity]").val()
+									, "emplNum" : panel.find("select[name=emplNum]").val()
 								},
 								success: function(data) {
 									remainQuantity();
@@ -159,14 +165,16 @@
 							});
 						});
 						
-						$("input[name=orderDate]").on("change", function() {
+						$("input[name=orderDate]").on("change", function(event) {
+							var panel = $(event.target).closest("div.panel");
 							$.ajax({
 								url: "/api/empl",
 								type: "POST",
 								data: { "orderDate" : $("input[name=orderDate]").val() },
 								success: function(data) {
+									panel.find("td#email").text("");
+									
 									for(var i = 0; i < Object.keys(data).length; i++) {
-										$("td#email").text("");
 										
 										var id = "white";
 										
@@ -180,16 +188,16 @@
 										
 										var elem = "<option " + "id=" + id + " value='" + data[i].emplNum + "'>" + data[i].emplName + "(" + data[i].emplNum + ")</option>";
 										
-										$("select[name=emplNum] option:not([value=0])").remove();
+										panel.find("select[name=emplNum] option:not([value=0])").remove();
 										
-										$("select[name=emplNum]").each(function() {
+										panel.find("select[name=emplNum]").each(function() {
 											for(var i = 0; i < Object.keys(data).length; i++) {
 												
 												var id = "white";
 												
 												var elem = "<option " + "id=" + id + " value='" + data[i].emplNum + "'>" + data[i].emplName + "(" + data[i].emplNum + ")</option>";
 												
-												$("select[name=emplNum]").append(elem);
+												panel.find("select[name=emplNum]").append(elem);
 											}
 										});
 									}
@@ -197,24 +205,22 @@
 							});
 						});
 						
-						$("input[name=orderQuantity]").on("focus keyup change", function() {
-							$("td#sum").text($("td#unitPrice").text() * $("input[name=orderQuantity]").val());
+						$("input[name=orderQuantity]").on("focus keyup change", function(event) {
+							$(event.target).closest("div.panel").find("td#sum").text($(event.target).closest("div.panel").find("td#unitPrice").text() * $(this).val());
 						});
 						
 						$.ajax({
 							url: "/api/empl",
 							type: "POST",
 							success: function(data) {
-								$("select[name=emplNum]").each(function() {
-									for(var i = 0; i < Object.keys(data).length; i++) {
-										
-										var id = "white";
-										
-										var elem = "<option " + "id=" + id + " value='" + data[i].emplNum + "'>" + data[i].emplName + "(" + data[i].emplNum + ")</option>";
-										
-										$("select[name=emplNum]").append(elem);
-									}
-								});
+								for(var i = 0; i < Object.keys(data).length; i++) {
+									
+									var id = "white";
+									
+									var elem = "<option " + "id=" + id + " value='" + data[i].emplNum + "'>" + data[i].emplName + "(" + data[i].emplNum + ")</option>";
+									
+									$("select[name=emplNum]").append(elem);
+								}
 							}
 						});
 						

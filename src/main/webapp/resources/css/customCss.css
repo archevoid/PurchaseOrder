@@ -76,17 +76,42 @@ select[name=emplNum] {
 
 /* order.jsp */
 
+table#calendar {
+	table-layout: fixed;
+}
+
 table#calendar th, table#calendar td {
     text-align: center;
     font-size: 15px;
-    height: 100px;
+    height: 150px;
 }
 
 table#calendar td div.date {
-    float: left;
+    text-align: left;
+    width: 100%;
 }
 
-table#calendar td:active {
+table#calendar td div#orderInfo {
+	text-align: center;
+	width: 100%;
+	overflow: hidden;
+	margin-left: 15%;
+	width: 85%;
+    font-weight: 1000;
+    color: white;
+    border-radius: 7px;
+    font-size: 12px;
+}
+
+table#calendar td div#orderInfo:active {
+	filter: saturate(0.6);
+}
+
+table#calendar td div#orderInfo:hover {
+	transform: scale(1.5);
+}
+
+table#calendar td.clickable:active {
     background-color: grey;
 }
 

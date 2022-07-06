@@ -19,16 +19,14 @@ function drawCalendarSpace() {
     		var tag;
     		
 		    if(w == 0) {
-		        tag = "<td class='sun'></td>"
+		        tag = "<td class='clickable sun'></td>"
 		    } else if(w == 6) {
-		        tag = "<td class='sat'></td>"
+		        tag = "<td class='clickable sat'></td>"
 		    } else {
-		        tag = "<td></td>"
+		        tag = "<td class='clickable'></td>"
 		    }
 		    
 		    $(this).append(tag);
-		    
-		    console.log("1")
 		}
     });
 	
@@ -147,4 +145,44 @@ function remainQuantity() {
 			$("td#remainQuantity").text(data);
 		}
 	});
+}
+
+function orderList() {
+	$.ajax({
+		url: "/api/orderList",
+		type: "POST",
+		data: { "date" : $("span#year").text() + "-" + $("span#month").text() + "-01" },
+		success: function(data) {
+			var elem = $("td div.date");
+			
+			var colors = ["blueviolet", "cadetblue", "coral", "cornflowerblue", "darkcyan", "darkseagreen", "lightblue", "yellowgreen", "thistle", "orchid"];
+			for(var i = 0; i < Object.keys(data).length; i++) {
+				$("td div.date").each(function(index, value) {
+					if(parseInt(data[i].orderDate.split('-')[2]) == $(value).text()) {
+						var parent = $(value).closest('td');
+						
+						var backColor = colors[i % colors.length];
+						
+						var tag = "<div id='orderInfo' style='background-color: " + backColor + ";'>";
+						tag += "<span id='companyName'>" + data[i].companyName + "</span>";
+						tag += " (";
+						tag += "<span id='companyCode'>" + data[i].companyCode + "</span>";
+						tag += "): ";
+						tag += "<span id='partName'>" + data[i].partName + "</span>";
+						tag += "</div>";
+						
+						parent.append(tag);
+						
+						parent.removeClass("clickable");
+					}
+				});
+			}
+			
+			$("div#orderInfo").on("click", function() {
+				$("select[name=companyCode]").val($(this).children("span#companyCode").text());
+				
+				inputDay(curYear + "-" + curMonth.toString().padStart(2, "0") + "-" + $(this).closest("td").children("div.date").text().padStart(2, "0"));
+			});
+		}
+	})
 }

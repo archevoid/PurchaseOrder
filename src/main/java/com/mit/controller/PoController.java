@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mit.model.FileDTO;
 import com.mit.model.PlanDTO;
+import com.mit.service.OrderService;
 import com.mit.service.PlanService;
 
 import lombok.AllArgsConstructor;
@@ -35,6 +36,7 @@ import lombok.AllArgsConstructor;
 public class PoController {
 	
 	PlanService ps;
+	OrderService os;
 	
 	/* 파일 저장 경로 (root-context에 선언) */
 	@Resource(name = "pathOfInspectionFile")
@@ -49,6 +51,11 @@ public class PoController {
 	@GetMapping("plan")
 	public void goPlan(Model m) {
 		m.addAttribute("planNum", ps.getAllPlanNum());
+	}
+	
+	@GetMapping("order")
+	public void goOrder(Model m) {
+		m.addAttribute("companies", os.getCompany());
 	}
 	
 	@PostMapping("inputOrder")
@@ -66,7 +73,7 @@ public class PoController {
 		String referer = (String)request.getHeader("REFERER");
 		
 		String url = request.getRequestURL().toString().replace(request.getRequestURI(), "");
-		String prevUri = "/po/plan";
+		String prevUri = "/po/order";
 		
 		if(!referer.equals(url + prevUri)) {
 			return "/po/dashboard";
@@ -97,11 +104,6 @@ public class PoController {
 //		rttr.addFlashAttribute("success", ps.updatePlan(planDto));
 		
 		return "redirect:/po/plan";
-	}
-	
-	@GetMapping("order")
-	public void goOrder() {
-		
 	}
 	
 //	@PostMapping("inputFile")

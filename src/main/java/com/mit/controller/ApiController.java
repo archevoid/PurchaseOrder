@@ -1,17 +1,21 @@
 package com.mit.controller;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mit.model.CompanyDTO;
 import com.mit.model.OrderDTO;
 import com.mit.model.PlanDTO;
 import com.mit.model.UserDTO;
+import com.mit.service.OrderService;
 import com.mit.service.PlanService;
 
 import lombok.AllArgsConstructor;
@@ -22,6 +26,7 @@ import lombok.AllArgsConstructor;
 public class ApiController {
 	
 	PlanService ps;
+	OrderService os;
 	
 	@GetMapping("plan")
 	public PlanDTO getPlan(String planNum) {
@@ -73,5 +78,10 @@ public class ApiController {
 	@PostMapping("remainQuantity")
 	public String getRemainQuantity(PlanDTO planDto) {
 		return ps.getRemainQuantity(planDto) + "";
+	}
+	
+	@PostMapping("orderList")
+	public List<OrderDTO> getOrderList(Date date) {
+		return os.getOrderByMonth(date);
 	}
 }

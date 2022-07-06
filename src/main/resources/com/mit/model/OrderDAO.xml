@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.mit.model.OrderDAO">
+	<select id="getCompany" resultType="com.mit.model.CompanyDTO">
+		SELECT ct.code AS companyCode
+			, (SELECT cp.name FROM company cp WHERE cp.code = ct.code) AS companyName
+		FROM tbl_contract ct
+	</select>
+	
+	<select id="getOrderByMonth" resultType="com.mit.model.OrderDTO">
+		SELECT p.order_num AS orderNum
+			, p.order_date AS orderDate
+			, (SELECT pt.partname FROM tbl_part pt WHERE pt.partcode = ct.partcode) AS partName
+			, (SELECT cp.name FROM company cp WHERE cp.code = ct.code) AS companyName
+			, ct.code AS companyCode
+		FROM purchase_order p INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
+		<![CDATA[
+			WHERE #{ date } <= p.order_date AND p.order_date <= LAST_DAY(#{ date })
+			ORDER BY p.order_date DESC
+		]]>
+	</select>
+</mapper>

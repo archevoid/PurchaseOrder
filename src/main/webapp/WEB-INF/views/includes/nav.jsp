@@ -25,17 +25,17 @@
                         <li>
                             <a href="dashboard"><i class="fa fa-dashboard fa-fw"></i>대시보드</a>
                         </li>
-                        
                         <li>
-                            <a href="plan" class="active"><i class="fa fa-table fa-fw"></i>발주 계획 확인</a>
+                            <a href="plan"><i class="fa fa-table fa-fw"></i>계획 확인</a>
+                        </li>
+                        <li>
+                            <a href="order"><i class="fa fa-edit fa-fw"></i>발주서 발행</a>
                         </li>
                         <li>
                             <a href="inspection"><i class="fa fa-edit fa-fw"></i>진척검수</a>
                         </li>
                         <li>
                             <a href="progress"><i class="fa fa-edit fa-fw"></i>납기진도율확인</a>
-                        </li><li>
-                            <a href="partner"><i class="fa fa-edit fa-fw"></i>출하준비상태</a>
                         </li>
                         
                         

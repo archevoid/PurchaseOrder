@@ -8,12 +8,6 @@
 <%@ include file="../includes/header.jsp"%>
 
 
-<script>
-	var today = new Date();
-	var curYear = today.getFullYear();
-	var curMonth = today.getMonth() + 1;
-</script>
-
 <body>
 	<div id="wrapper">
 		<%@ include file="../includes/nav.jsp"%>
@@ -32,10 +26,13 @@
 				<form action="printpo" method="post">
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<select class="form-control setPanelHeader">
+							<select class="form-control setPanelHeader" name="companyCode">
 								<option value="0">협력업체</option>
-							</select> <input type="date" class="form-control setPanelHeader"
-								name="orderDate">
+								<c:forEach items="${ companies }" var="company">
+									<option value="${ company.companyCode }">${ company.companyName }</option>
+								</c:forEach>
+							</select>
+							<input type="date" class="form-control setPanelHeader" name="orderDate">
 							<div class="pull-right">
 								<div class="btn-group in-panel-heading">
 									<button class="btn btn-outline btn-primary">발행</button>
@@ -51,13 +48,8 @@
 								<caption
 									style="caption-side: top; text-align: center; font-size: 30px;">
 									<button type="button" id="prev">&lt;&lt;</button>
-									<span id="year"><script>
-										document.write(curYear.toString()
-												.padStart(4, "0"));
-									</script></span>년 <span id="month"><script>
-										document.write(curMonth.toString()
-												.padStart(2, "0"));
-									</script></span>월
+									<span id="year"></span>년
+									<span id="month"></span>월
 									<button type="button" id="next">&gt;&gt;</button>
 								</caption>
 								<thead>
@@ -87,8 +79,8 @@
 	</div>
 
 
-	<!-- jQuery -->
-	<script src="/vendor/jquery/jquery.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+	<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 
 	<!-- Bootstrap Core JavaScript -->
 	<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -103,11 +95,20 @@
 	<script src="/resources/js/customScript.js"></script>
 
 	<script>
+		var today = new Date();
+		var curYear = today.getFullYear();
+		var curMonth = today.getMonth() + 1;
+		
+		
+		$("span#year").text(curYear.toString().padStart(4, "0"));
+		$("span#month").text(curMonth.toString().padStart(2, "0"));
+	
+	
 		drawCalendarSpace();
 		drawCalendar(curYear, curMonth);
 		
-		$("td").on("click", function() {
-		    inputDay(curYear + "-" + curMonth.toString().padStart(2, "0") + "-" + $(this).text().padStart(2, "0"));
+		$("td#clickable").on("click", function() {
+		    inputDay(curYear + "-" + curMonth.toString().padStart(2, "0") + "-" + $(this).children("div.date").text().padStart(2, "0"));
 		});
 		
 		$("#prev").on("click", function() {
@@ -123,6 +124,8 @@
 		
 		    clearCalendar();
 		    drawCalendar(curYear, curMonth);
+		    
+		    orderList();
 		});
 		
 		$("#next").on("click", function() {
@@ -138,7 +141,11 @@
 		
 		    clearCalendar();
 		    drawCalendar(curYear, curMonth);
+		    
+		    orderList();
 		});
+		
+		orderList();
 	</script>
 </body>
 
