@@ -21,9 +21,14 @@ public class CustomUserDetailsService implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String emplNum) throws UsernameNotFoundException {
+		UserDTO userDao = new UserDTO();
+		
+		userDao.setDeptNum(emplNum.substring(0, 2));
+		userDao.setEmplNum(emplNum.substring(2));
+		
 		log.warn("Load User By UserName: " + emplNum);
 		
-		UserDTO userDTO = userDAO.getUserById(emplNum);
+		UserDTO userDTO = userDAO.getUserById(userDao);
 		
 		log.warn("queried by userDAO: " + userDTO);
 		

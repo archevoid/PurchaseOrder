@@ -54,6 +54,7 @@
 		                ))) AS sameCompanyAtSameDay
 		</if>
 		FROM employee e LEFT JOIN purchase_order p ON e.empl_num = p.empl_num
+		ORDER BY e.empl_num ASC
 	</select>
 	
 	<select id="getEmailByEmplNum" resultType="com.mit.model.UserDTO">
@@ -65,10 +66,14 @@
 		FROM purchase_order p
 		WHERE p.support_num = #{ planNum }
 		GROUP BY p.support_num
+        
+		UNION ALL
+		
+		SELECT 0 FROM DUAL WHERE NOT EXISTS (SELECT * FROM purchase_order p WHERE p.support_num = #{ planNum } GROUP BY p.support_num)
 	</select>
 	
 	<select id="getRemainQuantity" resultType="long">
-		SELECT sp.requirement - (SELECT SUM(p.order_quantity) FROM purchase_order p GROUP BY p.support_num)
+		SELECT NVL(sp.requirement - (SELECT SUM(p.order_quantity) FROM purchase_order p GROUP BY p.support_num), sp.requirement)
 		FROM tbl_support sp
 		WHERE supportno = #{ planNum }
 	</select>

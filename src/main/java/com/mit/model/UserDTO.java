@@ -9,7 +9,7 @@ import lombok.Data;
 public class UserDTO {
 	private String emplNum;
 	private String password;
-	private Long deptNum;
+	private String deptNum;
 	private String emplName;
 	private List<AuthVO> authList;
 	private String email;

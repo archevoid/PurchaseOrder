@@ -7,7 +7,7 @@ public interface PlanDAO {
 	
 	PlanDTO getPlanByPlanNum(String planNum);
 	
-	List<CompanyDTO> getCompanyInfoByPartName(String partCode);
+	List<CompanyDTO> getCompanyInfoByPartName(String partName);
 	
 	int insertOrder(OrderDTO orderDto);
 	
