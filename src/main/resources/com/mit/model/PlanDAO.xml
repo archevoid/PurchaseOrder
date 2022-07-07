@@ -18,7 +18,7 @@
 		WHERE s.supportno = #{ planNum }
 	</select>
 	
-	<select id="getCompanyInfoByPartName" resultType="com.mit.model.CompanyDTO">
+	<select id="getCompanyInfo" resultType="com.mit.model.CompanyDTO">
 		SELECT ct.contractNo AS contractNum
 			, ct.unitprice AS unitPrice
 			, cp.name AS companyName
@@ -26,8 +26,9 @@
 			, cp.currency AS contractCurrency
 			, cp.account AS companyAccount
 			, cp.business_number AS businessNum
+			, NVL((SELECT 1 FROM purchase_order p WHERE p.support_num = #{ planNum } AND p.contract_num = ct.contractno), 0) AS existance
 		FROM tbl_contract ct INNER JOIN company cp ON ct.code = cp.code
-		WHERE ct.partcode = (SELECT partcode FROM tbl_part p WHERE p.partName = #{ partName })
+		WHERE ct.partcode = (SELECT s.partcode FROM tbl_support s WHERE s.supportno = ${ planNum })
 	</select>
 	
 	<insert id="insertOrder">
@@ -76,5 +77,16 @@
 		SELECT NVL(sp.requirement - (SELECT SUM(p.order_quantity) FROM purchase_order p GROUP BY p.support_num), sp.requirement)
 		FROM tbl_support sp
 		WHERE supportno = #{ planNum }
+	</select>
+	
+	<select id="getCurrentOrder" resultType="com.mit.model.OrderDTO">
+		SELECT p.order_date AS orderDate
+			, p.order_quantity AS orderQuantity
+			, e.empl_num AS emplNum
+			, e.empl_name AS emplName
+			, e.empl_email AS email
+			, (SELECT c.unitprice FROM tbl_contract c WHERE c.contractno = p.contract_num) AS unitPrice
+		FROM purchase_order p INNER JOIN employee e ON p.empl_num = e.empl_num
+		WHERE p.support_num = #{ planNum } AND p.contract_num = #{ contractNum }
 	</select>
 </mapper>
