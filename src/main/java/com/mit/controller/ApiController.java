@@ -34,8 +34,8 @@ public class ApiController {
 	}
 	
 	@GetMapping("companyInfo")
-	public List<CompanyDTO> getCompanyInfoByPartName(String partName) {
-		return ps.getCompanyInfoByPartName(partName);
+	public List<CompanyDTO> getCompanyInfo(PlanDTO planDto) {
+		return ps.getCompanyInfo(planDto);
 	}
 	
 	@PostMapping("inputOrder")
@@ -83,5 +83,10 @@ public class ApiController {
 	@PostMapping("orderList")
 	public List<OrderDTO> getOrderList(Date date) {
 		return os.getOrderByMonth(date);
+	}
+	
+	@PostMapping("currentOrder")
+	public OrderDTO getCurrentOrder(PlanDTO planDto) {
+		return ps.getCurrentOrder(planDto);
 	}
 }

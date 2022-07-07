@@ -23,4 +23,9 @@ public class OrderDTO {
 	/* getOrderByMonth() */
 	private String companyName;
 	private String companyCode;
+	
+	/* getCurrentOrder() */
+	private String emplName;
+	private String email;
+	private Long unitPrice;
 }

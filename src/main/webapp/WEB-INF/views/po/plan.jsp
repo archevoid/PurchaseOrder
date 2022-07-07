@@ -95,7 +95,7 @@
 				$.ajax({
 					url: "/api/plan",
 					type: "GET",
-					data: { "planNum" : + $("select[name=planNum]").val() },
+					data: { "planNum" : $("select[name=planNum]").val() },
 					success: function(data) {
 						if(data == null) {
 							$("#partName").text("");
@@ -114,14 +114,32 @@
 		});
 		
 		$("button#showInputForm").on("click", function() {
+			var emplNumArray = [];
+			
+			$.ajax({
+				url: "/api/empl",
+				type: "POST",
+				async: false,
+				success: function(data) {
+					for(var i = 0; i < Object.keys(data).length; i++) {
+						var id = "white";
+						
+						emplNumArray[i] = "<option " + "id=" + id + " value='" + data[i].emplNum + "'>" + data[i].emplName + "(" + data[i].emplNum + ")</option>";
+					}
+				}
+			});
+			
 			if($("#orderInputForm").length > 0) {
 				return;
 			} else {
 				$.ajax({
 					url: "/api/companyInfo",
 					type: "GET",
-					data: { "partName" : $("td#partName").text()},
+					data: { "planNum" : $("select[name=planNum]").val() },
 					success: function(data) {
+						
+						var empl_temp = 0;
+						
 						for(var i = 0; i < Object.keys(data).length; i++) {
 							
 							var elem = makeCompanyPanel(data[i].contractNum, data[i]);
@@ -131,6 +149,40 @@
 							$("div.panel").draggable();
 							
 							$("input[name=contractNum]").val($("select[name=planNum]").val());
+							
+							for(var j = 0; j < emplNumArray.length; j++) {
+								var $selectEmplNum = $("select[name=emplNum]").eq(0);
+								$selectEmplNum.append(emplNumArray[j]);
+							}
+
+							
+							if(data[i].existance != 0) {
+								$.ajax({
+									url: "/api/currentOrder",
+									type: "POST",
+									data: {
+										"planNum" : $("select[name=planNum]").val()
+										, "contractNum" : data[i].contractNum
+									},
+									success: function(data) {
+										var $orderDateTag = $("input[name=orderDate]").eq(0);
+										var $emplNumTag = $("select[name=emplNum]").eq(0);
+										var $emailTag = $("td#email").eq(0);
+										var $orderQuantityTag = $("input[name=orderQuantity]").eq(0);
+										var $sumTag = $("td#sum").eq(0);
+										
+										$orderDateTag.val(data.orderDate);
+										$emplNumTag.val(data.emplNum);
+										$emailTag.text(data.email);
+										$orderQuantityTag.val(data.orderQuantity);
+										$sumTag.text(parseInt(data.orderQuantity) * parseInt(data.unitPrice));
+										
+										$orderDateTag.prop("disabled", "true");
+										$emplNumTag.prop("disabled", "true");
+										$orderQuantityTag.prop("disabled", "true");
+									}
+								});
+							}
 						}
 						
 						$("select[name=emplNum]").on("change", function(event) {
@@ -208,22 +260,6 @@
 						$("input[name=orderQuantity]").on("focus keyup change", function(event) {
 							$(event.target).closest("div.panel").find("td#sum").text($(event.target).closest("div.panel").find("td#unitPrice").text() * $(this).val());
 						});
-						
-						$.ajax({
-							url: "/api/empl",
-							type: "POST",
-							success: function(data) {
-								for(var i = 0; i < Object.keys(data).length; i++) {
-									
-									var id = "white";
-									
-									var elem = "<option " + "id=" + id + " value='" + data[i].emplNum + "'>" + data[i].emplName + "(" + data[i].emplNum + ")</option>";
-									
-									$("select[name=emplNum]").append(elem);
-								}
-							}
-						});
-						
 					}
 				});
 			}
