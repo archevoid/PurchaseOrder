@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mit.model.FileDTO;
+import com.mit.model.OrderDTO;
 import com.mit.model.PlanDTO;
 import com.mit.service.OrderService;
 import com.mit.service.PlanService;
@@ -69,7 +70,7 @@ public class PoController {
 	}
 	
 	@PostMapping("printpo")
-	public String printpo(PlanDTO planDto, HttpServletRequest request, Model m) {
+	public String printpo(OrderDTO orderDto, HttpServletRequest request, Model m) {
 		String referer = (String)request.getHeader("REFERER");
 		
 		String url = request.getRequestURL().toString().replace(request.getRequestURI(), "");
@@ -79,7 +80,18 @@ public class PoController {
 			return "/po/dashboard";
 		}
 		
-//		m.addAttribute("planData", ps.getPlanByEplNumAndDueDate(planDto.getEplNum() + "", planDto.getPtnNum() + "", planDto.getDueDate().toString()));
+		HashMap<String, Character> currency = new HashMap<String, Character>();
+		
+		currency.put("KRW", (char)0x20A9);
+		currency.put("USD", (char)0x0024);
+		currency.put("EUR", (char)0x20AC);
+		currency.put("JPY", (char)0x00A5);
+		currency.put("CNY", (char)0x00A5);
+		currency.put("other", (char)0x00A4);
+		
+		
+		m.addAttribute("orderInfo", os.getOrderInfo(orderDto));
+		m.addAttribute("currency", currency);
 		
 		return "/po/printpo";
 	}

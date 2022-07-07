@@ -159,7 +159,8 @@ function orderList() {
 			for(var i = 0; i < Object.keys(data).length; i++) {
 				$("td div.date").each(function(index, value) {
 					if(parseInt(data[i].orderDate.split('-')[2]) == $(value).text()) {
-						var parent = $(value).closest('td');
+					
+						var $parent = $(value).closest('td');
 						
 						var backColor = colors[i % colors.length];
 						
@@ -171,9 +172,9 @@ function orderList() {
 						tag += "<span id='partName'>" + data[i].partName + "</span>";
 						tag += "</div>";
 						
-						parent.append(tag);
+						$parent.append(tag);
 						
-						parent.removeClass("clickable");
+						$parent.removeClass("clickable");
 					}
 				});
 			}

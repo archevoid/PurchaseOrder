@@ -5,7 +5,7 @@
 	
 <mapper namespace="com.mit.model.OrderDAO">
 	<select id="getCompany" resultType="com.mit.model.CompanyDTO">
-		SELECT ct.code AS companyCode
+		SELECT DISTINCT ct.code AS companyCode
 			, (SELECT cp.name FROM company cp WHERE cp.code = ct.code) AS companyName
 		FROM tbl_contract ct
 	</select>
@@ -21,5 +21,25 @@
 			WHERE #{ date } <= p.order_date AND p.order_date <= LAST_DAY(#{ date })
 			ORDER BY p.order_date DESC
 		]]>
+	</select>
+	
+	<select id="getOrderInfo" resultType="com.mit.model.OrderDTO">
+		SELECT e.empl_name AS emplName
+			, e.empl_email AS email
+			, cp.name AS companyName
+			, cp.owner AS charge
+			, cp.contact AS contact
+			, cp.business_number AS businessNumber
+			, p.order_date AS orderDate
+			, p.due_date AS dueDate
+			, ct.unitprice AS unitPrice
+			, (SELECT pt.partname FROM tbl_part pt WHERE pt.partcode = ct.partcode) AS partName
+			, p.order_quantity AS orderQuantity
+			, cp.account AS account
+			, cp.currency AS currency
+		FROM purchase_order p INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
+			INNER JOIN company cp ON ct.code = cp.code
+			INNER JOIN employee e ON e.empl_num = p.empl_num
+		WHERE cp.code = #{ companyCode } AND p.order_date = #{ orderDate }
 	</select>
 </mapper>
