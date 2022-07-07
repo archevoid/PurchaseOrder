@@ -25,4 +25,8 @@ public class OrderService extends com.mit.service.Service {
 	public List<OrderDTO> getOrderByMonth(Date date) {
 		return orderDao.getOrderByMonth(date);
 	}
+	
+	public List<OrderDTO> getOrderInfo(OrderDTO orderDto) {
+		return orderDao.getOrderInfo(orderDto);
+	}
 }

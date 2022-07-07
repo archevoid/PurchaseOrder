@@ -7,4 +7,6 @@ public interface OrderDAO {
 	List<CompanyDTO> getCompany();
 	
 	List<OrderDTO> getOrderByMonth(Date date);
+	
+	List<OrderDTO> getOrderInfo(OrderDTO orderDto);
 }
