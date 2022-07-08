@@ -63,8 +63,12 @@ function clearCalendar() {
     $("div.date").text("");
 }
 
-function inputDay(fullDay) {
-    $("input[name=orderDate]").val(fullDay);
+function inputDay(fullDay, cssSelector) {
+    $(cssSelector).val(fullDay);
+}
+
+function makePanelHeading() {
+	
 }
 
 function makeCompanyPanel(contractNum, data) {

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.mit.model.InspectionDAO">
+	<select id="getNotFinishedOrder" resultType="com.mit.model.OrderDTO">
+		SELECT p.order_num AS orderNum
+		    , pt.partname AS partName
+		FROM purchase_order p INNER JOIN tbl_support sp ON p.support_num = sp.supportno
+		    INNER JOIN tbl_part pt ON pt.partcode = sp.partcode
+		    LEFT JOIN (SELECT i.order_num AS order_num, COUNT(i.inspection_num) AS countInspection, COUNT(ir.inspection_num) AS countResult
+		        FROM inspection i INNER JOIN inspection_result ir ON i.order_num = ir.order_num
+		        GROUP BY i.order_num) sc ON p.order_num = sc.order_num
+		<![CDATA[
+			WHERE sysdate < sp.deliverydate OR sc.countInspection != sc.countResult
+		]]>
+	</select>
+	
+	<select id="getInspectionByOrderNum" resultType="com.mit.model.InspectionDTO">
+		SELECT i.order_num AS orderNum
+			, i.inspection_num AS inspectionNum
+			, i.inspection_date AS inspectionDate
+			, i.inspection_quantity AS inspectionQuantity
+			, i.sample_quantity AS sampleQuantity
+		FROM inpection i
+		WHERE i.order_num = #{ orderNum }
+	</select>
+</mapper>

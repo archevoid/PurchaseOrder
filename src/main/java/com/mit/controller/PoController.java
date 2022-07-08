@@ -26,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.mit.model.FileDTO;
 import com.mit.model.OrderDTO;
 import com.mit.model.PlanDTO;
+import com.mit.service.InspectionService;
 import com.mit.service.OrderService;
 import com.mit.service.PlanService;
 
@@ -38,6 +39,7 @@ public class PoController {
 	
 	PlanService ps;
 	OrderService os;
+	InspectionService is;
 	
 	/* 파일 저장 경로 (root-context에 선언) */
 	@Resource(name = "pathOfInspectionFile")
@@ -94,6 +96,11 @@ public class PoController {
 		m.addAttribute("currency", currency);
 		
 		return "/po/printpo";
+	}
+	
+	@GetMapping("/inspection")
+	public void goInspection(Model m) {
+		m.addAttribute("orderList", is.getNotFinishedOrder());
 	}
 	
 	
