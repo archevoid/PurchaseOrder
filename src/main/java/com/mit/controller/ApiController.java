@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mit.model.CompanyDTO;
+import com.mit.model.InspectionDTO;
 import com.mit.model.OrderDTO;
 import com.mit.model.PlanDTO;
 import com.mit.model.UserDTO;
+import com.mit.service.InspectionService;
 import com.mit.service.OrderService;
 import com.mit.service.PlanService;
 
@@ -25,6 +27,7 @@ public class ApiController {
 	
 	PlanService ps;
 	OrderService os;
+	InspectionService is;
 	
 	@GetMapping("plan")
 	public PlanDTO getPlan(String planNum) {
@@ -86,5 +89,10 @@ public class ApiController {
 	@PostMapping("currentOrder")
 	public OrderDTO getCurrentOrder(PlanDTO planDto) {
 		return ps.getCurrentOrder(planDto);
+	}
+	
+	@PostMapping("inspection")
+	public List<InspectionDTO> getInspectionByOrderNum(InspectionDTO inspectionDto) {
+		return is.getInspectionByOrderNum(inspectionDto);
 	}
 }
