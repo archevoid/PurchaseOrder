@@ -79,12 +79,12 @@ public class PoController {
 		
 		HashMap<String, Character> currency = new HashMap<String, Character>();
 		
-		currency.put("KRW", (char)0x20A9);
-		currency.put("USD", (char)0x0024);
-		currency.put("EUR", (char)0x20AC);
-		currency.put("JPY", (char)0x00A5);
-		currency.put("CNY", (char)0x00A5);
-		currency.put("other", (char)0x00A4);
+		currency.put("KRW", '\u20A9');
+		currency.put("USD", '\u0024');
+		currency.put("EUR", '\u20AC');
+		currency.put("JPN", '\u00A5');
+		currency.put("CNY", '\u00A5');
+		currency.put("other", '\u00A4');
 		
 		
 		m.addAttribute("orderInfo", os.getOrderInfo(orderDto));
