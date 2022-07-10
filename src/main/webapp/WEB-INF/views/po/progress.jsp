@@ -16,9 +16,7 @@
 				<div class="page-header d-print-none">
 					<div class="row g-2 align-items-center">
 						<div class="col">
-							<div class="page-pretitle">
-			                  	Purchase Order
-			                </div>
+							<div class="page-pretitle">Purchase Order</div>
 							<h2 class="page-title">Search results</h2>
 							<div class="text-muted mt-1">About 2,410 result (0.19
 								seconds)</div>
@@ -514,9 +512,9 @@
 					</div>
 				</div>
 			</div>
-		</div>
 
-		<%@ include file="../includes/footer.jsp"%>
+			<%@ include file="../includes/footer.jsp"%>
+		</div>
 	</div>
 </body>
 </html>

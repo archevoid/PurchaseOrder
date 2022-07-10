@@ -35,8 +35,8 @@
 		<selectKey keyProperty="orderNum" order="BEFORE" resultType="long">
 			SELECT order_num_seq.NEXTVAL FROM dual
 		</selectKey>
-		INSERT INTO purchase_order(order_num, order_date, order_quantity, empl_num, support_num, contract_num)
-		VALUES (#{ orderNum }, #{ orderDate }, #{ orderQuantity }, #{ emplNum }, #{ planNum }, #{ contractNum })
+		INSERT INTO purchase_order(order_num, order_date, order_quantity, empl_num, support_num, contract_num, due_date)
+		VALUES (#{ orderNum }, #{ orderDate }, #{ orderQuantity }, #{ emplNum }, #{ planNum }, #{ contractNum }, #{ dueDate })
 	</insert>
 	
 	<select id="getEmpl" resultType="com.mit.model.UserDTO">
@@ -81,6 +81,7 @@
 	
 	<select id="getCurrentOrder" resultType="com.mit.model.OrderDTO">
 		SELECT p.order_date AS orderDate
+			, p.due_date AS dueDate
 			, p.order_quantity AS orderQuantity
 			, e.empl_num AS emplNum
 			, e.empl_name AS emplName

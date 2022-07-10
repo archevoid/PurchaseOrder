@@ -5,7 +5,7 @@
 
 <%
 	/* 사명, 참조, 전화번호, 팩스번호, 주소 */
-String[] aboutUs = new String[] { "Team FoS", "", "010-4242-4242", "031-4242-4242", "대한민국 경기도 수원시 권선구 1234-1234" };
+String[] aboutUs = new String[]{"Team FoS", "", "010-4242-4242", "031-4242-4242", "대한민국 경기도 수원시 권선구 1234-1234"};
 %>
 
 
@@ -213,38 +213,38 @@ String[] aboutUs = new String[] { "Team FoS", "", "010-4242-4242", "031-4242-424
 					</div>
 
 				</div>
-				<%@ include file="../includes/footer.jsp"%>
 			</div>
+
+			<%@ include file="../includes/footer.jsp"%>
 		</div>
 	</div>
-	
+
 	<script>
 		$(document).ready(function() {
 			let sum = 0;
 			$(".totalPrice").each(function() {
-				if((!isNaN($(this).text()) && (!$(this).text().trim() == ""))) {
+				if ((!isNaN($(this).text()) && (!$(this).text().trim() == ""))) {
 					sum += parseInt($(this).text());
 				}
 			});
-			
+
 			$(".total").each(function() {
 				$(this).text(sum);
 			});
-			
-			
+
 			$(".number").each(function() {
-				if((!isNaN($(this).text()) && (!$(this).text().trim() == ""))) {
+				if ((!isNaN($(this).text()) && (!$(this).text().trim() == ""))) {
 					$(this).text(parseInt($(this).text()).toLocaleString('ko-KR'));
 				}
 			});
-			
+
 			$("table#companyTable tbody th").each(function() {
-				if($(this).text().length > 3) {
+				if ($(this).text().length > 3) {
 					$(this).addClass("longWord");
 				}
 			});
 		});
 	</script>
-	
+
 </body>
 </html>

@@ -71,61 +71,125 @@ function makePanelHeading() {
 	
 }
 
-function makeCompanyPanel(contractNum, data) {
+function makeCompanyCard(data) {
 
-	var upper =
-		`<form action="inputOrder" method="post" id="orderInputForm">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<span class="setPanelHeader">
-						<b><span id='contractNum'>` + contractNum + `</span>번 계약</b>` + 
-					`</span>
-					<div class="pull-right">
-						<div class="btn-group in-panel-heading">
-							<button type="button" class="btn btn-outline btn-primary" id="inputOrder">입력</button>
-							<button type="reset" class="btn btn-outline btn-danger">초기화</button>
-						</div>
-					</div>
-				</div>
-				<div class="panel-body">
-					<table class="table table-hover centerAll" id="companyInfo">
-						<thead>
-							<tr>
-								<th>협력회사</th>
-								<th>발주일자</th>
-								<th>담당자 이름</th>
-								<th>이메일</th>
-								<th>공급가격</th>
-								<th>수량</th>
-								<th>소계</th>
-							</tr>
-						</thead>
-						<tbody>`;
-										
-	var lower = 
-`						</tbody>
-					</table>
+	var frontUpper = 
+		`<div class="col-md-6 col-lg-4 col-company-card" id="` + data.companyName + `">
+							<div class="container-turn-over container-plan p-rel">
+								<div class="card card-plan">
+									<div class="front">
+										<div class="card-header">
+											<h3 class="card-title">` + data.companyName + `</h3>
+											<input type='hidden' name='code'
+												value='" + data.companyCode + "'>
+												<input type="hidden" name="contractNum" value="` + data.contractNum + `"> 
+										 </div>
+										<div class="card-body">
+		`;
+	
+	var frontLower = 
+		`</div>
+			<!-- Card footer -->
+			<div class="card-footer">
+				<div class="d-flex">
+					<button type="button" class="btn btn-link">초기화</button>
+					<button type="button" class="btn btn-primary ms-auto"
+						id="inputOrder">입력</button>
 				</div>
 			</div>
-		</form>`;
-				
-	var companyName = "<td id='companyName'>" + data.companyName + "</td><input type='hidden' name='companyCode' value='" + data.companyCode + "'>";
-	var dateInput = "<td><input type='date' name='orderDate' class='form-control'></td>";
-	var unitPrice = "<td id='unitPrice'>" + data.unitPrice + "</td>";
-	var emplNum = "<td><select name='emplNum' class='form-control'><option value='0'>담당자 선택</option></select></td>";
-	var email = "<td id='email'></td>";
-	var quantityInput = "<td><input type='number' name='orderQuantity' class='form-control'></td>";
-	var sum = "<td id='sum'></td>";
+		</div>
+		`;
+		
+		
+	var frontContent = [];
 	
-	var middle = companyName + "\n"
-				 + dateInput + "\n" 
-				 + emplNum + "\n"
-				 + email + "\n" 
-				 + unitPrice + "\n"
-				 + quantityInput + "\n"
-				 + sum + "\n";
+	// 단가
+	frontContent[0] = 
+		`<div class="mb-3">
+			<div class="form-label">단가</div>
+			<div class='ht-inp'>` + data.unitPrice + `</div>
+		</div>
+		`;
+		
+	// 발주일자
+	frontContent[1] = 
+		`<div class="row">
+			<div class="col-lg-6">
+				<div class="mb-3">
+					<div class="form-label">발주 일자</div>
+					<input type='date' name='orderDate' class='form-control'>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="mb-3">
+					<div class="form-label">납기 일자</div>
+					<input type='date' name='dueDate' class='form-control'>
+				</div>
+			</div>
+		</div>
+		`;
+		
+	// 담당자
+	frontContent[2] = 
+		`<div class="row">
+			<div class="col-lg-4">
+				<div class="mb-3">
+					<label class="form-label">담당자</label> 
+					<select name='emplNum' class='form-select'>
+						<option value='0'>선택</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-lg-8">
+				<div class="ht-lab"></div>
+				<div id="email" class='ht-inp'></div>
+			</div>
+		</div>
+		`;
+		
+	// 발주수량
+	frontContent[3] = 
+		`<div class="row">
+			<div class="col-lg-4">
+				<div class="mb-3">
+					<label class="form-label">발주 수량</label> <input
+						type='number' name='orderQuantity' class='form-control'>
+				</div>
+			</div>
+			<div class="col-lg-8">
+				<label class="form-label">총 가격</label>
+				<div id="sum" class='ht-inp'></div>
+			</div>
+		</div>
+		`;
+
 	
-	return upper + middle + lower;
+	var frontMiddle = "";
+	
+	for(var i = 0; i < frontContent.length; i++) {
+		frontMiddle += frontContent[i];
+	}
+	
+	
+	var backUpper = `
+		
+		`;
+	var backLower = 
+		`
+		
+		`;
+	
+	var backContent = [];
+	
+		
+	var backMiddle = "";
+	
+	for(var i = 0; i < backContent.length; i++) {
+		backMiddle += backContent[i];
+	}
+	
+	
+	return frontUpper + frontMiddle + frontLower + backUpper + backMiddle + backLower;
 }
 
 
@@ -135,7 +199,7 @@ function refreshTotalPrice() {
 		type: "POST",
 		data: { "planNum" : $("select[name=planNum]").val() },
 		success: function(data) {
-			$("td#total_price").text(data);
+			$("td#inputPrice").text(data);
 		}
 	});
 }

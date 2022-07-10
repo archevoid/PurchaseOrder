@@ -409,9 +409,9 @@
 					</div>
 				</div>
 				<%-- modal 창 끝 --%>
-				<%@ include file="../includes/footer.jsp"%>
 			</div>
 
+			<%@ include file="../includes/footer.jsp"%>
 		</div>
 	</div>
 </body>

@@ -46,23 +46,59 @@ th, td {
 }
 
 .mr-1 {
-	margin-right: 0.5rem;
+	margin-right: 0.5rem !important;
+}
+
+.ht-lab {
+	height: calc(0.875rem * var(--tblr-body-line-height)) !important;
+	display: block;
+	margin-bottom: 0.5rem !important;
+}
+
+.ht-inp {
+	height: calc(0.875rem * var(--tblr-body-line-height) + 0.4375rem * 2 + 1px * 2) !important;
+	padding: 0.4375rem 2.25rem 0.4375rem 0.75rem !important;
+	display: block;
+}
+
+.p-rel {
+	position: relative;
 }
 
 /* plan.jsp */
-input[name=orderQuantity] { 
-    width: 100px;
-    margin: auto;
+.fliped > .card-plan {
+    box-shadow: rgb(30 41 59 / 16%) 0 2px 16px 0;
+    transform: rotateY(180deg);
+    transform-style: preserve-3d;
+    transition: all 0.5s ease;
+    backface-visibility: hidden;
 }
 
-input[name=orderDate] {
-	width: 120px;
-    margin: auto;
+.container-turn-over {
+	height: calc((1rem * var(--tblr-body-line-height) + 1rem * 2 + 1px) + (1rem * 2 + (1rem + (0.875rem * var(--tblr-body-line-height) + 0.5rem) + (0.875rem * var(--tblr-body-line-height) + 0.4375rem * 2 + 1px * 2)) * 4) + (1rem * 2 + (0.875rem * 1.4285714286 + 0.4375rem * 2 + 1px * 2)) + 1px * 2) !important;
+	width: 100% !important;
 }
 
-select[name=emplNum] {
-	width: 130px;
-	margin: auto;
+.card-plan {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+.front {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	backface-visibility: hidden;
+}
+
+.back {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	backface-visibility: hidden;
+	transform: rotateY(180deg);
+	background: var(--tblr-card-bg,#fff)
 }
 
 #white {

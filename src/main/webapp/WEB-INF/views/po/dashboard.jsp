@@ -202,8 +202,7 @@
 										<div class="card-body">
 											<div class="row align-items-center">
 												<div class="col-auto">
-													<span class="bg-blue text-white avatar">
-														<!-- Download SVG icon from http://tabler-icons.io/i/currency-dollar -->
+													<span class="bg-blue text-white avatar"> <!-- Download SVG icon from http://tabler-icons.io/i/currency-dollar -->
 														<svg xmlns="http://www.w3.org/2000/svg" class="icon"
 															width="24" height="24" viewBox="0 0 24 24"
 															stroke-width="2" stroke="currentColor" fill="none"
@@ -227,8 +226,7 @@
 										<div class="card-body">
 											<div class="row align-items-center">
 												<div class="col-auto">
-													<span class="bg-green text-white avatar">
-														<!-- Download SVG icon from http://tabler-icons.io/i/shopping-cart -->
+													<span class="bg-green text-white avatar"> <!-- Download SVG icon from http://tabler-icons.io/i/shopping-cart -->
 														<svg xmlns="http://www.w3.org/2000/svg" class="icon"
 															width="24" height="24" viewBox="0 0 24 24"
 															stroke-width="2" stroke="currentColor" fill="none"
@@ -253,8 +251,7 @@
 										<div class="card-body">
 											<div class="row align-items-center">
 												<div class="col-auto">
-													<span class="bg-twitter text-white avatar">
-														<!-- Download SVG icon from http://tabler-icons.io/i/brand-twitter -->
+													<span class="bg-twitter text-white avatar"> <!-- Download SVG icon from http://tabler-icons.io/i/brand-twitter -->
 														<svg xmlns="http://www.w3.org/2000/svg" class="icon"
 															width="24" height="24" viewBox="0 0 24 24"
 															stroke-width="2" stroke="currentColor" fill="none"
@@ -277,8 +274,7 @@
 										<div class="card-body">
 											<div class="row align-items-center">
 												<div class="col-auto">
-													<span class="bg-facebook text-white avatar">
-														<!-- Download SVG icon from http://tabler-icons.io/i/brand-facebook -->
+													<span class="bg-facebook text-white avatar"> <!-- Download SVG icon from http://tabler-icons.io/i/brand-facebook -->
 														<svg xmlns="http://www.w3.org/2000/svg" class="icon"
 															width="24" height="24" viewBox="0 0 24 24"
 															stroke-width="2" stroke="currentColor" fill="none"
@@ -799,8 +795,7 @@
 										</thead>
 										<tr>
 											<td>/about.html <a href="#" class="ms-1"
-												aria-label="Open website">
-													<!-- Download SVG icon from http://tabler-icons.io/i/link -->
+												aria-label="Open website"> <!-- Download SVG icon from http://tabler-icons.io/i/link -->
 													<svg xmlns="http://www.w3.org/2000/svg" class="icon"
 														width="24" height="24" viewBox="0 0 24 24"
 														stroke-width="2" stroke="currentColor" fill="none"
@@ -822,8 +817,7 @@
 										</tr>
 										<tr>
 											<td>/special-promo.html <a href="#" class="ms-1"
-												aria-label="Open website">
-													<!-- Download SVG icon from http://tabler-icons.io/i/link -->
+												aria-label="Open website"> <!-- Download SVG icon from http://tabler-icons.io/i/link -->
 													<svg xmlns="http://www.w3.org/2000/svg" class="icon"
 														width="24" height="24" viewBox="0 0 24 24"
 														stroke-width="2" stroke="currentColor" fill="none"
@@ -845,8 +839,7 @@
 										</tr>
 										<tr>
 											<td>/news/1,new-ui-kit.html <a href="#" class="ms-1"
-												aria-label="Open website">
-													<!-- Download SVG icon from http://tabler-icons.io/i/link -->
+												aria-label="Open website"> <!-- Download SVG icon from http://tabler-icons.io/i/link -->
 													<svg xmlns="http://www.w3.org/2000/svg" class="icon"
 														width="24" height="24" viewBox="0 0 24 24"
 														stroke-width="2" stroke="currentColor" fill="none"
@@ -868,8 +861,7 @@
 										</tr>
 										<tr>
 											<td>/lorem-ipsum-dolor-sit-amet-very-long-url.html <a
-												href="#" class="ms-1" aria-label="Open website">
-													<!-- Download SVG icon from http://tabler-icons.io/i/link -->
+												href="#" class="ms-1" aria-label="Open website"> <!-- Download SVG icon from http://tabler-icons.io/i/link -->
 													<svg xmlns="http://www.w3.org/2000/svg" class="icon"
 														width="24" height="24" viewBox="0 0 24 24"
 														stroke-width="2" stroke="currentColor" fill="none"
@@ -891,8 +883,7 @@
 										</tr>
 										<tr>
 											<td>/colors.html <a href="#" class="ms-1"
-												aria-label="Open website">
-													<!-- Download SVG icon from http://tabler-icons.io/i/link -->
+												aria-label="Open website"> <!-- Download SVG icon from http://tabler-icons.io/i/link -->
 													<svg xmlns="http://www.w3.org/2000/svg" class="icon"
 														width="24" height="24" viewBox="0 0 24 24"
 														stroke-width="2" stroke="currentColor" fill="none"
@@ -914,8 +905,7 @@
 										</tr>
 										<tr>
 											<td>/docs/index.html <a href="#" class="ms-1"
-												aria-label="Open website">
-													<!-- Download SVG icon from http://tabler-icons.io/i/link -->
+												aria-label="Open website"> <!-- Download SVG icon from http://tabler-icons.io/i/link -->
 													<svg xmlns="http://www.w3.org/2000/svg" class="icon"
 														width="24" height="24" viewBox="0 0 24 24"
 														stroke-width="2" stroke="currentColor" fill="none"
@@ -1569,8 +1559,9 @@
 					</div>
 				</div>
 			</div>
+
+			<%@ include file="../includes/footer.jsp"%>
 		</div>
-		<%@ include file="../includes/footer.jsp"%>
 	</div>
 </body>
 
