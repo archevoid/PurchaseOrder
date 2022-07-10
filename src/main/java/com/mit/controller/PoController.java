@@ -61,11 +61,6 @@ public class PoController {
 		m.addAttribute("companies", os.getCompany());
 	}
 	
-	@PostMapping("inputOrder")
-	public void inputOrder() {
-		
-	}
-	
 	@GetMapping("partner")
 	public String partner() {
 		return "/po/inputStatusShipment";
