@@ -107,7 +107,7 @@ function makeCompanyCard(data) {
 	frontContent[0] = 
 		`<div class="mb-3">
 			<div class="form-label">단가</div>
-			<div class='ht-inp'>` + data.unitPrice + `</div>
+			<div id="unitPrice" class='ht-inp'>` + data.unitPrice + `</div>
 		</div>
 		`;
 		
@@ -131,32 +131,24 @@ function makeCompanyCard(data) {
 		
 	// 담당자
 	frontContent[2] = 
-		`<div class="row">
-			<div class="col-lg-4">
-				<div class="mb-3">
-					<label class="form-label">담당자</label> 
-					<select name='emplNum' class='form-select'>
-						<option value='0'>선택</option>
-					</select>
-				</div>
-			</div>
-			<div class="col-lg-8">
-				<div class="ht-lab"></div>
-				<div id="email" class='ht-inp'></div>
-			</div>
+		`<div class="mb-3">
+			<label class="form-label">담당자</label> 
+			<select name='emplNum' class='form-select'>
+				<option value='0'>선택</option>
+			</select>
 		</div>
 		`;
 		
 	// 발주수량
 	frontContent[3] = 
 		`<div class="row">
-			<div class="col-lg-4">
+			<div class="col-lg-6">
 				<div class="mb-3">
 					<label class="form-label">발주 수량</label> <input
 						type='number' name='orderQuantity' class='form-control'>
 				</div>
 			</div>
-			<div class="col-lg-8">
+			<div class="col-lg-6">
 				<label class="form-label">총 가격</label>
 				<div id="sum" class='ht-inp'></div>
 			</div>

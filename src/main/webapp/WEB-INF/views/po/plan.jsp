@@ -124,7 +124,7 @@
 						for (var i = 0; i < Object.keys(data).length; i++) {
 							var id = "white";
 
-							emplNumArray[i] = "<option " + "id=" + id + " value='" + data[i].emplNum + "'>" + data[i].emplName + "(" + data[i].emplNum + ")</option>";
+							emplNumArray[i] = "<option " + "id=" + id + " value='" + data[i].emplNum + "'>" + data[i].emplName + " (" + data[i].emplNum + ") " + data[i].email + "</option>";
 						}
 					}
 				});
@@ -265,16 +265,14 @@
 							});
 
 							$("input[name=orderQuantity]").on("focus keyup change", function(event) {
-								$(event.target).closest("div.card-plan").find("div#sum").text($(event.target).closest("div.card-plan").find("div#unitPrice").text() * $(event.target).val());
+								var $thisCard = $(event.target).closest("div.card-plan");
+								
+								$thisCard.find("div#sum").text($thisCard.find("div#unitPrice").text() * $(event.target).val());
 							});
 						}
 					});
 				}
 			}
-		});
-
-		$("button#showInputForm").on("click", function() {
-
 		});
 	</script>
 
