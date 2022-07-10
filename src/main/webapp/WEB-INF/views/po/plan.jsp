@@ -169,7 +169,7 @@
 											var $emplNumTag = $("#" + companyName + " select[name=emplNum]");
 											var $emailTag = $("#" + companyName + " div#email");
 											var $orderQuantityTag = $("#" + companyName + " input[name=orderQuantity]");
-											var $sumTag = $("#" + companyName + " div#sum");
+											var $sumTag = $("#" + companyName + " span#sum");
 											
 											$orderDateTag.val(data.orderDate);
 											$dueDateTag.val(data.dueDate);
@@ -267,7 +267,7 @@
 							$("input[name=orderQuantity]").on("focus keyup change", function(event) {
 								var $thisCard = $(event.target).closest("div.card-plan");
 								
-								$thisCard.find("div#sum").text($thisCard.find("div#unitPrice").text() * $(event.target).val());
+								$thisCard.find("span#sum").text($thisCard.find("span#unitPrice").text() * $(event.target).val());
 							});
 						}
 					});

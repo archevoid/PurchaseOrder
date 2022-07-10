@@ -1,3 +1,13 @@
+const currency = {
+    "KRW" : '\u20A9', 
+    "USD" : '\u0024', 
+    "EUR" : '\u20AC', 
+    "JPN" : '\u00A5', 
+    "CNY" : '\u00A5', 
+    "other" : '\u00A4'
+};
+
+
 function changeActionAndSubmit(formElem, strUrl) {
 	formElem.action = strUrl;
 	
@@ -67,11 +77,15 @@ function inputDay(fullDay, cssSelector) {
     $(cssSelector).val(fullDay);
 }
 
-function makePanelHeading() {
-	
-}
-
 function makeCompanyCard(data) {
+
+	let currencyCode;
+
+	if(currency.hasOwnProperty(data.contractCurrency.toUpperCase())) {
+		currencyCode = currency[data.contractCurrency.toUpperCase()];
+	} else {
+		currencyCode = currency["other"];
+	}
 
 	var frontUpper = 
 		`<div class="col-md-6 col-lg-4 col-company-card" id="` + data.companyName + `">
@@ -107,7 +121,10 @@ function makeCompanyCard(data) {
 	frontContent[0] = 
 		`<div class="mb-3">
 			<div class="form-label">단가</div>
-			<div id="unitPrice" class='ht-inp'>` + data.unitPrice + `</div>
+			<div id="priceContainer" class="ht-inp">
+				<span id="currency">` + currencyCode + `</span>
+				<span id="unitPrice">` + data.unitPrice + `</span>
+			</div>
 		</div>
 		`;
 		
@@ -150,7 +167,10 @@ function makeCompanyCard(data) {
 			</div>
 			<div class="col-lg-6">
 				<label class="form-label">총 가격</label>
-				<div id="sum" class='ht-inp'></div>
+				<div id="priceContainer" class="ht-inp">
+					<span id="currency">` + currencyCode + `</span>
+					<span id="sum"></span>
+				</div>
 			</div>
 		</div>
 		`;
@@ -246,4 +266,36 @@ function orderList() {
 			});
 		}
 	})
+}
+
+function getComplexPrice(currencyList, priceList) {
+	var result = "";
+	
+	
+	const cLength = currencyList.length;
+	const pLength = priceList.length;
+	
+	if(cLength != pLength) {
+		return "";
+	}
+	
+	for(var i = 0; i < cLength; i++) {
+		let currencyCode;
+
+		if(currency.hasOwnProperty(currencyList[i].toUpperCase())) {
+			currencyCode = currency[currencyList[i].toUpperCase()];
+		} else {
+			currencyCode = currency["other"];
+		}
+	
+		if(result.includes(currencyCode)) {
+			var str = result.match("/" + currencyCode + " \d");
+			
+			var curContent = str.split("\s");
+			
+			result += currencyList[i] + " " + priceList[i];
+		} else {
+			result += currencyList[i] + " " + priceList[i];
+		}
+	}
 }
