@@ -69,6 +69,6 @@ public class LoginController {
 	
 	@GetMapping("/*")
 	public void loginPage() {
-		System.out.println(b.encode("test"));
+		
 	}
 }

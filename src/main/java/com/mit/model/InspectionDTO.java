@@ -25,4 +25,7 @@ public class InspectionDTO {
 	private String partName;
 	private String orderQuantity;
 	private Byte existance; // 검수 결과 존재 여부
+	
+	private String progress;
+	
 }

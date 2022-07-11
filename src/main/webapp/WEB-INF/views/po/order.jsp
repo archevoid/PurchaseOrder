@@ -27,7 +27,8 @@
 							<div class="d-flex">
 								<ol class="breadcrumb breadcrumb-arrows"
 									aria-label="breadcrumbs">
-									<li class="breadcrumb-item"><a href="dashboard">Purchase Order</a></li>
+									<li class="breadcrumb-item"><a href="dashboard">Purchase
+											Order</a></li>
 									<li class="breadcrumb-item active" aria-current="page"><a
 										href="#">Order</a></li>
 								</ol>
@@ -114,16 +115,9 @@
 		drawCalendarSpace();
 		drawCalendar(curYear, curMonth);
 
-		$("td.clickable").on(
-				"click",
-				function() {
-					inputDay(curYear
-							+ "-"
-							+ curMonth.toString().padStart(2, "0")
-							+ "-"
-							+ $(this).children("div.date").text().padStart(2,
-									"0"), "input[name=orderDate]");
-				});
+		$("td.clickable").on("click", function() {
+			inputDay(curYear + "-" + curMonth.toString().padStart(2, "0") + "-" + $(this).children("div.date").text().padStart(2, "0"), "input[name=orderDate]");
+		});
 
 		$("#prev").on("click", function() {
 			if (curMonth == 1) {
