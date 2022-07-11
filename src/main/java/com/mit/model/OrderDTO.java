@@ -37,4 +37,21 @@ public class OrderDTO {
 	private String businessNumber;
 	private String account;
 	private String currency;
+	
+	/* getTotalPrice() */
+	private Long totalPrice;
+	private String contractCurrency;
+	
+	/* progress 데이터 검색 */
+	private String supportNum;
+	
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
+	private Date initialOrderDate;
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
+	private Date finalOrderDate;
+	
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
+	private Date initialdueDate;
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
+	private Date finaldueDate;
 }

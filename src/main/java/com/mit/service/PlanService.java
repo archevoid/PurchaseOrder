@@ -43,7 +43,7 @@ public class PlanService extends com.mit.service.Service {
 		return planDao.getEmailByEmplNum(userDto);
 	}
 	
-	public long getTotalPrice(PlanDTO planDto) {
+	public OrderDTO getTotalPrice(PlanDTO planDto) {
 		return planDao.getTotalPrice(planDto);
 	}
 	

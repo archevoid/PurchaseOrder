@@ -19,11 +19,56 @@
 	
 	<select id="getInspectionByOrderNum" resultType="com.mit.model.InspectionDTO">
 		SELECT i.order_num AS orderNum
-			, i.inspection_num AS inspectionNum
-			, i.inspection_date AS inspectionDate
-			, i.inspection_quantity AS inspectionQuantity
-			, i.sample_quantity AS sampleQuantity
-		FROM inpection i
+		    , e.empl_name AS emplName
+		    , e.empl_email AS email
+		    , pt.partName AS partName
+		    , p.order_quantity AS orderQuantity
+		    , i.inspection_num AS inspectionNum
+		    , i.inspection_date AS inspectionDate
+		    , i.inspection_quantity AS inspectionQuantity
+		    , i.sample_quantity AS sampleQuantity
+		    , NVL((SELECT 1 FROM inspection_result ir WHERE ir.order_num = i.order_num AND ir.inspection_num = i.inspection_num), 0) AS existance
+		FROM inspection i INNER JOIN purchase_order p ON p.order_num = i.order_num 
+		    INNER JOIN employee e ON p.empl_num = e.empl_num
+		    INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
+		    INNER JOIN tbl_part pt ON ct.partcode = pt.partcode
 		WHERE i.order_num = #{ orderNum }
+	</select>
+	
+	<select id="getInspectionSchedule" resultType="com.mit.model.InspectionDTO">
+		SELECT i.order_num AS orderNum
+		    , i.inspection_num AS inspectionNum
+		    , i.inspection_date AS inspectionDate
+		    , i.inspection_quantity AS inspectionQuantity
+		    , i.sample_quantity AS sampleQuantity
+		FROM inspection i
+		WHERE i.order_num = #{ orderNum } AND i.inspection_num = #{ inspectionNum }
+	</select>
+	
+	<select id="getInspectionResult" resultType="com.mit.model.InspectionDTO">
+		SELECT ir.order_num AS orderNum
+		    , ir.inspection_num AS inspectionNum
+		    , ir.inspection_defect AS inspectionDefect
+		    , ir.complement AS complement
+		    , ir.close AS close
+		FROM inspection_result ir
+		WHERE ir.order_num = #{ orderNum } AND ir.inspection_num = #{ inspectionNum }
+	</select>
+	
+	<insert id="insertInspectionSchedule">
+		INSERT INTO inspection (order_num, inspection_num, inspection_date, inspection_quantity, sample_quantity)
+		VALUES (#{ orderNum }, #{ inspectionNum }, #{ inspecionDate }, #{ inspectionQuantity }, #{ sampleQuantity })
+	</insert>
+	
+	<insert id="insertInspectionResult">
+		INSERT INTO inspection_result (order_num, inspection_num, inspection_defect, complement, close)
+		VALUES (#{ orderNum }, #{ inspectionNum }, #{ inspectionDefect }, #{ complement }, #{ close })
+	</insert>
+	
+	<select id="getNextInspectionNum" resultType="com.mit.model.InspectionDTO">
+		SELECT (MAX(i.inspection_num) + 1) AS nextNum FROM inspection i WHERE i.order_num = #{ orderNum }
+	</select>
+	<select id="getNextInspectionResultNum" resultType="com.mit.model.InspectionDTO">
+		SELECT (MAX(ir.inspection_num) + 1) AS nextNum FROM inspection_result ir WHERE ir.order_num = #{ orderNum }
 	</select>
 </mapper>

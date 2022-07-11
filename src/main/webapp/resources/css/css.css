@@ -65,6 +65,16 @@ th, td {
 	position: relative;
 }
 
+.rm-side::-webkit-inner-spin-button {
+ appearance: none;
+ -moz-appearance: none;
+ -webkit-appearance: none;
+}
+
+.percent::after {
+	content: '%';
+}
+
 /* plan.jsp */
 .fliped > .card-plan {
     box-shadow: rgb(30 41 59 / 16%) 0 2px 16px 0;

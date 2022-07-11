@@ -54,7 +54,6 @@
 									</div>
 								</div>
 								<div class="card-body">
-
 									<table class="table table-vcenter card-table" id="planInfo">
 										<thead>
 											<tr>

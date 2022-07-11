@@ -72,7 +72,7 @@ div#company thead th {
 
 div#company tbody th {
 	letter-spacing: 20px;
-	text-indent: 12.5px;
+	text-indent: 10px;
 }
 
 div#company tbody td {
@@ -106,7 +106,7 @@ th:last-child, td:last-child {
 }
 
 .longWord {
-	letter-spacing: 7px !important;
+	letter-spacing: 5px !important;
 }
 
 thead th {
