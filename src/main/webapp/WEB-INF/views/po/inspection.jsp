@@ -68,7 +68,7 @@
 										<tbody>
 											<tr>
 												<td id="orderNum"></td>
-												<td id="emplNum"></td>
+												<td id="emplName"></td>
 												<td id="email"></td>
 												<td id="partName"></td>
 												<td id="orderQuantity"></td>
@@ -83,7 +83,7 @@
 							<div class="card">
 								<div class="card-body py-3 ms-auto d-print-none btn-list">
 									<span class="d-none d-sm-inline">
-										<button type="button" class="btn btn-white">
+										<button type="button" class="btn btn-white" id="inputInspection">
 											<img src="/resources/img/download.svg" class="icon"> 선택
 											일정 다운로드
 										</button>
@@ -95,7 +95,7 @@
 								</div>
 								<div>
 									<table
-										class="table card-table table-vcenter text-nowrap datatable">
+										class="table card-table table-vcenter text-nowrap datatable" id="inspectionSchedule">
 										<thead>
 											<tr>
 												<th class="w-1"><input
@@ -116,33 +116,27 @@
 												<th>수량</th>
 												<th>샘플개수</th>
 												<th>상태</th>
-												<th>PROGRESS</th>
 												<th></th>
 											</tr>
 										</thead>
 										<tbody>
 											<tr>
 												<td><input class="form-check-input m-0 align-middle"
-													type="checkbox" aria-label="Select invoice"></td>
-												<td><span class="text-muted">001401</span></td>
-												<td><a href="invoice.html" class="text-reset"
-													tabindex="-1">Design Works</a></td>
-												<td><span class="flag flag-country-us"></span> Carlson
-													Limited</td>
-												<td>87956621</td>
-												<td>15 Dec 2017</td>
-												<td>$887</td>
+													type="checkbox" aria-label="Select invoice" name="selectedInspection"></td>
+												<td id="inspectionNum"><span class="text-muted"></span></td>
+												<td id="inspectionDate"></td>
+												<td id="inspectionQuantity"></td>
+												<td id="sampleQuantity"></td>
+												<td id="progress"></td>
 												<td class="text-end"><span class="dropdown">
 														<button class="btn dropdown-toggle align-text-top"
 															data-bs-boundary="viewport" data-bs-toggle="dropdown">Actions</button>
 														<div class="dropdown-menu dropdown-menu-end">
-															<a class="dropdown-item" href="#"> Action </a>
 															<button type="button" class="dropdown-item"
 																data-bs-toggle="modal" data-bs-target="#modal-report">
 																결과입력</button>
-															<button type="button" class="dropdown-item"
-																data-bs-toggle="modal" data-bs-target="#modal-report">
-																결과 다운로드</button>
+															<button type="button" class="dropdown-item">결과 다운로드</button>
+														</div>
 												</span></td>
 											</tr>
 
@@ -260,5 +254,97 @@
 			<%@ include file="../includes/footer.jsp"%>
 		</div>
 	</div>
+	<script>
+		$("select[name=orderNum]").on("change", function() {
+			$.ajax({
+				url : "/api/inspection",
+				type : "post",
+				data : {
+					"orderNum" : $(this).val()
+				},
+				success : function(data) {
+					console.log(data);
+					
+					$("td#orderNum").text(data[0].orderNum);
+					$("td#emplName").text(data[0].emplName);
+					$("td#email").text(data[0].email);
+					$("td#partName").text(data[0].partName);
+					$("td#orderQuantity").text(data[0].orderQuantity);
+					
+					$("table #inspectionSchedule tr").remove();
+					
+					var elem = "";
+					
+					for(var key in data) {
+						if(data.inspectionNum != null) {
+						
+							elem += '<tr>'
+									+	'<td>'
+									+		'<input class="form-check-input m-0 align-middle"'
+									+			'type="checkbox" aria-label="Select invoice" name="selectedInspection">'
+									+	'</td>'
+									+	'<td id="inspectionNum">'
+									+		'<span class="text-muted" id="inspectionNum">' + data[key].inspectionNum + '</span>'
+									+	'</td>'
+									+	'<td id="inspectionDate">' + data[key].inspectionDate + '</td>'
+									+	'<td id="inspectionQuantity">' + data[key].inspectionQuantity + '</td>'
+									+	'<td id="sampleQuantity">' + data[key].sampleQuantity + '</td>'
+									+	'<td id="progress">' + data[key].progress + '</td>'
+									+	'<td class="text-end">'
+									+		'<span class="dropdown">'
+									+			'<button class="btn dropdown-toggle align-text-top"'
+									+				'data-bs-boundary="viewport" data-bs-toggle="dropdown">Actions'
+									+			'</button>'
+									+			'<div class="dropdown-menu dropdown-menu-end">'
+									+				'<button type="button" class="dropdown-item"'
+									+					'data-bs-toggle="modal" data-bs-target="#modal-report">'
+									+					'결과입력'
+									+				'</button>'
+									+				'<button type="button" class="dropdown-item">'
+									+					'결과 다운로드'
+									+				'</button>'
+									+		'</span>'
+									+	'</td>'
+									+'</tr>';
+
+						}
+					}
+					
+					$("table#inspectionSchedule tbody").append(elem);
+				}
+			});
+		});
+		
+		$("button#inputInspection").on("click", function() {
+			elem += '<tr>'
+				+	'<td>'
+				+		'<input class="form-check-input m-0 align-middle"'
+				+			'type="checkbox" aria-label="Select invoice" name="selectedInspection">'
+				+	'</td>'
+				+	'<td id="inspectionNum">'
+				+		'<span class="text-muted" id="inspectionNum">' + data[key].inspectionNum + '</span>'
+				+	'</td>'
+				+	'<td id="inspectionDate">' + data[key].inspectionDate + '</td>'
+				+	'<td id="inspectionQuantity">' + data[key].inspectionQuantity + '</td>'
+				+	'<td id="sampleQuantity">' + data[key].sampleQuantity + '</td>'
+				+	'<td id="progress">' + data[key].progress + '</td>'
+				+	'<td class="text-end">'
+				+		'<span class="dropdown">'
+				+			'<button class="btn dropdown-toggle align-text-top"'
+				+				'data-bs-boundary="viewport" data-bs-toggle="dropdown">Actions'
+				+			'</button>'
+				+			'<div class="dropdown-menu dropdown-menu-end">'
+				+				'<button type="button" class="dropdown-item"'
+				+					'data-bs-toggle="modal" data-bs-target="#modal-report">'
+				+					'결과입력'
+				+				'</button>'
+				+				'<button type="button" class="dropdown-item">'
+				+					'결과 다운로드'
+				+				'</button>'
+				+		'</span>'
+				+	'</td>'
+				+'</tr>';
+		});
+	</script>
 </body>
 </html>
