@@ -103,4 +103,14 @@ public class ApiController {
 		
 		return is.getInspectionByOrderNum(inspectionDto);
 	}
+	
+	@PostMapping("nextInspectionNum")
+	public Integer getNextInspectionNum(InspectionDTO inspectionDto) {
+		return is.getNextInspectionNum(inspectionDto);
+	}
+	
+	@PostMapping("inputInspection")
+	public Integer inputInspection(InspectionDTO inspectionDto) {
+		return is.insertInspectionSchedule(inspectionDto);
+	}
 }
