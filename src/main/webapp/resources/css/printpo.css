@@ -12,15 +12,11 @@
 	text-align: center;
 }
 
-body {
-	margin: 0;
-	padding: 0;
-}
-
 div#content {
 	width: 21cm;
 	min-height: 29.7cm;
 	padding: 1.5cm 1.5cm 2cm 1.5cm;
+	margin: auto;
 }
 
 h1#documentName {
@@ -32,7 +28,7 @@ h1#documentName {
 
 table {
 	border-spacing: 0;
-	margin: 0 auto 0.5cm auto;
+	margin: 0 auto 0.3cm auto;
 	table-layout: fixed;
 	word-break: break-all;
 	width: 100%;
@@ -44,7 +40,7 @@ table#companyTable {
 }
 
 div#company {
-	margin-bottom: 0.5cm;
+	margin-bottom: 0.3cm;
 }
 
 div#planContent {
@@ -109,6 +105,10 @@ th:last-child, td:last-child {
 	border-top: 3px double;
 }
 
+.longWord {
+	letter-spacing: 7px !important;
+}
+
 thead th {
 	background-color: #D3D3D3;
 }
@@ -122,6 +122,62 @@ td#etc {
 	height: 3cm;
 	text-align: left;
 	vertical-align: top;
+}
+
+.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+}
+
+.btn-danger {
+    color: #fff;
+    background-color: #d9534f;
+    border-color: #d43f3a;
+}
+
+.btn-outline {
+    color: inherit;
+    background-color: transparent !important;
+    transition: all .5s;
+}
+
+.btn-primary.btn-outline {
+    color: #428bca;
+}
+
+.btn-danger.btn-outline {
+    color: #d9534f;
+}
+
+div#btnArea {
+	float: right;
+}
+
+button {
+	float: left;
 }
 
 @page {
@@ -139,5 +195,9 @@ td#etc {
 		box-shadow: initial;
 		background: initial;
 		page-break-after: always;
+	}
+	
+	div#content {
+		padding: 0.5cm 0.5cm 0.5cm 0cm;
 	}
 }
