@@ -42,4 +42,46 @@
 			INNER JOIN employee e ON e.empl_num = p.empl_num
 		WHERE cp.code = #{ companyCode } AND p.order_date = #{ orderDate }
 	</select>
+	
+	<select id="getOrderProgress" resultType="com.mit.model.OrderDTO">
+		SELECT pt.partname AS partName
+		    , e.empl_name AS emplName
+		    , e.empl_email AS email
+		    , cp.name AS companyName
+		    , p.order_date AS orderDate
+		    , p.due_date AS dueDate
+		FROM purchase_order p INNER JOIN employee e ON p.empl_num = e.empl_num
+		    INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
+		    INNER JOIN tbl_part pt ON ct.partcode = pt.partcode
+		    INNER JOIN company cp ON ct.code = cp.code
+		    
+	    <where>
+	    	<trim prefixOverrides="AND">
+		    	<choose>
+		    		<when test="orderNum != null">
+		    			AND p.order_num = #{ orderNum }
+		    		</when>
+		    		<when test="emplNum != null">
+		    			AND p.empl_num = #{ emplNum }
+		    		</when>
+		    		<when test="supportNum != null">
+		    			AND p.support_num = #{ supportNum }
+		    		</when>
+		    		<when test="companyCode != null">
+		    			AND cp.code = #{ companyCode }
+		    		</when>
+		    		<when test="initialOrderDate != null and finalOrderDate != null">
+		    			<![CDATA[
+		    				AND #{ initialOrderDate } < p.order_date AND p.order_date < #{ finalOrderDate }
+		    			]]>
+		    		</when>
+		    		<when test="initialdueDate != null and finaldueDate != null">
+		    			<![CDATA[
+		    				AND #{ initialdueDate } < p.order_date AND p.order_date < #{ finaldueDate }
+		    			]]>
+		    		</when>
+		    	</choose>
+	    	</trim>
+	    </where>
+	</select>
 </mapper>

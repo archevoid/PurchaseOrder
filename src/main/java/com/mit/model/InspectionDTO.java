@@ -17,4 +17,12 @@ public class InspectionDTO {
 	
 	private Long insepectionDefect;
 	private String complement;
+	private Byte close;
+	
+	/* 검수 일정 조회 */
+	private String emplName;
+	private String email;
+	private String partName;
+	private String orderQuantity;
+	private Byte existance; // 검수 결과 존재 여부
 }

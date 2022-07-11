@@ -72,8 +72,8 @@ public class ApiController {
 	}
 	
 	@PostMapping("totalPrice")
-	public String getTotalPrice(PlanDTO planDto) {
-		return ps.getTotalPrice(planDto) + "";
+	public OrderDTO getTotalPrice(PlanDTO planDto) {
+		return ps.getTotalPrice(planDto);
 	}
 	
 	@PostMapping("remainQuantity")

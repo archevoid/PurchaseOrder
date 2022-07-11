@@ -62,15 +62,18 @@
 		SELECT e.empl_email AS email FROM employee e WHERE empl_num = #{ emplNum }
 	</select>
 	
-	<select id="getTotalPrice" resultType="long">
-		SELECT SUM(p.order_quantity * (SELECT ct.unitprice FROM tbl_contract ct WHERE ct.contractno = p.contract_num)) AS totalPrice
+	<select id="getTotalPrice" resultType="com.mit.model.OrderDTO">
+		SELECT (SELECT cp.currency FROM company cp WHERE cp.code = (SELECT ct.code FROM tbl_contract ct WHERE ct.contractno = p.contract_num)) AS contractCurrency
+		    , (SELECT SUM(p.order_quantity * (SELECT ct.unitprice FROM tbl_contract ct WHERE ct.contractno = p.contract_num)) AS totalPrice
+		        FROM purchase_order p
+		        GROUP BY p.support_num) AS totalPrice
 		FROM purchase_order p
 		WHERE p.support_num = #{ planNum }
-		GROUP BY p.support_num
-        
-		UNION ALL
 		
-		SELECT 0 FROM DUAL WHERE NOT EXISTS (SELECT * FROM purchase_order p WHERE p.support_num = #{ planNum } GROUP BY p.support_num)
+		
+		UNION ALL
+				
+		SELECT 'other' AS contractCurrency, 0 AS totalPrice FROM DUAL WHERE NOT EXISTS (SELECT * FROM purchase_order p WHERE p.support_num = #{ planNum } GROUP BY p.support_num)
 	</select>
 	
 	<select id="getRemainQuantity" resultType="long">

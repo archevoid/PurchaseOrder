@@ -15,7 +15,7 @@ public interface PlanDAO {
 	
 	UserDTO getEmailByEmplNum(UserDTO userDto);
 	
-	long getTotalPrice(PlanDTO planDto);
+	OrderDTO getTotalPrice(PlanDTO planDto);
 	
 	long getRemainQuantity(PlanDTO planDto);
 	

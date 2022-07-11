@@ -211,7 +211,13 @@ function refreshTotalPrice() {
 		type: "POST",
 		data: { "planNum" : $("select[name=planNum]").val() },
 		success: function(data) {
-			$("td#inputPrice").text(data);
+			$.each(data, function(idx) {
+			
+			});
+			
+			
+			$("div#inputPrice span#" + data.contractCurrency.toUpperCase() + "SubCurrency").text(data.currency);
+			$("div#inputPrice span#" + data.contractCurrency.toUpperCase() + "SubPrice").text(data.totalPrice);
 		}
 	});
 }
@@ -279,23 +285,31 @@ function getComplexPrice(currencyList, priceList) {
 		return "";
 	}
 	
-	for(var i = 0; i < cLength; i++) {
-		let currencyCode;
-
-		if(currency.hasOwnProperty(currencyList[i].toUpperCase())) {
-			currencyCode = currency[currencyList[i].toUpperCase()];
-		} else {
-			currencyCode = currency["other"];
-		}
+	var keys = Object.keys(currency);
 	
-		if(result.includes(currencyCode)) {
-			var str = result.match("/" + currencyCode + " \d");
-			
-			var curContent = str.split("\s");
-			
-			result += currencyList[i] + " " + priceList[i];
-		} else {
-			result += currencyList[i] + " " + priceList[i];
+	var sums = [];
+	
+	for(var i = 0; i < keys - 1; i++) {
+		result += "<div id='" + keys[i] + "'>" + currency[keys[i]] + "</div>";
+		result += "<span id='" + keys[i] + "SubCurrency" + "'>" + currency[keys[i]] + "</span>";
+		
+		sums[i] = 0;
+		
+		var equalPosition = -1;
+		for(var j = 0; j < cLength; j++) {
+			if (keys[i] == currencyList[j].toUpperCase()) {
+				sums[i] += parseInt(priceList[j]);
+				equalPosition = j;
+			} else if (!currency.includes(currencyList[j].toUpperCase())) {
+				sums[sums.length - 1] += parseInt(priceList[j]);
+				equalPosition = j;
+			}
+		}
+		
+		if (equalPosition != -1) {
+			result += "<span id='" + keys[i] + "SubPrice'" + ">" + sums[equalPosition] + "</span>";
 		}
 	}
+	
+	return result;
 }
