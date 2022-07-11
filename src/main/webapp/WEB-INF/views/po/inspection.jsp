@@ -83,13 +83,13 @@
 							<div class="card">
 								<div class="card-body py-3 ms-auto d-print-none btn-list">
 									<span class="d-none d-sm-inline">
-										<button type="button" class="btn btn-white" id="inputInspection">
+										<button type="button" class="btn btn-white">
 											<img src="/resources/img/download.svg" class="icon"> 선택
 											일정 다운로드
 										</button>
 									</span>
 									<button type="button"
-										class="btn btn-primary d-none d-sm-inline-block">
+										class="btn btn-primary d-none d-sm-inline-block" id="inputInspection">
 										<img src="/resources/img/upload.svg" class="icon"> 계획입력
 									</button>
 								</div>
@@ -119,33 +119,12 @@
 												<th></th>
 											</tr>
 										</thead>
-										<tbody>
-											<tr>
-												<td><input class="form-check-input m-0 align-middle"
-													type="checkbox" aria-label="Select invoice" name="selectedInspection"></td>
-												<td id="inspectionNum"><span class="text-muted"></span></td>
-												<td id="inspectionDate"></td>
-												<td id="inspectionQuantity"></td>
-												<td id="sampleQuantity"></td>
-												<td id="progress"></td>
-												<td class="text-end"><span class="dropdown">
-														<button class="btn dropdown-toggle align-text-top"
-															data-bs-boundary="viewport" data-bs-toggle="dropdown">Actions</button>
-														<div class="dropdown-menu dropdown-menu-end">
-															<button type="button" class="dropdown-item"
-																data-bs-toggle="modal" data-bs-target="#modal-report">
-																결과입력</button>
-															<button type="button" class="dropdown-item">결과 다운로드</button>
-														</div>
-												</span></td>
-											</tr>
-
-										</tbody>
+										<tbody></tbody>
 									</table>
 								</div>
 								<div class="card-footer d-flex align-items-center">
-									<p class="m-0 text-muted">
-										Showing <span>1</span> to <span>8</span> of <span>16</span>
+									<p class="m-0 text-muted hidden" id="entryInfo">
+										Showing <span id="showingEntry"></span>
 										entries
 									</p>
 
@@ -171,25 +150,25 @@
 									<div class="col-lg-6">
 										<div class="mb-3">
 											<label class="form-label">발주번호</label> <input type="number"
-												id="orderNum" class="form-control rm-side" readonly>
+												id="orderNumModal" class="form-control rm-side" readonly>
 										</div>
 									</div>
 									<div class="col-lg-6">
 										<div class="mb-3">
 											<label class="form-label">차수</label> <input type="number"
-												id="inspectionNum" class="form-control rm-side" readonly>
+												id="inspectionNumModal" class="form-control rm-side" readonly>
 										</div>
 									</div>
 								</div>
 								<div class="mb-3">
 									<label class="form-label">검수수량</label> <input type="number"
-										id="inspectionQuantity" class="form-control rm-side" readonly>
+										id="inspectionQuantityModal" class="form-control rm-side" readonly>
 								</div>
 								<div class="row">
 									<div class="col-lg-6">
 										<div class="mb-3">
 											<label class="form-label">샘플수량</label> <input type="number"
-												id="sampleQuantity" class="form-control rm-side" readonly>
+												id="sampleQuantityModal" class="form-control rm-side" readonly>
 										</div>
 									</div>
 									<div class="col-lg-6">
@@ -207,7 +186,7 @@
 									<div class="col-lg-6">
 										<div class="mb-3">
 											<label class="form-label">불량수량</label> <input type="number"
-												id="defectQuantity" class="form-control">
+												id="defectQuantityModal" class="form-control">
 										</div>
 									</div>
 									<div class="col-lg-6">
@@ -227,7 +206,7 @@
 									<label class="form-label">보완사항 입력 <span
 										class="form-label-description"><span
 											id="numberOfContent"></span>/1000</span></label>
-									<textarea class="form-control" name="complement" rows="6"
+									<textarea class="form-control" name="complement" rows="6" id="complementModal"
 										placeholder="보완사항 입력"></textarea>
 								</div>
 							</div>
@@ -255,7 +234,19 @@
 		</div>
 	</div>
 	<script>
+		var orderNumVal = -1;
+	
 		$("select[name=orderNum]").on("change", function() {
+			$("tr#inspectionInfo").remove();
+			$("tr#inspectionInputTr").remove();
+			
+			if($("select[name=orderNum]").val() == 0) {
+				$("p#entryInfo").addClass("hidden")
+				return;
+			}
+			
+			orderNumVal = $(this).val();
+			
 			$.ajax({
 				url : "/api/inspection",
 				type : "post",
@@ -263,8 +254,6 @@
 					"orderNum" : $(this).val()
 				},
 				success : function(data) {
-					console.log(data);
-					
 					$("td#orderNum").text(data[0].orderNum);
 					$("td#emplName").text(data[0].emplName);
 					$("td#email").text(data[0].email);
@@ -276,9 +265,9 @@
 					var elem = "";
 					
 					for(var key in data) {
-						if(data.inspectionNum != null) {
+						if(data[key].inspectionNum != null) {
 						
-							elem += '<tr>'
+							elem += '<tr id="inspectionInfo">'
 									+	'<td>'
 									+		'<input class="form-check-input m-0 align-middle"'
 									+			'type="checkbox" aria-label="Select invoice" name="selectedInspection">'
@@ -297,12 +286,13 @@
 									+			'</button>'
 									+			'<div class="dropdown-menu dropdown-menu-end">'
 									+				'<button type="button" class="dropdown-item"'
-									+					'data-bs-toggle="modal" data-bs-target="#modal-report">'
+									+					'data-bs-toggle="modal" data-bs-target="#modal-report" id="inputResultBtn">'
 									+					'결과입력'
 									+				'</button>'
 									+				'<button type="button" class="dropdown-item">'
 									+					'결과 다운로드'
 									+				'</button>'
+									+			'</div>'
 									+		'</span>'
 									+	'</td>'
 									+'</tr>';
@@ -311,39 +301,69 @@
 					}
 					
 					$("table#inspectionSchedule tbody").append(elem);
+					
+					$("span#showingEntry").text(Object.keys(data).length);
+					
+					$("p#entryInfo").removeClass("hidden");
 				}
 			});
 		});
 		
 		$("button#inputInspection").on("click", function() {
-			elem += '<tr>'
-				+	'<td>'
-				+		'<input class="form-check-input m-0 align-middle"'
-				+			'type="checkbox" aria-label="Select invoice" name="selectedInspection">'
-				+	'</td>'
-				+	'<td id="inspectionNum">'
-				+		'<span class="text-muted" id="inspectionNum">' + data[key].inspectionNum + '</span>'
-				+	'</td>'
-				+	'<td id="inspectionDate">' + data[key].inspectionDate + '</td>'
-				+	'<td id="inspectionQuantity">' + data[key].inspectionQuantity + '</td>'
-				+	'<td id="sampleQuantity">' + data[key].sampleQuantity + '</td>'
-				+	'<td id="progress">' + data[key].progress + '</td>'
-				+	'<td class="text-end">'
-				+		'<span class="dropdown">'
-				+			'<button class="btn dropdown-toggle align-text-top"'
-				+				'data-bs-boundary="viewport" data-bs-toggle="dropdown">Actions'
-				+			'</button>'
-				+			'<div class="dropdown-menu dropdown-menu-end">'
-				+				'<button type="button" class="dropdown-item"'
-				+					'data-bs-toggle="modal" data-bs-target="#modal-report">'
-				+					'결과입력'
-				+				'</button>'
-				+				'<button type="button" class="dropdown-item">'
-				+					'결과 다운로드'
-				+				'</button>'
-				+		'</span>'
-				+	'</td>'
-				+'</tr>';
+			if($("tr#inspectionInputTr").length != 0 || $("select[name=orderNum]").val() == 0) {
+				return;
+			}
+			
+			$.ajax({
+				url : "/api/nextInspectionNum",
+				type : "post",
+				data : {
+					"orderNum" : orderNumVal
+				},
+				success : function(data) {
+					var elem = '<tr id="inspectionInputTr">'
+						+	'<td>'
+						+		'<input class="form-check-input m-0 align-middle"'
+						+			'type="checkbox" aria-label="Select invoice" name="selectedInspection">'
+						+	'</td>'
+						+	'<td id="inspectionNum">'
+						+		'<span class="text-muted" id="inspectionNum">' +  data + '</span>'
+						+	'</td>'
+						+	'<td id="inspectionDate"><input type="date" class="form-control" name="inspectionDate"></td>'
+						+	'<td id="inspectionQuantity"><input type="number" class="form-control" name="inspectionQuantity"></td>'
+						+	'<td id="sampleQuantity"><input type="number" class="form-control" name="sampleQuantity"></td>'
+						+	'<td id="progress"></td>'
+						+	'<td class="text-end">'
+						+		'<span class="dropdown">'
+						+			'<button class="btn align-text-top" id="inspectionInputBtn">입력'
+						+			'</button>'
+						+		'</span>'
+						+	'</td>'
+						+'</tr>';
+						
+					$("table#inspectionSchedule tbody").append(elem);
+					
+					$("button#inspectionInputBtn").on("click", function() {
+						$.ajax({
+							url : "/api/inputInspection",
+							type : "post",
+							data : {
+								"orderNum" : $("select[name=orderNum]").val()
+								, "inspectionDate" : $("input[name='inspectionDate']").val()
+								, "inspectionQuantity" : $("input[name='inspectionQuantity']").val()
+								, "sampleQuantity" : $("input[name='sampleQuantity']").val()
+							},
+							success : function(data) {
+								$("tr#inspectionInputTr").remove();
+							}
+						});
+					});
+				}
+			});
+		});
+		
+		$("button#inputResultBtn").on("click", function() {
+			
 		});
 	</script>
 </body>

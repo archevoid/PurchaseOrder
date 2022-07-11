@@ -29,7 +29,10 @@
 		    , i.sample_quantity AS sampleQuantity
 		    , NVL((SELECT 1 FROM inspection_result ir WHERE ir.order_num = i.order_num AND ir.inspection_num = i.inspection_num), 0) AS existance
 	    <![CDATA[
-	    	, CASE WHEN sysdate > i.inspection_date AND sysdate < p.due_date THEN '진행중' ELSE '확인불가' END AS progress
+	    	, CASE 
+	    		WHEN sysdate < i.inspection_date THEN '시작 전'
+	    		WHEN sysdate > p.due_date THEN '종료 후'
+	    		ELSE '진행 중' END AS progress
     	]]>
 		FROM inspection i RIGHT JOIN purchase_order p ON p.order_num = i.order_num 
 		    INNER JOIN employee e ON p.empl_num = e.empl_num
@@ -60,7 +63,7 @@
 	
 	<insert id="insertInspectionSchedule">
 		INSERT INTO inspection (order_num, inspection_num, inspection_date, inspection_quantity, sample_quantity)
-		VALUES (#{ orderNum }, #{ inspectionNum }, #{ inspecionDate }, #{ inspectionQuantity }, #{ sampleQuantity })
+		VALUES (#{ orderNum }, (SELECT NVL((MAX(i.inspection_num) + 1), 1) AS nextNum FROM inspection i WHERE i.order_num = #{ orderNum }), #{ inspectionDate }, #{ inspectionQuantity }, #{ sampleQuantity })
 	</insert>
 	
 	<insert id="insertInspectionResult">
@@ -68,10 +71,10 @@
 		VALUES (#{ orderNum }, #{ inspectionNum }, #{ inspectionDefect }, #{ complement }, #{ close })
 	</insert>
 	
-	<select id="getNextInspectionNum" resultType="com.mit.model.InspectionDTO">
-		SELECT (MAX(i.inspection_num) + 1) AS nextNum FROM inspection i WHERE i.order_num = #{ orderNum }
+	<select id="getNextInspectionNum" resultType="int">
+		SELECT NVL((MAX(i.inspection_num) + 1), 1) AS nextNum FROM inspection i WHERE i.order_num = #{ orderNum }
 	</select>
-	<select id="getNextInspectionResultNum" resultType="com.mit.model.InspectionDTO">
-		SELECT (MAX(ir.inspection_num) + 1) AS nextNum FROM inspection_result ir WHERE ir.order_num = #{ orderNum }
+	<select id="getNextInspectionResultNum" resultType="int">
+		SELECT NVL((MAX(ir.inspection_num) + 1), 1) AS nextNum FROM inspection_result ir WHERE ir.order_num = #{ orderNum }
 	</select>
 </mapper>
