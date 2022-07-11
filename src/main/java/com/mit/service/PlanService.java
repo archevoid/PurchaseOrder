@@ -27,8 +27,8 @@ public class PlanService extends com.mit.service.Service {
 		return planDao.getPlanByPlanNum(planNum);
 	}
 	
-	public List<CompanyDTO> getCompanyInfoByPartName(String partName) {
-		return planDao.getCompanyInfoByPartName(partName);
+	public List<CompanyDTO> getCompanyInfo(PlanDTO planDto) {
+		return planDao.getCompanyInfo(planDto);
 	}
 	
 	public int insertOrder(OrderDTO orderDto) {
@@ -49,5 +49,9 @@ public class PlanService extends com.mit.service.Service {
 	
 	public long getRemainQuantity(PlanDTO planDto) {
 		return planDao.getRemainQuantity(planDto);
+	}
+	
+	public OrderDTO getCurrentOrder(PlanDTO planDto) {
+		return planDao.getCurrentOrder(planDto);
 	}
 }

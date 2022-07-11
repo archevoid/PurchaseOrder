@@ -12,4 +12,7 @@ public class CompanyDTO {
 	private String contractCurrency;
 	private String companyAccount;
 	private String businessNum;
+	
+	/* getCompanyInfoByPartName() */
+	private Byte existance;
 }
