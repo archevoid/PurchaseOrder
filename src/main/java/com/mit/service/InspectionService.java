@@ -24,4 +24,28 @@ public class InspectionService extends com.mit.service.Service {
 	public List<InspectionDTO> getInspectionByOrderNum(InspectionDTO inspectionDto) {
 		return inspectionDao.getInspectionByOrderNum(inspectionDto);
 	}
+	
+	public InspectionDTO getInspectionSchedule(InspectionDTO inspectionDto) {
+		return inspectionDao.getInspectionSchedule(inspectionDto);
+	}
+	
+	public InspectionDTO getInspectionResult(InspectionDTO inspectionDto) {
+		return inspectionDao.getInspectionResult(inspectionDto);
+	}
+	
+	public Integer insertInspectionSchedule(InspectionDTO inspectionDto) {
+		return inspectionDao.insertInspectionSchedule(inspectionDto);
+	}
+	
+	public Integer insertInspectionResult(InspectionDTO inspectionDto) {
+		return inspectionDao.insertInspectionResult(inspectionDto);
+	}
+	
+	public Integer getNextInspectionNum(InspectionDTO inspectionDto) {
+		return inspectionDao.getNextInspectionNum(inspectionDto);
+	}
+	
+	public Integer getNextInspectionResultNum(InspectionDTO inspectionDto) {
+		return inspectionDao.getNextInspectionResultNum(inspectionDto);
+	}
 }

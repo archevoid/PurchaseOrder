@@ -29,4 +29,8 @@ public class OrderService extends com.mit.service.Service {
 	public List<OrderDTO> getOrderInfo(OrderDTO orderDto) {
 		return orderDao.getOrderInfo(orderDto);
 	}
+	
+	public List<OrderDTO> searchOrderProgress(OrderDTO orderDto) {
+		return orderDao.searchOrderProgress(orderDto);
+	}
 }

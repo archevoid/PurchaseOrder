@@ -9,4 +9,6 @@ public interface OrderDAO {
 	List<OrderDTO> getOrderByMonth(Date date);
 	
 	List<OrderDTO> getOrderInfo(OrderDTO orderDto);
+	
+	List<OrderDTO> searchOrderProgress(OrderDTO orderDto);
 }
