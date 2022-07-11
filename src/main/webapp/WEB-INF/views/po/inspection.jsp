@@ -175,7 +175,7 @@
 										<div class="mb-3">
 											<label class="form-label">샘플비율</label>
 											<div class="input-group input-group-flat">
-												<input type="number" id="sampleRatio"
+												<input type="number" id="sampleRatioModal" step="0.1"
 													class="form-control rm-side" readonly> <span
 													class="input-group-text"> % </span>
 											</div>
@@ -193,7 +193,7 @@
 										<div class="mb-3">
 											<label class="form-label">불량비율</label>
 											<div class="input-group input-group-flat">
-												<input type="number" id="defectRatio"
+												<input type="number" id="defectRatioModal" step="0.1"
 													class="form-control rm-side" readonly> <span
 													class="input-group-text"> % </span>
 											</div>
@@ -251,7 +251,7 @@
 				url : "/api/inspection",
 				type : "post",
 				data : {
-					"orderNum" : $(this).val()
+					"orderNum" : orderNumVal
 				},
 				success : function(data) {
 					$("td#orderNum").text(data[0].orderNum);
@@ -286,7 +286,7 @@
 									+			'</button>'
 									+			'<div class="dropdown-menu dropdown-menu-end">'
 									+				'<button type="button" class="dropdown-item"'
-									+					'data-bs-toggle="modal" data-bs-target="#modal-report" id="inputResultBtn">'
+									+					'data-bs-toggle="modal" data-bs-target="#modal-report" id="showResultModal">'
 									+					'결과입력'
 									+				'</button>'
 									+				'<button type="button" class="dropdown-item">'
@@ -305,6 +305,20 @@
 					$("span#showingEntry").text(Object.keys(data).length);
 					
 					$("p#entryInfo").removeClass("hidden");
+					
+					$("button#showResultModal").on("click", function(event) {
+						$thisInspection = $(event.target).closest("tr#inspectionInfo");
+						
+						$("input#orderNumModal").val(orderNumVal);
+						$("input#inspectionNumModal").val($thisInspection.find("span#inspectionNum").text());
+						$("input#inspectionQuantityModal").val($thisInspection.find("td#inspectionQuantity").text());
+						$("input#sampleQuantityModal").val($thisInspection.find("td#sampleQuantity").text());
+						$("input#sampleRatioModal").val(parseInt($thisInspection.find("td#sampleQuantity").text()) * 1.0 / parseInt($thisInspection.find("td#inspectionQuantity").text()) * 100);
+						
+						$("input#defectQuantityModal").on("change keyup focus", function() {
+							$("input#defectRatioModal").val((parseInt($(this).val())) * 1.0 / parseInt($("input#sampleQuantityModal").val()) * 100);
+						});
+					});
 				}
 			});
 		});
@@ -360,10 +374,6 @@
 					});
 				}
 			});
-		});
-		
-		$("button#inputResultBtn").on("click", function() {
-			
 		});
 	</script>
 </body>
