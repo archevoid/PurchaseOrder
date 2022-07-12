@@ -15,7 +15,7 @@ public class InspectionDTO {
 	private Long inspectionQuantity;
 	private Long sampleQuantity;
 	
-	private Long insepectionDefect;
+	private Long inspectionDefect;
 	private String complement;
 	private Byte close;
 	

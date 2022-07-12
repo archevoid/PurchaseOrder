@@ -110,7 +110,12 @@ public class ApiController {
 	}
 	
 	@PostMapping("inputInspection")
-	public Integer inputInspection(InspectionDTO inspectionDto) {
+	public Integer insertInspection(InspectionDTO inspectionDto) {
 		return is.insertInspectionSchedule(inspectionDto);
+	}
+	
+	@PostMapping("inputResult")
+	public Integer insertInspectionResult(InspectionDTO inspectionDto) {
+		return is.insertInspectionResult(inspectionDto);
 	}
 }
