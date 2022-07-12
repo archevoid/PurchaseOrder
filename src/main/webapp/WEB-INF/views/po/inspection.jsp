@@ -89,13 +89,15 @@
 										</button>
 									</span>
 									<button type="button"
-										class="btn btn-primary d-none d-sm-inline-block" id="inputInspection">
+										class="btn btn-primary d-none d-sm-inline-block"
+										id="inputInspection">
 										<img src="/resources/img/upload.svg" class="icon"> 계획입력
 									</button>
 								</div>
 								<div>
 									<table
-										class="table card-table table-vcenter text-nowrap datatable" id="inspectionSchedule">
+										class="table card-table table-vcenter text-nowrap datatable"
+										id="inspectionSchedule">
 										<thead>
 											<tr>
 												<th class="w-1"><input
@@ -124,8 +126,7 @@
 								</div>
 								<div class="card-footer d-flex align-items-center">
 									<p class="m-0 text-muted hidden" id="entryInfo">
-										Showing <span id="showingEntry"></span>
-										entries
+										Showing <span id="showingEntry"></span> entries
 									</p>
 
 								</div>
@@ -156,19 +157,22 @@
 									<div class="col-lg-6">
 										<div class="mb-3">
 											<label class="form-label">차수</label> <input type="number"
-												id="inspectionNumModal" class="form-control rm-side" readonly>
+												id="inspectionNumModal" class="form-control rm-side"
+												readonly>
 										</div>
 									</div>
 								</div>
 								<div class="mb-3">
 									<label class="form-label">검수수량</label> <input type="number"
-										id="inspectionQuantityModal" class="form-control rm-side" readonly>
+										id="inspectionQuantityModal" class="form-control rm-side"
+										readonly>
 								</div>
 								<div class="row">
 									<div class="col-lg-6">
 										<div class="mb-3">
 											<label class="form-label">샘플수량</label> <input type="number"
-												id="sampleQuantityModal" class="form-control rm-side" readonly>
+												id="sampleQuantityModal" class="form-control rm-side"
+												readonly>
 										</div>
 									</div>
 									<div class="col-lg-6">
@@ -203,26 +207,35 @@
 							</div>
 							<div class="modal-body">
 								<div class="mb-3">
-									<label class="form-label">보완사항 입력 <span
+									<label class="form-label">보완사항 <span
 										class="form-label-description"><span
 											id="numberOfContent"></span>/1000</span></label>
-									<textarea class="form-control" name="complement" rows="6" id="complementModal"
-										placeholder="보완사항 입력"></textarea>
+									<textarea class="form-control" name="complement" rows="6"
+										id="complementModal" placeholder="보완사항 입력"></textarea>
+								</div>
+								<div class="mb-3">
+									<label class="form-check"> <input type="checkbox"
+										class="form-check-input" id="finalInspection"> <span
+										class="form-check-label">마지막 검수</span>
+									</label>
 								</div>
 							</div>
 
 							<div class="modal-footer">
-								<a href="#" class="btn btn-link link-secondary"
-									data-bs-dismiss="modal"> Cancel </a> <a href="#"
-									class="btn btn-primary ms-auto" data-bs-dismiss="modal"> <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+								<button class="btn btn-link link-secondary"
+									data-bs-dismiss="modal">Cancel</button>
+								<button id="insertResultBtn" class="btn btn-primary ms-auto"
+									data-bs-dismiss="modal">
+									<!-- Download SVG icon from http://tabler-icons.io/i/plus -->
 									<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
 										height="24" viewBox="0 0 24 24" stroke-width="2"
 										stroke="currentColor" fill="none" stroke-linecap="round"
 										stroke-linejoin="round">
 										<path stroke="none" d="M0 0h24v24H0z" fill="none" />
 										<line x1="12" y1="5" x2="12" y2="19" />
-										<line x1="5" y1="12" x2="19" y2="12" /></svg> Create new report
-								</a>
+										<line x1="5" y1="12" x2="19" y2="12" /></svg>
+									Create new Inspection
+								</button>
 							</div>
 						</div>
 					</div>
@@ -235,18 +248,18 @@
 	</div>
 	<script>
 		var orderNumVal = -1;
-	
+
 		$("select[name=orderNum]").on("change", function() {
 			$("tr#inspectionInfo").remove();
 			$("tr#inspectionInputTr").remove();
-			
-			if($("select[name=orderNum]").val() == 0) {
+
+			if ($("select[name=orderNum]").val() == 0) {
 				$("p#entryInfo").addClass("hidden")
 				return;
 			}
-			
+
 			orderNumVal = $(this).val();
-			
+
 			$.ajax({
 				url : "/api/inspection",
 				type : "post",
@@ -259,75 +272,68 @@
 					$("td#email").text(data[0].email);
 					$("td#partName").text(data[0].partName);
 					$("td#orderQuantity").text(data[0].orderQuantity);
-					
+
 					$("table #inspectionSchedule tr").remove();
-					
+
 					var elem = "";
-					
-					for(var key in data) {
-						if(data[key].inspectionNum != null) {
-						
-							elem += '<tr id="inspectionInfo">'
-									+	'<td>'
-									+		'<input class="form-check-input m-0 align-middle"'
-									+			'type="checkbox" aria-label="Select invoice" name="selectedInspection">'
-									+	'</td>'
-									+	'<td id="inspectionNum">'
-									+		'<span class="text-muted" id="inspectionNum">' + data[key].inspectionNum + '</span>'
-									+	'</td>'
-									+	'<td id="inspectionDate">' + data[key].inspectionDate + '</td>'
-									+	'<td id="inspectionQuantity">' + data[key].inspectionQuantity + '</td>'
-									+	'<td id="sampleQuantity">' + data[key].sampleQuantity + '</td>'
-									+	'<td id="progress">' + data[key].progress + '</td>'
-									+	'<td class="text-end">'
-									+		'<span class="dropdown">'
-									+			'<button class="btn dropdown-toggle align-text-top"'
-									+				'data-bs-boundary="viewport" data-bs-toggle="dropdown">Actions'
-									+			'</button>'
-									+			'<div class="dropdown-menu dropdown-menu-end">'
-									+				'<button type="button" class="dropdown-item"'
-									+					'data-bs-toggle="modal" data-bs-target="#modal-report" id="showResultModal">'
-									+					'결과입력'
-									+				'</button>'
-									+				'<button type="button" class="dropdown-item">'
-									+					'결과 다운로드'
-									+				'</button>'
-									+			'</div>'
-									+		'</span>'
-									+	'</td>'
-									+'</tr>';
+
+					for ( var key in data) {
+						if (data[key].inspectionNum != null) {
+
+							elem += '<tr id="inspectionInfo">' + '<td>' + '<input class="form-check-input m-0 align-middle"'
+									+			'type="checkbox" aria-label="Select invoice" name="selectedInspection">' + '</td>' + '<td id="inspectionNum">' + '<span class="text-muted" id="inspectionNum">' + data[key].inspectionNum + '</span>' + '</td>' + '<td id="inspectionDate">' + data[key].inspectionDate + '</td>' + '<td id="inspectionQuantity">' + data[key].inspectionQuantity + '</td>' + '<td id="sampleQuantity">' + data[key].sampleQuantity + '</td>' + '<td id="progress">' + data[key].progress + '</td>' + '<td class="text-end">' + '<span class="dropdown">' + '<button class="btn dropdown-toggle align-text-top"'
+									+				'data-bs-boundary="viewport" data-bs-toggle="dropdown">Actions' + '</button>' + '<div class="dropdown-menu dropdown-menu-end">'
+									+ '<button type="button" class="dropdown-item"'
+									+					'data-bs-toggle="modal" data-bs-target="#modal-report" id="showResultModal">' + '결과입력' + '</button>' + '<button type="button" class="dropdown-item">' + '결과 다운로드' + '</button>' + '</div>' + '</span>' + '</td>' + '</tr>';
 
 						}
 					}
-					
+
 					$("table#inspectionSchedule tbody").append(elem);
-					
+
 					$("span#showingEntry").text(Object.keys(data).length);
-					
+
 					$("p#entryInfo").removeClass("hidden");
-					
+
 					$("button#showResultModal").on("click", function(event) {
 						$thisInspection = $(event.target).closest("tr#inspectionInfo");
-						
+
 						$("input#orderNumModal").val(orderNumVal);
 						$("input#inspectionNumModal").val($thisInspection.find("span#inspectionNum").text());
 						$("input#inspectionQuantityModal").val($thisInspection.find("td#inspectionQuantity").text());
 						$("input#sampleQuantityModal").val($thisInspection.find("td#sampleQuantity").text());
 						$("input#sampleRatioModal").val(parseInt($thisInspection.find("td#sampleQuantity").text()) * 1.0 / parseInt($thisInspection.find("td#inspectionQuantity").text()) * 100);
-						
+
 						$("input#defectQuantityModal").on("change keyup focus", function() {
 							$("input#defectRatioModal").val((parseInt($(this).val())) * 1.0 / parseInt($("input#sampleQuantityModal").val()) * 100);
+						});
+
+						$("button#insertResultBtn").on("click", function() {
+
+							var checked = $("input#finalInspection").is(":checked") ? 1 : 0;
+
+							$.ajax({
+								url : "/api/inputResult",
+								type : "post",
+								data : {
+									"orderNum" : $("input#orderNumModal").val(),
+									"inspectionNum" : $("input#inspectionNumModal").val(),
+									"inspectionDefect" : $("input#defectQuantityModal").val(),
+									"complement" : $("textarea#complementModal").val(),
+									"close" : checked
+								}
+							});
 						});
 					});
 				}
 			});
 		});
-		
+
 		$("button#inputInspection").on("click", function() {
-			if($("tr#inspectionInputTr").length != 0 || $("select[name=orderNum]").val() == 0) {
+			if ($("tr#inspectionInputTr").length != 0 || $("select[name=orderNum]").val() == 0) {
 				return;
 			}
-			
+
 			$.ajax({
 				url : "/api/nextInspectionNum",
 				type : "post",
@@ -335,37 +341,20 @@
 					"orderNum" : orderNumVal
 				},
 				success : function(data) {
-					var elem = '<tr id="inspectionInputTr">'
-						+	'<td>'
-						+		'<input class="form-check-input m-0 align-middle"'
-						+			'type="checkbox" aria-label="Select invoice" name="selectedInspection">'
-						+	'</td>'
-						+	'<td id="inspectionNum">'
-						+		'<span class="text-muted" id="inspectionNum">' +  data + '</span>'
-						+	'</td>'
-						+	'<td id="inspectionDate"><input type="date" class="form-control" name="inspectionDate"></td>'
-						+	'<td id="inspectionQuantity"><input type="number" class="form-control" name="inspectionQuantity"></td>'
-						+	'<td id="sampleQuantity"><input type="number" class="form-control" name="sampleQuantity"></td>'
-						+	'<td id="progress"></td>'
-						+	'<td class="text-end">'
-						+		'<span class="dropdown">'
-						+			'<button class="btn align-text-top" id="inspectionInputBtn">입력'
-						+			'</button>'
-						+		'</span>'
-						+	'</td>'
-						+'</tr>';
-						
+					var elem = '<tr id="inspectionInputTr">' + '<td>' + '<input class="form-check-input m-0 align-middle"'
+						+			'type="checkbox" aria-label="Select invoice" name="selectedInspection">' + '</td>' + '<td id="inspectionNum">' + '<span class="text-muted" id="inspectionNum">' + data + '</span>' + '</td>' + '<td id="inspectionDate"><input type="date" class="form-control" name="inspectionDate"></td>' + '<td id="inspectionQuantity"><input type="number" class="form-control" name="inspectionQuantity"></td>' + '<td id="sampleQuantity"><input type="number" class="form-control" name="sampleQuantity"></td>' + '<td id="progress"></td>' + '<td class="text-end">' + '<span class="dropdown">' + '<button class="btn align-text-top" id="inspectionInputBtn">입력' + '</button>' + '</span>' + '</td>' + '</tr>';
+
 					$("table#inspectionSchedule tbody").append(elem);
-					
+
 					$("button#inspectionInputBtn").on("click", function() {
 						$.ajax({
 							url : "/api/inputInspection",
 							type : "post",
 							data : {
-								"orderNum" : $("select[name=orderNum]").val()
-								, "inspectionDate" : $("input[name='inspectionDate']").val()
-								, "inspectionQuantity" : $("input[name='inspectionQuantity']").val()
-								, "sampleQuantity" : $("input[name='sampleQuantity']").val()
+								"orderNum" : $("select[name=orderNum]").val(),
+								"inspectionDate" : $("input[name='inspectionDate']").val(),
+								"inspectionQuantity" : $("input[name='inspectionQuantity']").val(),
+								"sampleQuantity" : $("input[name='sampleQuantity']").val()
 							},
 							success : function(data) {
 								$("tr#inspectionInputTr").remove();
@@ -374,6 +363,19 @@
 					});
 				}
 			});
+		});
+
+		$("textarea#complementModal").on("click keyup focus", function(event) {
+			var $text = $(event.target).val();
+
+			const limit = 1000;
+
+			if ($text.length > limit) {
+				$(event.target).val($text.substring(0, limit));
+				$("span#numberOfContent").text(limit);
+			} else {
+				$("span#numberOfContent").text($text.length);
+			}
 		});
 	</script>
 </body>
