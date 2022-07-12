@@ -50,34 +50,62 @@
 		    , cp.name AS companyName
 		    , p.order_date AS orderDate
 		    , p.due_date AS dueDate
+		    , p.order_quantity AS orderQuantity
+		    , NVL((SELECT SUM(i.inspection_quantity) AS completeQuantity FROM inspection i 
+                WHERE (i.order_num, i.inspection_num) 
+                    IN (SELECT ir.order_num, ir.inspection_num FROM inspection_result ir WHERE i.order_num = ir.order_num AND i.inspection_num = ir.inspection_num)), 0) AS completeQuantity
 		FROM purchase_order p INNER JOIN employee e ON p.empl_num = e.empl_num
 		    INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
 		    INNER JOIN tbl_part pt ON ct.partcode = pt.partcode
 		    INNER JOIN company cp ON ct.code = cp.code
+
 		    
 	    <where>
 	    	<trim prefixOverrides="AND">
 		    	<choose>
-		    		<when test="orderNum != null">
-		    			AND p.order_num = #{ orderNum }
+		    		<when test="partName != null">
+			    		<![CDATA[
+			    			AND pt.partname LIKE '%'||#{ partName }||'%'
+		    			]]>
 		    		</when>
-		    		<when test="emplNum != null">
-		    			AND p.empl_num = #{ emplNum }
+		    		<when test="emplName != null">
+			    		<![CDATA[
+			    			AND e.emplName LIKE '%'||#{ emplName }||'%'
+		    			]]>
 		    		</when>
-		    		<when test="supportNum != null">
-		    			AND p.support_num = #{ supportNum }
-		    		</when>
-		    		<when test="companyCode != null">
-		    			AND cp.code = #{ companyCode }
+		    		<when test="companyName != null">
+			    		<![CDATA[
+			    			AND cp.companyName LIKE '%'||#{ companyName }||'%'
+	    				]]>
 		    		</when>
 		    		<when test="initialOrderDate != null and finalOrderDate != null">
 		    			<![CDATA[
 		    				AND #{ initialOrderDate } < p.order_date AND p.order_date < #{ finalOrderDate }
 		    			]]>
 		    		</when>
-		    		<when test="initialdueDate != null and finaldueDate != null">
+		    		<when test="initialOrderDate == null and finalOrderDate != null">
 		    			<![CDATA[
-		    				AND #{ initialdueDate } < p.order_date AND p.order_date < #{ finaldueDate }
+		    				AND sysdate < p.order_date AND p.order_date < #{ finalOrderDate }
+		    			]]>
+		    		</when>
+		    		<when test="initialOrderDate != null and finalOrderDate == null">
+		    			<![CDATA[
+		    				AND sysdate < p.order_date AND p.order_date < sysdate
+		    			]]>
+		    		</when>
+		    		<when test="initialDueDate != null and finalDueDate != null">
+		    			<![CDATA[
+		    				AND #{ initialDueDate } < p.due_date AND p.due_date < #{ finalDueDate }
+		    			]]>
+		    		</when>
+		    		<when test="initialDueDate == null and finalDueDate != null">
+		    			<![CDATA[
+		    				AND sysdate < p.due_date AND p.due_date < #{ finalDueDate }
+		    			]]>
+		    		</when>
+		    		<when test="initialDueDate != null and finalDueDate == null">
+		    			<![CDATA[
+		    				AND #{ initialDueDate } < p.due_date AND p.due_date < sysdate
 		    			]]>
 		    		</when>
 		    	</choose>

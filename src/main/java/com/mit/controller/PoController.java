@@ -100,8 +100,8 @@ public class PoController {
 	
 	
 	@GetMapping("progress")
-	public void progress(Model m) {
-		
+	public void progress(OrderDTO orderDto, Model m) {
+		m.addAttribute("orders", os.searchOrderProgress(orderDto));
 	}
 	
 	@PostMapping("inputpo")
