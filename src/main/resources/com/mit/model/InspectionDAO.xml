@@ -27,7 +27,6 @@
 		    , i.inspection_date AS inspectionDate
 		    , i.inspection_quantity AS inspectionQuantity
 		    , i.sample_quantity AS sampleQuantity
-		    , NVL((SELECT 1 FROM inspection_result ir WHERE ir.order_num = i.order_num AND ir.inspection_num = i.inspection_num), 0) AS existance
 	    	, CASE 
                 WHEN (SELECT COUNT(*) FROM inspection ip INNER JOIN inspection_result ipr ON ip.order_num = ipr.order_num AND ip.inspection_num = ipr.inspection_num WHERE ip.order_num = p.order_num) != 0 THEN '종료'
             <![CDATA[
@@ -40,16 +39,21 @@
 		    INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
 		    INNER JOIN tbl_part pt ON ct.partcode = pt.partcode
 		WHERE p.order_num = #{ orderNum }
-	</select>
-	
-	<select id="getInspectionSchedule" resultType="com.mit.model.InspectionDTO">
-		SELECT i.order_num AS orderNum
-		    , i.inspection_num AS inspectionNum
-		    , i.inspection_date AS inspectionDate
-		    , i.inspection_quantity AS inspectionQuantity
-		    , i.sample_quantity AS sampleQuantity
-		FROM inspection i
-		WHERE i.order_num = #{ orderNum } AND i.inspection_num = #{ inspectionNum }
+		<choose>
+			<when test="inspectionNum != null">
+				AND i.inspection_num = #{ inspectionNum }
+			</when>
+			<when test="inspectionNumList != null">
+				<trim prefix="AND (" suffix=")">
+					<trim prefixOverrides="OR">
+						<foreach collection="inspectionNumList" item="unitNum">
+							OR i.inspection_num = #{ unitNum }
+						</foreach>
+					</trim>
+				</trim>
+			</when>
+		</choose>
+		ORDER BY i.inspection_num ASC
 	</select>
 	
 	<select id="getInspectionResult" resultType="com.mit.model.InspectionDTO">

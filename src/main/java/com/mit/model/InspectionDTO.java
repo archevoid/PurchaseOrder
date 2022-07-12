@@ -1,6 +1,7 @@
 package com.mit.model;
 
 import java.sql.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -24,8 +25,9 @@ public class InspectionDTO {
 	private String email;
 	private String partName;
 	private String orderQuantity;
-	private Byte existance; // 검수 결과 존재 여부
 	
 	private String progress;
-	
+
+	/* 다운로드용 */
+	private List<String> inspectionNumList;
 }

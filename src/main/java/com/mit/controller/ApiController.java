@@ -93,14 +93,6 @@ public class ApiController {
 	
 	@PostMapping("inspection")
 	public List<InspectionDTO> getInspectionByOrderNum(InspectionDTO inspectionDto) {
-		List<InspectionDTO> result = is.getInspectionByOrderNum(inspectionDto);
-		
-		for (InspectionDTO dto : result) {
-			if (dto.getExistance() == 1) {
-				dto.setProgress("완료");
-			}
-		}
-		
 		return is.getInspectionByOrderNum(inspectionDto);
 	}
 	
