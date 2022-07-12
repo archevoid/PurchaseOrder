@@ -25,10 +25,6 @@ public class InspectionService extends com.mit.service.Service {
 		return inspectionDao.getInspectionByOrderNum(inspectionDto);
 	}
 	
-	public InspectionDTO getInspectionSchedule(InspectionDTO inspectionDto) {
-		return inspectionDao.getInspectionSchedule(inspectionDto);
-	}
-	
 	public InspectionDTO getInspectionResult(InspectionDTO inspectionDto) {
 		return inspectionDao.getInspectionResult(inspectionDto);
 	}

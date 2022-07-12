@@ -7,8 +7,6 @@ public interface InspectionDAO {
 	
 	public List<InspectionDTO> getInspectionByOrderNum(InspectionDTO inspectionDto);
 	
-	public InspectionDTO getInspectionSchedule(InspectionDTO inspectionDto);
-	
 	public InspectionDTO getInspectionResult(InspectionDTO inspectionDto);
 	
 	public Integer insertInspectionSchedule(InspectionDTO inspectionDto);
