@@ -102,13 +102,15 @@ function makeCompanyCard(data) {
 		`;
 	
 	var frontLower = 
-		`</div>
-			<!-- Card footer -->
-			<div class="card-footer">
-				<div class="d-flex">
-					<button type="button" class="btn btn-link">초기화</button>
-					<button type="button" class="btn btn-primary ms-auto"
-						id="inputOrder">입력</button>
+				`</div>
+					<!-- Card footer -->
+					<div class="card-footer">
+						<div class="d-flex">
+							<button type="button" class="btn btn-link">초기화</button>
+							<button type="button" class="btn btn-primary ms-auto"
+								id="inputOrder">입력</button>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
