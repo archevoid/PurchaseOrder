@@ -39,41 +39,56 @@
 				<div class="container-xl">
 					<div class="row g-4">
 						<div class="col-3" id="search-div">
-								<div class="subheader mb-2"><h3>품목명</h3></div>
-								<div>
-									<input type="text" name="partName" class="form-control" placeholder="품목명을 입력해주세요">
-								</div>
-								<div class="subheader mb-2"><h3>사원명</h3></div>
-								<div>
-									<input type="text" name="emplName" class="form-control" placeholder="사원명을 입력해주세요">
-								</div>
-								<div class="subheader mb-2"><h3>협력회사</h3></div>
-								<div>
-									<input type="text" name="supportName" class="form-control" placeholder="협력 회사를 입력해주세요">
-								</div>
-								<div class="subheader mb-2"><h3>주문일자</h3></div>
-									<div class="row">
-										<div class="col-6">
-											<input type="date" name="initialOrderDate" class="form-control">
-										</div>
-										<div class="col-6">
-											<input type="date" name="finalOrderDate" class="form-control">
-										</div>
+							<div class="subheader mb-2">품목명</div>
+							<div class="mb-3">
+								<input type="text" name="partName" class="form-control"
+									placeholder="품목명을 입력해주세요">
+							</div>
+							<div class="subheader mb-2">사원명</div>
+							<div class="mb-3">
+								<input type="text" name="emplName" class="form-control"
+									placeholder="사원명을 입력해주세요">
+							</div>
+							<div class="subheader mb-2">협력회사</div>
+							<div class="mb-3">
+								<input type="text" name="companyName" class="form-control"
+									placeholder="협력 회사를 입력해주세요">
+							</div>
+							<div class="subheader mb-2">주문일자</div>
+							<div class="row">
+								<div class="col-6">
+									<div class="mb-3">
+										<input type="date" name="initialOrderDate"
+											class="form-control">
 									</div>
-								<div class="subheader mb-2"><h3>납기일자</h3></div>
-								<div class="row">
-									<div class="col-6">
-											<input type="date" name="initialDueDate" class="form-control">
-										</div>
-										<div class="col-6">
-											<input type="date" name="finalDueDate" class="form-control">
-										</div>
 								</div>
-								<div class="mt-5">
-									<button type="button" class="btn btn-primary w-100" id="search-button">Confirm changes
-									</button>
-									<a href="progress" class="btn btn-link w-100"> Reset to defaults </a>
+								<div class="col-6">
+									<div class="mb-3">
+										<input type="date" name="finalOrderDate" class="form-control">
+									</div>
 								</div>
+							</div>
+							<div class="subheader mb-2">
+								<h3>납기일자</h3>
+							</div>
+							<div class="row">
+								<div class="col-6">
+									<div class="mb-3">
+										<input type="date" name="initialDueDate" class="form-control">
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="mb-3">
+										<input type="date" name="finalDueDate" class="form-control">
+									</div>
+								</div>
+							</div>
+							<div class="mt-5">
+								<button type="button" class="btn btn-primary w-100"
+									id="search-button">Confirm changes</button>
+								<a href="progress" class="btn btn-link w-100"> Reset to
+									defaults </a>
+							</div>
 						</div>
 						<div class="col-9">
 							<div class="card">
@@ -82,14 +97,22 @@
 										<table class="table">
 											<thead>
 												<tr>
-													<th><button class="table-sort" data-sort="sort-partCode">품목명</button></th>
-													<th><button class="table-sort" data-sort="sort-emplName">사원명</button></th>
-													<th><button class="table-sort" data-sort="sort-companyName">협력회사</button></th>
-													<th><button class="table-sort" data-sort="sort-orderDate">주문일자</button></th>
-													<th><button class="table-sort" data-sort="sort-duedate">납기일자</button></th>
-													<th><button class="table-sort" data-sort="sort-completeQuantity">검수 완료</button></th>
-													<th><button class="table-sort" data-sort="sort-orderQuantity">목표 개수</button></th>
-													<th><button class="table-sort" data-sort="sort-progress">Progress</button></th>
+													<th><button class="table-sort"
+															data-sort="sort-partCode">품목명</button></th>
+													<th><button class="table-sort"
+															data-sort="sort-emplName">사원명</button></th>
+													<th><button class="table-sort"
+															data-sort="sort-companyName">협력회사</button></th>
+													<th><button class="table-sort"
+															data-sort="sort-orderDate">주문일자</button></th>
+													<th><button class="table-sort"
+															data-sort="sort-duedate">납기일자</button></th>
+													<th><button class="table-sort"
+															data-sort="sort-completeQuantity">검수 완료</button></th>
+													<th><button class="table-sort"
+															data-sort="sort-orderQuantity">목표 개수</button></th>
+													<th><button class="table-sort"
+															data-sort="sort-progress">Progress</button></th>
 												</tr>
 											</thead>
 											<tbody class="table-tbody">
@@ -102,18 +125,21 @@
 														<td class="sort-duedate" data-date="1628071164">${ progress.dueDate }</td>
 														<td class="sort-completeQuantity">${ progress.completeQuantity }</td>
 														<td class="sort-orderQuantity">${ progress.orderQuantity }</td>
-														<td class="sort-progress" data-progress="${ progress.completeQuantity * 1.0 / progress.orderQuantity * 100 }">
+														<td class="sort-progress"
+															data-progress="${ progress.completeQuantity * 1.0 / progress.orderQuantity * 100 }">
 															<div class="row align-items-center">
-																<div class="col-auto">
-																	${ progress.completeQuantity * 1.0 / progress.orderQuantity * 100 }%
+																<div class="col-auto">${ progress.completeQuantity * 1.0 / progress.orderQuantity * 100 }%
 																</div>
 																<div class="col">
 																	<div class="progress" style="width: 5rem">
-																		<div class="progress-bar" style="width: ${ progress.completeQuantity * 1.0 / progress.orderQuantity * 100 }%"
-																			role="progressbar" aria-valuenow="${ progress.completeQuantity * 1.0 / progress.orderQuantity * 100 }"
+																		<div class="progress-bar"
+																			style="width: ${ progress.completeQuantity * 1.0 / progress.orderQuantity * 100 }%"
+																			role="progressbar"
+																			aria-valuenow="${ progress.completeQuantity * 1.0 / progress.orderQuantity * 100 }"
 																			aria-valuemin="0" aria-valuemax="100"
 																			aria-label="${ progress.completeQuantity * 1.0 / progress.orderQuantity * 100 }% Complete">
-																			<span class="visually-hidden">${ progress.completeQuantity * 1.0 / progress.orderQuantity * 100 }% Complete</span>
+																			<span class="visually-hidden">${ progress.completeQuantity * 1.0 / progress.orderQuantity * 100 }%
+																				Complete</span>
 																		</div>
 																	</div>
 																</div>
@@ -135,7 +161,6 @@
 		</div>
 	</div>
 	<script>
-		$("form#search-order")
 		$("button#search-button").on("click", function(event) {
 			var url = "";
 			$(event.target).closest("div#search-div").find("input").each(function(index, elem) {
@@ -143,10 +168,10 @@
 					url += "&" + $(elem).attr("name") + "=" + $(elem).val();
 				}
 			});
-			
-			url = url.trim("&");
+
+			url = url.replaceAll("^[&]");
 			url = "?" + url;
-			
+
 			location.href = url;
 		});
 	</script>

@@ -70,12 +70,12 @@
 		    		</when>
 		    		<when test="emplName != null">
 			    		<![CDATA[
-			    			AND e.emplName LIKE '%'||#{ emplName }||'%'
+			    			AND e.empl_name LIKE '%'||#{ emplName }||'%'
 		    			]]>
 		    		</when>
 		    		<when test="companyName != null">
 			    		<![CDATA[
-			    			AND cp.companyName LIKE '%'||#{ companyName }||'%'
+			    			AND cp.name LIKE '%'||#{ companyName }||'%'
 	    				]]>
 		    		</when>
 		    		<when test="initialOrderDate != null and finalOrderDate != null">
