@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -17,9 +18,9 @@
 					<div class="row g-2 align-items-center">
 						<div class="col">
 							<div class="page-pretitle">Purchase Order</div>
-							<h2 class="page-title">Search results</h2>
-							<div class="text-muted mt-1">About 2,410 result (0.19
-								seconds)</div>
+							<h2 class="page-title">납기진도율</h2>
+							<%-- <div class="text-muted mt-1">About 2,410 result (0.19
+								seconds)</div>--%>
 						</div>
 						<div class="col-12 col-md-auto ms-auto d-print-none">
 							<div class="d-flex">
@@ -37,90 +38,42 @@
 			<div class="page-body">
 				<div class="container-xl">
 					<div class="row g-4">
-						<div class="col-3">
-							<form action="" method="get">
-								<div class="subheader mb-2">Category</div>
-								<div class="list-group list-group-transparent mb-3">
-									<a
-										class="list-group-item list-group-item-action d-flex align-items-center active"
-										href="#"> Games <small class="text-muted ms-auto">24</small>
-									</a> <a
-										class="list-group-item list-group-item-action d-flex align-items-center"
-										href="#"> Clothing <small class="text-muted ms-auto">149</small>
-									</a> <a
-										class="list-group-item list-group-item-action d-flex align-items-center"
-										href="#"> Jewelery <small class="text-muted ms-auto">88</small>
-									</a> <a
-										class="list-group-item list-group-item-action d-flex align-items-center"
-										href="#"> Toys <small class="text-muted ms-auto">54</small>
-									</a>
-								</div>
-								<div class="subheader mb-2">Rating</div>
-								<div class="mb-3">
-									<label class="form-check mb-1"> <input type="radio"
-										class="form-check-input" name="form-stars" value="5 stars"
-										checked> <span class="form-check-label">5 stars</span>
-									</label> <label class="form-check mb-1"> <input type="radio"
-										class="form-check-input" name="form-stars" value="4 stars">
-										<span class="form-check-label">4 stars</span>
-									</label> <label class="form-check mb-1"> <input type="radio"
-										class="form-check-input" name="form-stars" value="3 stars">
-										<span class="form-check-label">3 stars</span>
-									</label> <label class="form-check mb-1"> <input type="radio"
-										class="form-check-input" name="form-stars"
-										value="2 and less stars"> <span
-										class="form-check-label">2 and less stars</span>
-									</label>
-								</div>
-								<div class="subheader mb-2">Tags</div>
-								<div class="mb-3">
-									<label class="form-check mb-1"> <input type="checkbox"
-										class="form-check-input" name="form-tags[]" value="business"
-										checked> <span class="form-check-label">business</span>
-									</label> <label class="form-check mb-1"> <input type="checkbox"
-										class="form-check-input" name="form-tags[]" value="evening">
-										<span class="form-check-label">evening</span>
-									</label> <label class="form-check mb-1"> <input type="checkbox"
-										class="form-check-input" name="form-tags[]" value="leisure">
-										<span class="form-check-label">leisure</span>
-									</label> <label class="form-check mb-1"> <input type="checkbox"
-										class="form-check-input" name="form-tags[]" value="party">
-										<span class="form-check-label">party</span>
-									</label>
-								</div>
-								<div class="subheader mb-2">Price</div>
-								<div class="row g-2 align-items-center mb-3">
-									<div class="col">
-										<div class="input-group">
-											<span class="input-group-text"> $ </span> <input type="text"
-												class="form-control" placeholder="from" value="3"
-												autocomplete="off">
-										</div>
-									</div>
-									<div class="col-auto">—</div>
-									<div class="col">
-										<div class="input-group">
-											<span class="input-group-text"> $ </span> <input type="text"
-												class="form-control" placeholder="to" autocomplete="off">
-										</div>
-									</div>
-								</div>
-								<div class="subheader mb-2">Shipping</div>
+						<div class="col-3" id="search-div">
+								<div class="subheader mb-2"><h3>품목명</h3></div>
 								<div>
-									<select name="" class="form-select">
-										<option>United Kingdom</option>
-										<option>USA</option>
-										<option>Germany</option>
-										<option>Poland</option>
-										<option>Other…</option>
-									</select>
+									<input type="text" name="partName" class="form-control" placeholder="품목명을 입력해주세요">
+								</div>
+								<div class="subheader mb-2"><h3>사원명</h3></div>
+								<div>
+									<input type="text" name="emplName" class="form-control" placeholder="사원명을 입력해주세요">
+								</div>
+								<div class="subheader mb-2"><h3>협력회사</h3></div>
+								<div>
+									<input type="text" name="supportName" class="form-control" placeholder="협력 회사를 입력해주세요">
+								</div>
+								<div class="subheader mb-2"><h3>주문일자</h3></div>
+									<div class="row">
+										<div class="col-6">
+											<input type="date" name="initialOrderDate" class="form-control">
+										</div>
+										<div class="col-6">
+											<input type="date" name="finalOrderDate" class="form-control">
+										</div>
+									</div>
+								<div class="subheader mb-2"><h3>납기일자</h3></div>
+								<div class="row">
+									<div class="col-6">
+											<input type="date" name="initialDueDate" class="form-control">
+										</div>
+										<div class="col-6">
+											<input type="date" name="finalDueDate" class="form-control">
+										</div>
 								</div>
 								<div class="mt-5">
-									<button class="btn btn-primary w-100">Confirm changes
+									<button type="button" class="btn btn-primary w-100" id="search-button">Confirm changes
 									</button>
-									<a href="#" class="btn btn-link w-100"> Reset to defaults </a>
+									<a href="progress" class="btn btn-link w-100"> Reset to defaults </a>
 								</div>
-							</form>
 						</div>
 						<div class="col-9">
 							<div class="card">
@@ -129,380 +82,45 @@
 										<table class="table">
 											<thead>
 												<tr>
-													<th><button class="table-sort" data-sort="sort-name">Name</button></th>
-													<th><button class="table-sort" data-sort="sort-city">City</button></th>
-													<th><button class="table-sort" data-sort="sort-type">Type</button></th>
-													<th><button class="table-sort" data-sort="sort-score">Score</button></th>
-													<th><button class="table-sort" data-sort="sort-date">Date</button></th>
-													<th><button class="table-sort"
-															data-sort="sort-quantity">Quantity</button></th>
-													<th><button class="table-sort"
-															data-sort="sort-progress">Progress</button></th>
+													<th><button class="table-sort" data-sort="sort-partCode">품목명</button></th>
+													<th><button class="table-sort" data-sort="sort-emplName">사원명</button></th>
+													<th><button class="table-sort" data-sort="sort-companyName">협력회사</button></th>
+													<th><button class="table-sort" data-sort="sort-orderDate">주문일자</button></th>
+													<th><button class="table-sort" data-sort="sort-duedate">납기일자</button></th>
+													<th><button class="table-sort" data-sort="sort-completeQuantity">검수 완료</button></th>
+													<th><button class="table-sort" data-sort="sort-orderQuantity">목표 개수</button></th>
+													<th><button class="table-sort" data-sort="sort-progress">Progress</button></th>
 												</tr>
 											</thead>
 											<tbody class="table-tbody">
-												<tr>
-													<td class="sort-name">Steel Vengeance</td>
-													<td class="sort-city">Cedar Point, United States</td>
-													<td class="sort-type">RMC Hybrid</td>
-													<td class="sort-score">100,0%</td>
-													<td class="sort-date" data-date="1628071164">August
-														04, 2021</td>
-													<td class="sort-quantity">74</td>
-													<td class="sort-progress" data-progress="30">
-														<div class="row align-items-center">
-															<div class="col-auto">30%</div>
-															<div class="col">
-																<div class="progress" style="width: 5rem">
-																	<div class="progress-bar" style="width: 30%"
-																		role="progressbar" aria-valuenow="30"
-																		aria-valuemin="0" aria-valuemax="100"
-																		aria-label="30% Complete">
-																		<span class="visually-hidden">30% Complete</span>
+												<c:forEach items="${ orders }" var="progress">
+													<tr>
+														<td class="sort-partCode">${ progress.partName }</td>
+														<td class="sort-emplName">${ progress.emplName }</td>
+														<td class="sort-companyName">${ progress.companyName }</td>
+														<td class="sort-orderDate">${ progress.orderDate }</td>
+														<td class="sort-duedate" data-date="1628071164">${ progress.dueDate }</td>
+														<td class="sort-completeQuantity">${ progress.completeQuantity }</td>
+														<td class="sort-orderQuantity">${ progress.orderQuantity }</td>
+														<td class="sort-progress" data-progress="${ progress.completeQuantity * 1.0 / progress.orderQuantity * 100 }">
+															<div class="row align-items-center">
+																<div class="col-auto">
+																	${ progress.completeQuantity * 1.0 / progress.orderQuantity * 100 }%
+																</div>
+																<div class="col">
+																	<div class="progress" style="width: 5rem">
+																		<div class="progress-bar" style="width: ${ progress.completeQuantity * 1.0 / progress.orderQuantity * 100 }%"
+																			role="progressbar" aria-valuenow="${ progress.completeQuantity * 1.0 / progress.orderQuantity * 100 }"
+																			aria-valuemin="0" aria-valuemax="100"
+																			aria-label="${ progress.completeQuantity * 1.0 / progress.orderQuantity * 100 }% Complete">
+																			<span class="visually-hidden">${ progress.completeQuantity * 1.0 / progress.orderQuantity * 100 }% Complete</span>
+																		</div>
 																	</div>
 																</div>
 															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="sort-name">Fury 325</td>
-													<td class="sort-city">Carowinds, United States</td>
-													<td class="sort-type">B&M Giga, Hyper, Steel</td>
-													<td class="sort-score">99,3%</td>
-													<td class="sort-date" data-date="1546512137">January
-														03, 2019</td>
-													<td class="sort-quantity">49</td>
-													<td class="sort-progress" data-progress="48">
-														<div class="row align-items-center">
-															<div class="col-auto">48%</div>
-															<div class="col">
-																<div class="progress" style="width: 5rem">
-																	<div class="progress-bar" style="width: 48%"
-																		role="progressbar" aria-valuenow="48"
-																		aria-valuemin="0" aria-valuemax="100"
-																		aria-label="48% Complete">
-																		<span class="visually-hidden">48% Complete</span>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="sort-name">Wildfire</td>
-													<td class="sort-city">Kolmården Sweden</td>
-													<td class="sort-type">RMC Twister, Wooden, Terrain</td>
-													<td class="sort-score">99,3%</td>
-													<td class="sort-date" data-date="1546016360">December
-														28, 2018</td>
-													<td class="sort-quantity">8</td>
-													<td class="sort-progress" data-progress="9">
-														<div class="row align-items-center">
-															<div class="col-auto">9%</div>
-															<div class="col">
-																<div class="progress" style="width: 5rem">
-																	<div class="progress-bar" style="width: 9%"
-																		role="progressbar" aria-valuenow="9" aria-valuemin="0"
-																		aria-valuemax="100" aria-label="9% Complete">
-																		<span class="visually-hidden">9% Complete</span>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="sort-name">Lightning Rod</td>
-													<td class="sort-city">Dollywood, United States</td>
-													<td class="sort-type">RMC Wooden</td>
-													<td class="sort-score">99,1%</td>
-													<td class="sort-date" data-date="1604704179">November
-														07, 2020</td>
-													<td class="sort-quantity">104</td>
-													<td class="sort-progress" data-progress="98">
-														<div class="row align-items-center">
-															<div class="col-auto">98%</div>
-															<div class="col">
-																<div class="progress" style="width: 5rem">
-																	<div class="progress-bar" style="width: 98%"
-																		role="progressbar" aria-valuenow="98"
-																		aria-valuemin="0" aria-valuemax="100"
-																		aria-label="98% Complete">
-																		<span class="visually-hidden">98% Complete</span>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="sort-name">Maverick</td>
-													<td class="sort-city">Cedar Point, United States</td>
-													<td class="sort-type">Intamin Rocket, Steel</td>
-													<td class="sort-score">99,1%</td>
-													<td class="sort-date" data-date="1637669424">November
-														23, 2021</td>
-													<td class="sort-quantity">86</td>
-													<td class="sort-progress" data-progress="46">
-														<div class="row align-items-center">
-															<div class="col-auto">46%</div>
-															<div class="col">
-																<div class="progress" style="width: 5rem">
-																	<div class="progress-bar" style="width: 46%"
-																		role="progressbar" aria-valuenow="46"
-																		aria-valuemin="0" aria-valuemax="100"
-																		aria-label="46% Complete">
-																		<span class="visually-hidden">46% Complete</span>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="sort-name">El Toro</td>
-													<td class="sort-city">Six Flags Great Adventure,
-														United States</td>
-													<td class="sort-type">Intamin Twister, Wooden</td>
-													<td class="sort-score">99,0%</td>
-													<td class="sort-date" data-date="1610586921">January
-														14, 2021</td>
-													<td class="sort-quantity">130</td>
-													<td class="sort-progress" data-progress="29">
-														<div class="row align-items-center">
-															<div class="col-auto">29%</div>
-															<div class="col">
-																<div class="progress" style="width: 5rem">
-																	<div class="progress-bar" style="width: 29%"
-																		role="progressbar" aria-valuenow="29"
-																		aria-valuemin="0" aria-valuemax="100"
-																		aria-label="29% Complete">
-																		<span class="visually-hidden">29% Complete</span>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="sort-name">Twisted Colossus</td>
-													<td class="sort-city">Six Flags Magic Mountain, United
-														States</td>
-													<td class="sort-type">RMC Hybrid</td>
-													<td class="sort-score">98,9%</td>
-													<td class="sort-date" data-date="1569399536">September
-														25, 2019</td>
-													<td class="sort-quantity">30</td>
-													<td class="sort-progress" data-progress="57">
-														<div class="row align-items-center">
-															<div class="col-auto">57%</div>
-															<div class="col">
-																<div class="progress" style="width: 5rem">
-																	<div class="progress-bar" style="width: 57%"
-																		role="progressbar" aria-valuenow="57"
-																		aria-valuemin="0" aria-valuemax="100"
-																		aria-label="57% Complete">
-																		<span class="visually-hidden">57% Complete</span>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="sort-name">Eejanaika new</td>
-													<td class="sort-city">Fuji-Q Highland, Japan</td>
-													<td class="sort-type">S&S Power 4th Dimension, Steel</td>
-													<td class="sort-score">98,6%</td>
-													<td class="sort-date" data-date="1610794724">January
-														16, 2021</td>
-													<td class="sort-quantity">162</td>
-													<td class="sort-progress" data-progress="91">
-														<div class="row align-items-center">
-															<div class="col-auto">91%</div>
-															<div class="col">
-																<div class="progress" style="width: 5rem">
-																	<div class="progress-bar" style="width: 91%"
-																		role="progressbar" aria-valuenow="91"
-																		aria-valuemin="0" aria-valuemax="100"
-																		aria-label="91% Complete">
-																		<span class="visually-hidden">91% Complete</span>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="sort-name">Wicked Cyclone</td>
-													<td class="sort-city">Six Flags New England, United
-														States</td>
-													<td class="sort-type">RMC Hybrid</td>
-													<td class="sort-score">98,2%</td>
-													<td class="sort-date" data-date="1568819813">September
-														18, 2019</td>
-													<td class="sort-quantity">174</td>
-													<td class="sort-progress" data-progress="3">
-														<div class="row align-items-center">
-															<div class="col-auto">3%</div>
-															<div class="col">
-																<div class="progress" style="width: 5rem">
-																	<div class="progress-bar" style="width: 3%"
-																		role="progressbar" aria-valuenow="3" aria-valuemin="0"
-																		aria-valuemax="100" aria-label="3% Complete">
-																		<span class="visually-hidden">3% Complete</span>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="sort-name">Shambhala</td>
-													<td class="sort-city">Port Aventura, Spain</td>
-													<td class="sort-type">B&M Hyper, Steel</td>
-													<td class="sort-score">98,2%</td>
-													<td class="sort-date" data-date="1538221867">September
-														29, 2018</td>
-													<td class="sort-quantity">111</td>
-													<td class="sort-progress" data-progress="24">
-														<div class="row align-items-center">
-															<div class="col-auto">24%</div>
-															<div class="col">
-																<div class="progress" style="width: 5rem">
-																	<div class="progress-bar" style="width: 24%"
-																		role="progressbar" aria-valuenow="24"
-																		aria-valuemin="0" aria-valuemax="100"
-																		aria-label="24% Complete">
-																		<span class="visually-hidden">24% Complete</span>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="sort-name">Taron</td>
-													<td class="sort-city">Phantasialand, Germany</td>
-													<td class="sort-type">Intamin Sit Down, Steel</td>
-													<td class="sort-score">98,2%</td>
-													<td class="sort-date" data-date="1592858850">June 22,
-														2020</td>
-													<td class="sort-quantity">130</td>
-													<td class="sort-progress" data-progress="48">
-														<div class="row align-items-center">
-															<div class="col-auto">48%</div>
-															<div class="col">
-																<div class="progress" style="width: 5rem">
-																	<div class="progress-bar" style="width: 48%"
-																		role="progressbar" aria-valuenow="48"
-																		aria-valuemin="0" aria-valuemax="100"
-																		aria-label="48% Complete">
-																		<span class="visually-hidden">48% Complete</span>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="sort-name">Expedition Ge Force</td>
-													<td class="sort-city">Holiday Park, Germany</td>
-													<td class="sort-type">Intamin Megacoaster, Steel</td>
-													<td class="sort-score">98,2%</td>
-													<td class="sort-date" data-date="1565107347">August
-														06, 2019</td>
-													<td class="sort-quantity">157</td>
-													<td class="sort-progress" data-progress="57">
-														<div class="row align-items-center">
-															<div class="col-auto">57%</div>
-															<div class="col">
-																<div class="progress" style="width: 5rem">
-																	<div class="progress-bar" style="width: 57%"
-																		role="progressbar" aria-valuenow="57"
-																		aria-valuemin="0" aria-valuemax="100"
-																		aria-label="57% Complete">
-																		<span class="visually-hidden">57% Complete</span>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="sort-name">Storm Chaser</td>
-													<td class="sort-city">Kentucky Kingdom, United States</td>
-													<td class="sort-type">RMC Steel</td>
-													<td class="sort-score">97,9%</td>
-													<td class="sort-date" data-date="1564805623">August
-														03, 2019</td>
-													<td class="sort-quantity">43</td>
-													<td class="sort-progress" data-progress="42">
-														<div class="row align-items-center">
-															<div class="col-auto">42%</div>
-															<div class="col">
-																<div class="progress" style="width: 5rem">
-																	<div class="progress-bar" style="width: 42%"
-																		role="progressbar" aria-valuenow="42"
-																		aria-valuemin="0" aria-valuemax="100"
-																		aria-label="42% Complete">
-																		<span class="visually-hidden">42% Complete</span>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="sort-name">Helix</td>
-													<td class="sort-city">Liseberg, Sweden</td>
-													<td class="sort-type">Mack Looper, Steel, Terrain</td>
-													<td class="sort-score">97,9%</td>
-													<td class="sort-date" data-date="1633500491">October
-														06, 2021</td>
-													<td class="sort-quantity">151</td>
-													<td class="sort-progress" data-progress="54">
-														<div class="row align-items-center">
-															<div class="col-auto">54%</div>
-															<div class="col">
-																<div class="progress" style="width: 5rem">
-																	<div class="progress-bar" style="width: 54%"
-																		role="progressbar" aria-valuenow="54"
-																		aria-valuemin="0" aria-valuemax="100"
-																		aria-label="54% Complete">
-																		<span class="visually-hidden">54% Complete</span>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="sort-name">Outlaw Run</td>
-													<td class="sort-city">Silver Dollar City, United
-														States</td>
-													<td class="sort-type">RMC Hybrid</td>
-													<td class="sort-score">96,6%</td>
-													<td class="sort-date" data-date="1547084027">January
-														10, 2019</td>
-													<td class="sort-quantity">131</td>
-													<td class="sort-progress" data-progress="64">
-														<div class="row align-items-center">
-															<div class="col-auto">64%</div>
-															<div class="col">
-																<div class="progress" style="width: 5rem">
-																	<div class="progress-bar" style="width: 64%"
-																		role="progressbar" aria-valuenow="64"
-																		aria-valuemin="0" aria-valuemax="100"
-																		aria-label="64% Complete">
-																		<span class="visually-hidden">64% Complete</span>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</td>
-												</tr>
+														</td>
+													</tr>
+												</c:forEach>
 											</tbody>
 										</table>
 									</div>
@@ -516,5 +134,21 @@
 			<%@ include file="../includes/footer.jsp"%>
 		</div>
 	</div>
+	<script>
+		$("form#search-order")
+		$("button#search-button").on("click", function(event) {
+			var url = "";
+			$(event.target).closest("div#search-div").find("input").each(function(index, elem) {
+				if ($(elem).val()) {
+					url += "&" + $(elem).attr("name") + "=" + $(elem).val();
+				}
+			});
+			
+			url = url.trim("&");
+			url = "?" + url;
+			
+			location.href = url;
+		});
+	</script>
 </body>
 </html>

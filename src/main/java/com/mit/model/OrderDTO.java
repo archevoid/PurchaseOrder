@@ -51,7 +51,10 @@ public class OrderDTO {
 	private Date finalOrderDate;
 	
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
-	private Date initialdueDate;
+	private Date initialDueDate;
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
-	private Date finaldueDate;
+	private Date finalDueDate;
+	
+	/* progress */
+	private Long completeQuantity;
 }
