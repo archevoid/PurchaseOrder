@@ -27,7 +27,7 @@
 			, cp.account AS companyAccount
 			, cp.business_number AS businessNum
 			, NVL((SELECT 1 FROM purchase_order p WHERE p.support_num = #{ planNum } AND p.contract_num = ct.contractno), 0) AS existance
-		FROM tbl_contract ct INNER JOIN company cp ON ct.code = cp.code
+		FROM tbl_contract ct INNER JOIN tbl_company cp ON ct.code = cp.code
 		WHERE ct.partcode = (SELECT s.partcode FROM tbl_support s WHERE s.supportno = ${ planNum })
 	</select>
 	
@@ -63,7 +63,7 @@
 	</select>
 	
 	<select id="getTotalPrice" resultType="com.mit.model.OrderDTO">
-		SELECT (SELECT cp.currency FROM company cp WHERE cp.code = (SELECT ct.code FROM tbl_contract ct WHERE ct.contractno = p.contract_num)) AS contractCurrency
+		SELECT (SELECT cp.currency FROM tbl_company cp WHERE cp.code = (SELECT ct.code FROM tbl_contract ct WHERE ct.contractno = p.contract_num)) AS contractCurrency
 		    , (SELECT SUM(p.order_quantity * (SELECT ct.unitprice FROM tbl_contract ct WHERE ct.contractno = p.contract_num)) AS totalPrice
 		        FROM purchase_order p
 		        GROUP BY p.support_num) AS totalPrice

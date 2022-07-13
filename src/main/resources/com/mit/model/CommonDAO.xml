@@ -23,7 +23,7 @@
 			, cp.start_date AS startDate
 			, cp.end_date AS endDate
 			, cp.invoice_issue AS invoiceIssue
-		FROM company cp
+		FROM tbl_company cp
 		<where>
 	    	<trim prefixOverrides="AND">
 		    	<choose>

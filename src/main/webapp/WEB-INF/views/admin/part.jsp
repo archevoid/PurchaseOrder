@@ -41,35 +41,6 @@
 				<div class="container-xl">
 					<div class="row g-4">
 						<div class="col-3">
-							<form action="" method="get">
-								<div class="subheader mb-2">Category</div>
-								<div class="list-group list-group-transparent mb-3">
-									<button
-										class="list-group-item list-group-item-action d-flex align-items-center active"
-										id="company-show-button"
-										onclick="location.href='/admin/company';'">
-										협력회사 <small class="text-muted ms-auto">${ companyList.size() }</small>
-									</button>
-									<button
-										class="list-group-item list-group-item-action d-flex align-items-center"
-										id="part-show-button" onclick="location.href='/admin/part';">
-										품목 <small class="text-muted ms-auto">${ partList.size() }</small>
-									</button>
-								</div>
-								<div class="subheader mb-2">Rating</div>
-								<div class="mb-3">
-									<div class="subheader mb-2">이름</div>
-									<div class="mb-3">
-										<input type="text" name="partName" class="form-control"
-											placeholder="이름을 입력해주세요">
-									</div>
-								</div>
-								<div class="mt-5">
-									<button class="btn btn-primary w-100">Confirm changes
-									</button>
-									<a href="#" class="btn btn-link w-100"> Reset to defaults </a>
-								</div>
-							</form>
 						</div>
 						<div class="col-9" id="part-list-container">
 							<div class="row row-cards">
@@ -240,6 +211,13 @@
 		$("button#cancelPart").on("click", function() {
 		    $("div#part-info-input-container").addClass("hidden");
 		    $("div#location-part").removeClass("hidden");
+		});
+		
+		$("button#company-show-button").on("click", function() {
+			location.href="/admin/company";
+		});
+		$("button#part-show-button").on("click", function() {
+			location.href="/admin/part";
 		});
 	</script>
 </body>
