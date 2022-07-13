@@ -154,10 +154,10 @@
                   	<div class="dropdown-menu">
 						<div class="dropdown-menu-columns">
 							<div class="dropdown-menu-column">
-								<a class="dropdown-item" href="./plan"> 발주 계획 입력 </a> <a
-								class="dropdown-item" href="./order"> 발주서 출력 </a> <a
-								class="dropdown-item" href="./inspection"> 진척 검수 </a> <a
-								class="dropdown-item" href="./progress"> 납기진도율 </a>
+								<a class="dropdown-item" href="/po/plan"> 발주 계획 입력 </a> <a
+								class="dropdown-item" href="/po/order"> 발주서 출력 </a> <a
+								class="dropdown-item" href="/po/inspection"> 진척 검수 </a> <a
+								class="dropdown-item" href="/po/progress"> 납기진도율 </a>
                             </div>
                         </div>
                     </div>

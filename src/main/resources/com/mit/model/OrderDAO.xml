@@ -6,7 +6,7 @@
 <mapper namespace="com.mit.model.OrderDAO">
 	<select id="getCompany" resultType="com.mit.model.CompanyDTO">
 		SELECT DISTINCT ct.code AS companyCode
-			, (SELECT cp.name FROM company cp WHERE cp.code = ct.code) AS companyName
+			, (SELECT cp.name FROM tbl_company cp WHERE cp.code = ct.code) AS companyName
 		FROM tbl_contract ct
 	</select>
 	
@@ -14,7 +14,7 @@
 		SELECT p.order_num AS orderNum
 			, p.order_date AS orderDate
 			, (SELECT pt.partname FROM tbl_part pt WHERE pt.partcode = ct.partcode) AS partName
-			, (SELECT cp.name FROM company cp WHERE cp.code = ct.code) AS companyName
+			, (SELECT cp.name FROM tbl_company cp WHERE cp.code = ct.code) AS companyName
 			, ct.code AS companyCode
 		FROM purchase_order p INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
 		<![CDATA[
@@ -38,7 +38,7 @@
 			, cp.account AS account
 			, cp.currency AS currency
 		FROM purchase_order p INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
-			INNER JOIN company cp ON ct.code = cp.code
+			INNER JOIN tbl_company cp ON ct.code = cp.code
 			INNER JOIN employee e ON e.empl_num = p.empl_num
 		WHERE cp.code = #{ companyCode } AND p.order_date = #{ orderDate }
 	</select>
@@ -57,7 +57,7 @@
 		FROM purchase_order p INNER JOIN employee e ON p.empl_num = e.empl_num
 		    INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
 		    INNER JOIN tbl_part pt ON ct.partcode = pt.partcode
-		    INNER JOIN company cp ON ct.code = cp.code
+		    INNER JOIN tbl_company cp ON ct.code = cp.code
 
 		    
 	    <where>
