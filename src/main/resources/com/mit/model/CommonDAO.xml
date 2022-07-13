@@ -141,7 +141,7 @@
 			, end_date 
 			, invoice_issue)
 		VALUES (
-			company_seq.NEXTVAL
+			seq_code.NEXTVAL
 			, #{ companyName }
 			, #{ businessNum }
 			, #{ taxCode }
@@ -230,7 +230,7 @@
 			, drw_img
 		)
 		VALUES (
-			company_seq.NEXTVAL
+			seq_partcode.NEXTVAL
 			, #{ partName }
 			, #{ partNickname }
 			, #{ partClass }

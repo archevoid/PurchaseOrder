@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -70,7 +71,14 @@
 												<td id="remainQuantity"></td>
 												<td id="requirement"></td>
 												<td id="deliveryDate"></td>
-												<td id="inputPrice"></td>
+												<td id="inputPrice">
+													<c:forEach items="${ currency }" var="cur">
+														<div id="currency-container">
+															<span id="${ fn:toLowerCase(cur.key) }" class="currency-code">${ cur.value }</span>
+															<span class="price">0</span>
+														</div>
+													</c:forEach>
+												</td>
 											</tr>
 										</tbody>
 									</table>

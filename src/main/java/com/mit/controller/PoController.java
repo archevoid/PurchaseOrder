@@ -44,6 +44,16 @@ public class PoController {
 	@GetMapping("plan")
 	public void goPlan(Model m) {
 		m.addAttribute("planNum", ps.getAllPlanNum());
+		
+		HashMap<String, Character> currency = new HashMap<String, Character>();
+		
+		currency.put("KRW", '\u20A9');
+		currency.put("USD", '\u0024');
+		currency.put("EUR", '\u20AC');
+		currency.put("JPN", '\u00A5');
+		currency.put("CNY", '\u00A5');
+		currency.put("other", '\u00A4');
+		m.addAttribute("currency", currency);
 	}
 	
 	@GetMapping("order")
