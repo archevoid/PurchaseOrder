@@ -214,12 +214,15 @@ function refreshTotalPrice() {
 		data: { "planNum" : $("select[name=planNum]").val() },
 		success: function(data) {
 			$.each(data, function(idx) {
-			
+				for (var i = 0; i < currency.length; i++) {
+					if ($("span.currency-code").text().equals(data.contractCurrency)) {
+						
+						var curPrice = $("span.currency-code").closest("div").find("span.price").text();
+						
+						$("span.currency-code").closest("div").find("span.price").text(parseInt(curPrice) + parseInt(data.totalPrice))
+					}
+				}
 			});
-			
-			
-			$("div#inputPrice span#" + data.contractCurrency.toUpperCase() + "SubCurrency").text(data.currency);
-			$("div#inputPrice span#" + data.contractCurrency.toUpperCase() + "SubPrice").text(data.totalPrice);
 		}
 	});
 }
