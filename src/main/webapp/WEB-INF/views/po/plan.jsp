@@ -145,6 +145,7 @@
 																data-sort="sort-companyName">조달납기</button></th>
 														<th><button class="table-sort"
 																data-sort="sort-orderDate">소요량</button></th>
+														<th>입력 금액 합계</th>
 														<th></th>
 													</tr>
 												</thead>
@@ -155,6 +156,7 @@
 															<td class="sort-partName" id="partName">${ plan.partName }</td>
 															<td class="sort-dueDate" id="dueDate">${ plan.dueDate }</td>
 															<td class="sort-requirement" id="requirement">${ plan.requirement }</td>
+															<td class="sort-sum" id="sum"></td>
 															<td class="text-end">
 																<button type="button" class="btn" id="show-input">
 																	<img src="/resources/img/row-insert-top.svg"
@@ -224,6 +226,7 @@
 	</div>
 
 	<script>
+	
 		$("button#show-input").on("click", function(event) {
 			$("div#data-plan").addClass("hidden");
 
@@ -240,7 +243,7 @@
 		        + ' </div>' 
 		        + ' <div class="col-lg-4">' 
 		        + ' <label class="form-label col-3 col-form-label">조달납기</label>' 
-		        + ' <input type="date" id="dueDate" class="form-control" value="" readonly>' 
+		        + ' <input type="date" id="dueDate" class="form-control" value="" name="dueDate" readonly>' 
 		        + ' </div>' 
 		        + ' <div class="col-lg-4">' 
 		        + ' <label class="form-label col-3 col-form-label">요구량</label>' 
@@ -266,13 +269,13 @@
 		        + ' <div class="form-group mb-3 row">' 
 		        + ' <label class="form-label col-3 col-form-label">발주일자</label>' 
 		        + ' <div class="col">' 
-		        + ' <input type="date" id="orderDate" class="form-control">' 
+		        + ' <input type="date" id="orderDate" class="form-control" name="orderDate">' 
 		        + ' </div>' 
 		        + ' </div>' 
 		        + ' <div class="form-group mb-3 row">'
 		        + ' <label class="form-label col-3 col-form-label">발주수량</label>' 
 		        + ' <div class="col">' 
-		        + ' <input type="number" id="orderQuantity" class="form-control">' 
+		        + ' <input type="number" id="orderQuantity" class="form-control" name="orderQuantity">' 
 		        + ' </div>' 
 		        + ' </div>' 
 		        + ' <div class="form-footer">' 
@@ -295,6 +298,23 @@
 			$("div#data-area").append(elem);
 			$("div#plan-input").focus();
 			
+			var emplNumArray = [];
+			
+			$.ajax({
+				url : "/api/empl",
+				type : "POST",
+				async : false,
+				success : function(data) {
+					for (var i = 0; i < Object.keys(data).length; i++) {
+						var id = "white";
+		
+						emplNumArray[i] = "<option " + "id=" + id + " value='" + data[i].emplNum + "'>" + data[i].emplName + " (" + data[i].emplNum + ") " + data[i].email + "</option>";
+						
+						$("select#emplNum").append(emplNumArray[i]);
+					}
+				}
+			});
+			
 			$curPlan = $(event.target).closest("tr.plan-data");
 			
 			$("span#input-form-planNum").text($curPlan.find("td#partNum").text());
@@ -309,20 +329,25 @@
 
 			});
 			
-			$("button#order-insert").on("click", function() {
-				var closeCard = $(this).closest("div.card-plan");
+			$("button#order-insert").on("click", function(event) {
+				var $closeCard = $(event.target).closest("div#order-input");
+				
 				$.ajax({
 					url : "/api/inputOrder",
 					type : "POST",
 					data : {
-						"planNum" : $("select[name=planNum]").val(),
-						"contractNum" : closeCard.find("input[name=contractNum]").val(),
-						"orderDate" : closeCard.find("input[name=orderDate]").val(),
-						"dueDate" : closeCard.find("input[name=dueDate]").val(),
-						"orderQuantity" : closeCard.find("input[name=orderQuantity]").val(),
-						"emplNum" : closeCard.find("select[name=emplNum]").val()
+						"planNum" : $closeCard.find("span#input-form-planNum").text(),
+						"contractNum" : $closeCard.find("input[name=contractNum]").val(),
+						"orderDate" : $closeCard.find("input[name=orderDate]").val(),
+						"dueDate" : $closeCard.find("input[name=dueDate]").val(),
+						"orderQuantity" : $closeCard.find("input[name=orderQuantity]").val(),
+						"emplNum" : $closeCard.find("select[name=emplNum]").val()
 					},
 					success : function(data) {
+						$closeCard.addClass("bg-primary-lt");
+						
+						setTimeout(function() { $closeCard.removeClass("bg-primary-lt") }, 1000);
+						
 						remainQuantity();
 						refreshTotalPrice();
 					}
@@ -359,18 +384,14 @@
 									var contractNum = $selectedCompany.find("input[name=code]").val();
 									var unitPrice = $selectedCompany.find("span#unitPrice").text();
 									
-									var companyNameTag = '<input type="text" id="companyName" class="form-control" value="' + companyName + '" readonly>'
-									var contractNumTag = '<input type="hidden" id="contractNum" value="' + contractNum + '">';
+									var companyNameTag = '<input type="text" id="companyName" class="form-control" value="' + companyName + '" name="companyName" readonly>'
+									var contractNumTag = '<input type="hidden" id="contractNum" value="' + contractNum + '" name="contractNum">';
 									var unitPriceTag = '<input type="hidden" name="unitPrice" value="' + unitPrice + '">';
 									
 									$("div#company-container").children().remove();
 									$("div#company-container").append(companyNameTag + contractNumTag);
 									
 									$("div.col-company-card").remove();
-									
-									/* var orderInputOffset = $("div.col-company-card").offset();
-									
-									$("html").animate({scrollTop : orderInputOffset.top}, 400); */
 								});
 							}
 						}

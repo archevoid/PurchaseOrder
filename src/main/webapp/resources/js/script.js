@@ -99,7 +99,7 @@ function makeCompanyCard(data) {
 													id="inputOrder">선택</button>
 											</div>
 											<input type='hidden' name='code'
-												value='"` + data.companyCode + `"'>
+												value="` + data.companyCode + `">
 												<input type="hidden" name="contractNum" value="` + data.contractNum + `"> 
 										 </div>
 										<div class="card-body">
