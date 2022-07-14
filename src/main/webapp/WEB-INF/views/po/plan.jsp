@@ -227,9 +227,69 @@
 		$("button#show-input").on("click", function(event) {
 			$("div#data-plan").addClass("hidden");
 
-			  var elem = '<div class="col-12"><div class="card" id="order-input">' + '    <div class="card-header">' + '        <h3 class="card-title"><span id="input-form-planNum"></span>번 계획 발주</h3>' + '    </div>' + '    <div class="card-body">' + '        <div class="form-group mb-4 row border-bottom p-3">' + '            <div class="col-lg-4">' + '                <label class="form-label col-3 col-form-label">품목</label>' + '                <input type="text" id="partName" class="form-control" value="" readonly>' + '            </div>' + '            <div class="col-lg-4">' + '                <label class="form-label col-3 col-form-label">조달납기</label>' + '                <input type="date" id="dueDate" class="form-control" value="" readonly>' + '            </div>' + '            <div class="col-lg-4">' + '                <label class="form-label col-3 col-form-label">요구량</label>' + '                <input type="number" id="requirement" class="form-control" value="" readonly>' + '            </div>'
-					+ '        </div>' + '        <div class="form-group mb-3 row">' + '            <label class="form-label col-3 col-form-label">업체</label>' + '            <div class="col">' + '            <button type="button" id="company-selector" class="btn w-100">업체 확인</button>' + '            <!-- ' + '                업체 선택시 업체 이름으로 바뀜' + '                <input type="text" id="companyName" class="form-control" value="" readonly>' + '                <input type="hidden" id="companyCode" value="">' + '            -->' + '            <small class="form-hint">클릭시 업체 선택으로 이동합니다.</small>' + '            </div>' + '        </div>' + '        <div class="form-group mb-3 row">' + '            <label class="form-label col-3 col-form-label">발주일자</label>' + '            <div class="col">' + '                <input type="date" id="orderDate" class="form-control">' + '            </div>' + '        </div>' + '        <div class="form-group mb-3 row">'
-					+ '             <label class="form-label col-3 col-form-label">발주수량</label>' + '            <div class="col">' + '                <input type="number" id="orderQuantity" class="form-control">' + '            </div>' + '        </div>' + '        <div class="form-footer">' + '            <div class="card-body py-3 ms-auto d-print-none btn-list float-end px-0">' + '                <span class="d-none d-sm-inline">' + '                    <button type="button" class="btn btn-white" id="order-cancel">' + '                        <img src="/resources/img/x.svg" class="icon"> 입력 취소' + '                    </button>' + '                </span>' + '                <button type="button" class="btn btn-primary d-none d-sm-inline-block" id="order-insert">' + '                    <img src="/resources/img/row-insert-top.svg" class="icon"> 입력' + '                </button>' + '            </div>' + '        </div>' + '    </div>' + '</div>' + '</div>';
+			var elem = '<div class="col-12">'
+		        + '<div class="card" id="order-input">' 
+		        + ' <div class="card-header">' 
+		        + ' <h3 class="card-title"><span id="input-form-planNum"></span>번 계획 발주</h3>' 
+		        + ' </div>' 
+		        + ' <div class="card-body">' 
+		        + ' <div class="form-group mb-4 row border-bottom p-3">' 
+		        + ' <div class="col-lg-4">' 
+		        + ' <label class="form-label col-3 col-form-label">품목</label>' 
+		        + ' <input type="text" id="partName" class="form-control" value="" readonly>' 
+		        + ' </div>' 
+		        + ' <div class="col-lg-4">' 
+		        + ' <label class="form-label col-3 col-form-label">조달납기</label>' 
+		        + ' <input type="date" id="dueDate" class="form-control" value="" readonly>' 
+		        + ' </div>' 
+		        + ' <div class="col-lg-4">' 
+		        + ' <label class="form-label col-3 col-form-label">요구량</label>' 
+		        + ' <input type="number" id="requirement" class="form-control" value="" readonly>' 
+		        + ' </div>'
+		        + ' </div>' 
+		        + ' <div class="form-group mb-3 row">' 
+		        + ' <label class="form-label col-3 col-form-label">업체</label>' 
+		        + ' <div class="col" id="company-container">' 
+		        + ' <button type="button" id="company-selector" class="btn w-100">업체 확인</button>' 
+		        + ' <!-- ' + '                업체 선택시 업체 이름으로 바뀜' + '                <input type="text" id="companyName" class="form-control" value="" readonly>' + '                <input type="hidden" id="companyCode" value="">' + '            -->'
+		        + ' <small class="form-hint">클릭시 업체 선택으로 이동합니다.</small>' 
+		        + ' </div>' 
+		        + ' </div>' 
+		        + ' <div class="form-group mb-3 row">' 
+		        + ' <label class="form-label col-3 col-form-label">담당자</label>' 
+		        + ' <div class="col">' 
+		        + ' <select id="emplNum" class="form-select" name="emplNum">' 
+		        + ' <option value="0">선택</option>' 
+		        + ' </select>' 
+		        + ' </div>' 
+		        + ' </div>'
+		        + ' <div class="form-group mb-3 row">' 
+		        + ' <label class="form-label col-3 col-form-label">발주일자</label>' 
+		        + ' <div class="col">' 
+		        + ' <input type="date" id="orderDate" class="form-control">' 
+		        + ' </div>' 
+		        + ' </div>' 
+		        + ' <div class="form-group mb-3 row">'
+		        + ' <label class="form-label col-3 col-form-label">발주수량</label>' 
+		        + ' <div class="col">' 
+		        + ' <input type="number" id="orderQuantity" class="form-control">' 
+		        + ' </div>' 
+		        + ' </div>' 
+		        + ' <div class="form-footer">' 
+		        + ' <div class="card-body py-3 ms-auto d-print-none btn-list float-end px-0">' 
+		        + ' <span class="d-none d-sm-inline">' 
+		        + ' <button type="button" class="btn btn-white" id="order-cancel">' 
+		        + ' <img src="/resources/img/x.svg" class="icon"> 입력 취소' 
+		        + ' </button>'
+		        + ' </span>' 
+		        + ' <button type="button" class="btn btn-primary d-none d-sm-inline-block" id="order-insert">' 
+		        + ' <img src="/resources/img/row-insert-top.svg" class="icon"> 입력' 
+		        + ' </button>' 
+		        + ' </div>' 
+		        + ' </div>' 
+		        + ' </div>' 
+		        + '</div>' 
+		        + '</div>';
 
 
 			$("div#data-area").append(elem);
@@ -244,8 +304,29 @@
 
 			$("button#order-cancel").on("click", function() {
 				$("div#order-input").remove();
+				$("div.col-company-card").remove();
 				$("div#data-plan").removeClass("hidden");
 
+			});
+			
+			$("button#order-insert").on("click", function() {
+				var closeCard = $(this).closest("div.card-plan");
+				$.ajax({
+					url : "/api/inputOrder",
+					type : "POST",
+					data : {
+						"planNum" : $("select[name=planNum]").val(),
+						"contractNum" : closeCard.find("input[name=contractNum]").val(),
+						"orderDate" : closeCard.find("input[name=orderDate]").val(),
+						"dueDate" : closeCard.find("input[name=dueDate]").val(),
+						"orderQuantity" : closeCard.find("input[name=orderQuantity]").val(),
+						"emplNum" : closeCard.find("select[name=emplNum]").val()
+					},
+					success : function(data) {
+						remainQuantity();
+						refreshTotalPrice();
+					}
+				});
 			});
 
 			$("button#company-selector").on("click", function(event) {
@@ -266,46 +347,31 @@
 								var elem = makeCompanyCard(data[i]);
 	
 								$("div#data-area").append(elem);
-	
-								var companyName = data[i].companyName;
-	
-								for (var j = 0; j < emplNumArray.length; j++) {
-									var $selectEmplNum = $('#' + companyName + " select[name=emplNum]");
-									$selectEmplNum.append(emplNumArray[j]);
-								}
-	
-								if (data[i].existance != 0) {
-									$("#" + companyName + " div.card-plan").addClass("bg-primary-lt");
-									$.ajax({
-										url : "/api/currentOrder",
-										type : "POST",
-										async : false,
-										data : {
-											"planNum" : $("select[name=planNum]").val(),
-											"contractNum" : data[i].contractNum
-										},
-										success : function(data) {
-											var $orderDateTag = $("#" + companyName + " input[name=orderDate]");
-											var $dueDateTag = $("#" + companyName + " input[name=dueDate]");
-											var $emplNumTag = $("#" + companyName + " select[name=emplNum]");
-											var $emailTag = $("#" + companyName + " div#email");
-											var $orderQuantityTag = $("#" + companyName + " input[name=orderQuantity]");
-											var $sumTag = $("#" + companyName + " span#sum");
-	
-											$orderDateTag.val(data.orderDate);
-											$dueDateTag.val(data.dueDate);
-											$emplNumTag.val(data.emplNum);
-											$emailTag.text(data.email);
-											$orderQuantityTag.val(data.orderQuantity);
-											$sumTag.text(parseInt(data.orderQuantity) * parseInt(data.unitPrice));
-	
-											$orderDateTag.prop("disabled", "true");
-											$dueDateTag.prop("disabled", "true");
-											$emplNumTag.prop("disabled", "true");
-											$orderQuantityTag.prop("disabled", "true");
-										}
-									});
-								}
+								
+								var offset = $("div.col-company-card").offset();
+								
+								$("html").animate({scrollTop : offset.top}, 100);
+								
+								$("button#inputOrder").on("click", function(event) {
+									$selectedCompany = $(event.target).closest("div.card-plan");
+									
+									var companyName = $selectedCompany.find("h3.card-title").text();
+									var contractNum = $selectedCompany.find("input[name=code]").val();
+									var unitPrice = $selectedCompany.find("span#unitPrice").text();
+									
+									var companyNameTag = '<input type="text" id="companyName" class="form-control" value="' + companyName + '" readonly>'
+									var contractNumTag = '<input type="hidden" id="contractNum" value="' + contractNum + '">';
+									var unitPriceTag = '<input type="hidden" name="unitPrice" value="' + unitPrice + '">';
+									
+									$("div#company-container").children().remove();
+									$("div#company-container").append(companyNameTag + contractNumTag);
+									
+									$("div.col-company-card").remove();
+									
+									/* var orderInputOffset = $("div.col-company-card").offset();
+									
+									$("html").animate({scrollTop : orderInputOffset.top}, 400); */
+								});
 							}
 						}
 					});
@@ -333,11 +399,11 @@
 			
 
 			if (url.indexOf("pageNum=") != -1) {
-				url = url.replace(/pageNum=\d+/, "pageNum=" + ${ pageInfo.curFirstPage - 1 });
+				url = url.replace(/pageNum=\d+/, "pageNum=" + "${ pageInfo.curFirstPage - 1 }");
 			} else if (url.match("/[?].+[=].+")) {
-				url = url + "&pageNum=" + ${ pageInfo.curFirstPage - 1 };
+				url = url + "&pageNum=" + "${ pageInfo.curFirstPage - 1 }";
 			} else {
-				url = url + "?pageNum=" + ${ pageInfo.curFirstPage - 1 };
+				url = url + "?pageNum=" + "${ pageInfo.curFirstPage - 1 }";
 			}
 			
 			location.href = url;
@@ -348,15 +414,19 @@
 			
 
 			if (url.indexOf("pageNum=") != -1) {
-				url = url.replace(/pageNum=\d+/, "pageNum=" + ${ pageInfo.curLastPage + 1 });
+				url = url.replace(/pageNum=\d+/, "pageNum=" + "${ pageInfo.curLastPage + 1 }");
 			} else if (url.match("/[?].+[=].+")) {
-				url = url + "&pageNum=" + ${ pageInfo.curLastPage + 1 };
+				url = url + "&pageNum=" + "${ pageInfo.curLastPage + 1 }";
 			} else {
-				url = url + "?pageNum=" + ${ pageInfo.curLastPage + 1 };
+				url = url + "?pageNum=" + "${ pageInfo.curLastPage + 1 }";
 			}
 			
 			location.href = url;
 		});
+		
+		
+		
+		
 		
 		
 

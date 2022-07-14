@@ -62,8 +62,13 @@
 			, cp.currency AS contractCurrency
 			, cp.account AS companyAccount
 			, cp.business_number AS businessNum
+			, ct.partssupply AS leadTime
+			, ct.transferconditions AS transferCondition
+			, cp.comemployee AS comEmployee
+			, cp.comemail AS comEamil
 			, NVL((SELECT 1 FROM purchase_order p WHERE p.support_num = #{ planNum } AND p.contract_num = ct.contractno), 0) AS existance
 		FROM tbl_contract ct INNER JOIN tbl_company cp ON ct.code = cp.code
+			
 		WHERE ct.partcode = (SELECT s.partcode FROM tbl_support s WHERE s.supportno = ${ planNum })
 	</select>
 	

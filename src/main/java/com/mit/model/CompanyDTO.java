@@ -33,4 +33,10 @@ public class CompanyDTO {
 	private Date endDate;
 	private String invoiceIssue;
 	
+	
+	private String leadTime;
+	private String transferCondition;
+	
+	private String comEmployee;
+	private String comEmail;
 }
