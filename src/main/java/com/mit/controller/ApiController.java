@@ -41,6 +41,8 @@ public class ApiController {
 	
 	@PostMapping("inputOrder")
 	public int insertOrder(OrderDTO orderDto) {
+		System.out.println(orderDto);
+		
 		PlanDTO planDto = new PlanDTO();
 		
 		planDto.setPlanNum(orderDto.getPlanNum());
