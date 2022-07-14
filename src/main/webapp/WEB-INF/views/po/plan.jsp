@@ -251,9 +251,9 @@
 			$("button#company-selector").on("click", function(event) {
 				if ($("div.col-company-card").length != 0) {
 					$("div.col-company-card").remove();
-					$(event.target).text("접기");
-				} else {
 					$(event.target).text("업체 확인");
+				} else {
+					$(event.target).text("접기");
 					$.ajax({
 						url : "/api/companyInfo",
 						type : "get",
