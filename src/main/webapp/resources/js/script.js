@@ -94,8 +94,12 @@ function makeCompanyCard(data) {
 									<div class="front">
 										<div class="card-header">
 											<h3 class="card-title">` + data.companyName + `</h3>
+											<div class="ms-auto d-print-none">
+												<button type="button" class="btn btn-primary ms-auto"
+													id="inputOrder">선택</button>
+											</div>
 											<input type='hidden' name='code'
-												value='" + data.companyCode + "'>
+												value='"` + data.companyCode + `"'>
 												<input type="hidden" name="contractNum" value="` + data.contractNum + `"> 
 										 </div>
 										<div class="card-body">
@@ -103,14 +107,6 @@ function makeCompanyCard(data) {
 	
 	var frontLower = 
 				`</div>
-					<!-- Card footer -->
-					<div class="card-footer">
-						<div class="d-flex">
-							<button type="button" class="btn btn-link">초기화</button>
-							<button type="button" class="btn btn-primary ms-auto"
-								id="inputOrder">입력</button>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -130,52 +126,45 @@ function makeCompanyCard(data) {
 		</div>
 		`;
 		
-	// 발주일자
+	// 담당자 이름
 	frontContent[1] = 
-		`<div class="row">
-			<div class="col-lg-6">
-				<div class="mb-3">
-					<div class="form-label">발주 일자</div>
-					<input type='date' name='orderDate' class='form-control'>
-				</div>
-			</div>
-			<div class="col-lg-6">
-				<div class="mb-3">
-					<div class="form-label">납기 일자</div>
-					<input type='date' name='dueDate' class='form-control'>
-				</div>
+		`<div class="mb-3">
+			<div class="form-label">헙력회사 담당자</div>
+			<div id="priceContainer" class="ht-inp">
+				<input type="text" value="` + data.comEmployee + `" class="form-control" readonly>
 			</div>
 		</div>
 		`;
 		
-	// 담당자
+	// 담당자 이메일
 	frontContent[2] = 
 		`<div class="mb-3">
-			<label class="form-label">담당자</label> 
-			<select name='emplNum' class='form-select'>
-				<option value='0'>선택</option>
-			</select>
+			<div class="form-label">이메일</div>
+			<div id="priceContainer" class="ht-inp">
+				<input type="text" value="` + data.comEmail + `" class="form-control" readonly>
+			</div>
+		</div>
+		`;
+	// 양도 양수 조건
+	frontContent[3] = 
+		`<div class="mb-3">
+			<div class="form-label">양도 양수 조건</div>
+			<div id="priceContainer" class="ht-inp">
+				<input type="text" value="` + data.transferCondition + `" class="form-control" readonly>
+			</div>
+		</div>
+		`;
+	// Lead Time
+	frontContent[4] = 
+		`<div class="mb-3">
+			<div class="form-label">L/T</div>
+			<div id="priceContainer" class="ht-inp">
+				<input type="text" value="` + data.leadTime + `" class="form-control" readonly>
+			</div>
 		</div>
 		`;
 		
-	// 발주수량
-	frontContent[3] = 
-		`<div class="row">
-			<div class="col-lg-6">
-				<div class="mb-3">
-					<label class="form-label">발주 수량</label> <input
-						type='number' name='orderQuantity' class='form-control'>
-				</div>
-			</div>
-			<div class="col-lg-6">
-				<label class="form-label">총 가격</label>
-				<div id="priceContainer" class="ht-inp">
-					<span id="currency">` + currencyCode + `</span>
-					<span id="sum"></span>
-				</div>
-			</div>
-		</div>
-		`;
+	
 
 	
 	var frontMiddle = "";

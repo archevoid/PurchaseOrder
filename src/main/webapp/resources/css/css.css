@@ -88,8 +88,9 @@ th, td {
     backface-visibility: hidden;
 }
 
+/* height: calc((1rem * var(--tblr-body-line-height) + 1rem * 2 + 1px) 카드헤더 + (1rem * 2 + (1rem + (0.875rem * var(--tblr-body-line-height) + 0.5rem) + (0.875rem * var(--tblr-body-line-height) + 0.4375rem * 2 + 1px * 2)) * 5) + (1rem * 2 + (0.875rem * 1.4285714286 + 0.4375rem * 2 + 1px * 2)footer) + 1px * 2)  !important; */
 .container-turn-over {
-	height: calc((1rem * var(--tblr-body-line-height) + 1rem * 2 + 1px) + (1rem * 2 + (1rem + (0.875rem * var(--tblr-body-line-height) + 0.5rem) + (0.875rem * var(--tblr-body-line-height) + 0.4375rem * 2 + 1px * 2)) * 4) + (1rem * 2 + (0.875rem * 1.4285714286 + 0.4375rem * 2 + 1px * 2)) + 1px * 2) !important;
+	height: calc((1rem * var(--tblr-body-line-height) + 1rem * 2 + 1px) + (1rem * 2 + (1rem + (0.875rem * var(--tblr-body-line-height) + 0.5rem) + (0.875rem * var(--tblr-body-line-height) + 0.4375rem * 2 + 1px * 2)) * 5) + 1px * 2) !important;
 	width: 100% !important;
 }
 
