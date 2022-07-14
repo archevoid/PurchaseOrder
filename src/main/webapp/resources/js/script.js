@@ -215,7 +215,7 @@ function refreshTotalPrice() {
 		success: function(data) {
 			$.each(data, function(idx) {
 				for (var i = 0; i < currency.length; i++) {
-					if ($("span.currency-code").text().equals(data.contractCurrency)) {
+					if ($("span.currency-code").text() == data.contractCurrency) {
 						
 						var curPrice = $("span.currency-code").closest("div").find("span.price").text();
 						

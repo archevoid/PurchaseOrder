@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.mit.model.CurPageDTO;
 import com.mit.model.OrderDTO;
+import com.mit.model.PageDTO;
 import com.mit.model.PlanDTO;
 import com.mit.service.InspectionService;
 import com.mit.service.OrderService;
@@ -42,8 +44,15 @@ public class PoController {
 	}
 	
 	@GetMapping("plan")
-	public void goPlan(Model m) {
-		m.addAttribute("planNum", ps.getAllPlanNum());
+	public void goPlan(CurPageDTO curPageDto, Model m) {
+		m.addAttribute("planList", ps.getPlan(curPageDto));
+		
+		Long numberOfPlan = ps.countPlan();
+		
+		m.addAttribute("numberOfPlan", numberOfPlan);
+		
+		m.addAttribute("pageInfo", new PageDTO(curPageDto, numberOfPlan));
+		
 		
 		HashMap<String, Character> currency = new HashMap<String, Character>();
 		
@@ -53,6 +62,7 @@ public class PoController {
 		currency.put("JPN", '\u00A5');
 		currency.put("CNY", '\u00A5');
 		currency.put("other", '\u00A4');
+		
 		m.addAttribute("currency", currency);
 	}
 	
@@ -112,6 +122,11 @@ public class PoController {
 	@PostMapping("updatepo")
 	public String updatePlan(PlanDTO planDto, RedirectAttributes rttr) {
 		return "redirect:/po/plan";
+	}
+	
+	@GetMapping("list")
+	public void goList() {
+		
 	}
 	
 	private <DTO> HashMap<String, String> getNotNullFields(DTO dto) {

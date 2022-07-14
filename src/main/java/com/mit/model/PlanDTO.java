@@ -11,12 +11,7 @@ import lombok.Data;
 @Data
 public class PlanDTO {
 	// planNum: support_num or supportNo를 위한 변수
-	private String planNum;
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
-	private Date deliveryDate;
-	private Long requirement;
 	private Long partCode;
-	private String partName;
 	
 	/* TBL_Contract */
 	private Long contractNo;
@@ -24,4 +19,12 @@ public class PlanDTO {
 	private String companyCode;
 	
 	private Long contractNum;
+	
+	
+	/**/
+	private String planNum;
+	private Long requirement;
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
+	private Date dueDate;
+	private String partName;
 }

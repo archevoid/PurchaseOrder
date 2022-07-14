@@ -86,13 +86,13 @@
 													<div class="col-lg-6">
 														<div class="mb-3">
 															<div class="form-label">공용여부</div>
-															<input type="text" class="form-control" name="common">
+															<input type="number" class="form-control" name="common">
 														</div>
 													</div>
 													<div class="col-lg-6">
 														<div class="mb-3">
 															<div class="form-label">도면번호</div>
-															<input type="text" class="form-control" name="drawNum">
+															<input type="number" class="form-control" name="drawNum">
 														</div>
 													</div>
 													<div class="col-lg-6">
@@ -166,7 +166,7 @@
 													<div class="col-lg-6">
 														<div class="mb-3">
 															<div class="form-label">도면이미지</div>
-															<img src="/resources/data/${ part.drawImage }">
+															<img src="/resources/img/img/${ part.drawImage }">
 														</div>
 													</div>
 												</div>

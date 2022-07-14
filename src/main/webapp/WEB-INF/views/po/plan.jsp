@@ -5,15 +5,32 @@
 
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
 <%@ include file="../includes/header.jsp"%>
 <title>계획 검수 - TeamFoS</title>
-</head>
 
+<c:choose>
+	<c:when test="${ param.pageNum ne null }">
+		<c:set value="${ param.pageNum }" var="pageNum" />
+	</c:when>
+	<c:otherwise>
+		<c:set value="1" var="pageNum" />
+	</c:otherwise>
+</c:choose>
+<c:choose>
+	<c:when test="${ param.amount ne null }">
+		<c:set value="${ param.amount }" var="amount" />
+	</c:when>
+	<c:otherwise>
+		<c:set value="10" var="amount" />
+	</c:otherwise>
+</c:choose>
+
+</head>
 <body>
 	<div class="page">
-		<%@ include file="../includes/verticalNav.jsp"%>
+		<%@ include file="../includes/horizontalNav.jsp"%>
+
 		<div class="page-wrapper">
 			<div class="container-xl">
 				<!-- Page title -->
@@ -21,14 +38,15 @@
 					<div class="row g-2 align-items-center">
 						<div class="col">
 							<div class="page-pretitle">Purchase Order</div>
-							<h2 class="page-title">Plan</h2>
+							<h2 class="page-title">발주 입력</h2>
+							<%-- <div class="text-muted mt-1">About 2,410 result (0.19
+								seconds)</div>--%>
 						</div>
 						<div class="col-12 col-md-auto ms-auto d-print-none">
 							<div class="d-flex">
 								<ol class="breadcrumb breadcrumb-arrows"
 									aria-label="breadcrumbs">
-									<li class="breadcrumb-item"><a href="dashboard">Purchase
-											Order</a></li>
+									<li class="breadcrumb-item"><a href="#">Purchase Order</a></li>
 									<li class="breadcrumb-item active" aria-current="page"><a
 										href="#">Plan</a></li>
 								</ol>
@@ -37,51 +55,163 @@
 					</div>
 				</div>
 			</div>
-
 			<div class="page-body">
 				<div class="container-xl">
-					<div class="row row-cards">
-						<div class="col-12" id="orders">
-							<div class="card">
-								<div class="card-header">
-									<h3 class="card-title">발주 계획 입력</h3>
-									<div class="ms-auto">
-										<select class="form-select" name="planNum">
-											<option value="0">계획번호</option>
-											<c:forEach items="${ planNum }" var="num">
-												<option value="${ num }">${ num }</option>
-											</c:forEach>
+					<div class="row g-4">
+						<div class="col-3" id="search-div">
+
+							<div class="subheader mb-2">대분류</div>
+							<div class="row">
+								<div class="col-6">
+									<div class="mb-3">
+										<select name="" class="form-select">
+											<option value="0">선택</option>
 										</select>
 									</div>
 								</div>
-								<div class="card-body">
-									<table class="table table-vcenter card-table" id="planInfo">
-										<thead>
-											<tr>
-												<th>품목명</th>
-												<th>남은 개수</th>
-												<th>총 개수</th>
-												<th>조달납기</th>
-												<th>입력가격</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td id="partName"></td>
-												<td id="remainQuantity"></td>
-												<td id="requirement"></td>
-												<td id="deliveryDate"></td>
-												<td id="inputPrice">
-													<c:forEach items="${ currency }" var="cur">
-														<div id="currency-container">
-															<span id="${ fn:toLowerCase(cur.key) }" class="currency-code">${ cur.value }</span>
-															<span class="price">0</span>
-														</div>
+								<div class="col-6">
+									<div class="mb-3">
+										<input type="text" name="" class="form-control">
+									</div>
+								</div>
+							</div>
+							<div class="subheader mb-2">중분류</div>
+							<div class="row">
+								<div class="col-6">
+									<div class="mb-3">
+										<select name="" class="form-select">
+											<option value="0">선택</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="mb-3">
+										<input type="text" name="" class="form-control">
+									</div>
+								</div>
+							</div>
+							<div class="subheader mb-2">소분류</div>
+							<div class="row">
+								<div class="col-6">
+									<div class="mb-3">
+										<select name="" class="form-select">
+											<option value="0">선택</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="mb-3">
+										<input type="text" name="" class="form-control">
+									</div>
+								</div>
+							</div>
+							<div class="subheader mb-2">조달납기</div>
+							<div class="row">
+								<div class="col-6">
+									<div class="mb-3">
+										<input type="date" name="" class="form-control">
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="mb-3">
+										<input type="date" name="" class="form-control">
+									</div>
+								</div>
+							</div>
+
+							<div class="mt-5">
+								<button type="button" class="btn btn-primary w-100"
+									id="search-button">Confirm changes</button>
+								<a href="progress" class="btn btn-link w-100"> Reset to
+									defaults </a>
+							</div>
+						</div>
+						<div class="col-9 row row-cards" id="data-area">
+							<div class="col-12">
+								<div class="card" id="data-plan">
+									<div class="card-header">
+										<h3 class="card-title">조달계획</h3>
+									</div>
+									<div class="card-body">
+										<div id="table-default">
+											<table class="table">
+												<thead>
+													<tr>
+														<th><button class="table-sort"
+																data-sort="sort-partCode">계획번호</button></th>
+														<th><button class="table-sort"
+																data-sort="sort-emplName">품목명</button></th>
+														<th><button class="table-sort"
+																data-sort="sort-companyName">조달납기</button></th>
+														<th><button class="table-sort"
+																data-sort="sort-orderDate">소요량</button></th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody class="table-tbody">
+													<c:forEach items="${ planList }" var="plan">
+														<tr class="plan-data">
+															<td class="sort-planNum" id="partNum">${ plan.planNum }</td>
+															<td class="sort-partName" id="partName">${ plan.partName }</td>
+															<td class="sort-dueDate" id="dueDate">${ plan.dueDate }</td>
+															<td class="sort-requirement" id="requirement">${ plan.requirement }</td>
+															<td class="text-end">
+																<button type="button" class="btn" id="show-input">
+																	<img src="/resources/img/row-insert-top.svg"
+																		class="icon"> 발주 입력
+																</button>
+															</td>
+														</tr>
 													</c:forEach>
-												</td>
-											</tr>
-										</tbody>
-									</table>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<div class="card-footer d-flex align-items-center">
+										<p class="m-0 text-muted">
+											Showing <span>${ (pageNum - 1) * amount + 1  }</span> to <span>${ (pageNum - 1) * amount + planList.size() }</span>
+											of <span>${ numberOfPlan }</span> entries
+										</p>
+										<ul class="pagination m-0 ms-auto">
+											<li
+												class="page-item <c:if test="${ pageInfo.curFirstPage le 1 }"> disabled </c:if>"><button
+													class="page-link page-prev" tabindex="-1"
+													aria-disabled="true">
+													<img src="/resources/img/chevron-left.svg"> prev
+												</button></li>
+											<c:forEach begin="${ pageInfo.curFirstPage }"
+												end="${ pageInfo.curLastPage }" var="num">
+												<c:if test="${ num eq pageInfo.curPageDto.pageNum }">
+
+												</c:if>
+												<c:choose>
+													<c:when test="${ num eq pageInfo.curPageDto.pageNum }">
+														<li class="page-item active"><button
+																class="page-link page-number">${ num }</button></li>
+													</c:when>
+													<c:otherwise>
+														<c:choose>
+															<c:when
+																test="${ pageInfo.curLastPage le pageInfo.lastPage }">
+																<li class="page-item"><button
+																		class="page-link page-number">${ num }</button></li>
+															</c:when>
+															<c:otherwise>
+																<li class="page-item disabled"><button
+																		class="page-link page-number">${ num }</button></li>
+															</c:otherwise>
+														</c:choose>
+													</c:otherwise>
+												</c:choose>
+											</c:forEach>
+
+											<li
+												class="page-item <c:if test="${ pageInfo.curLastPage ge pageInfo.lastPage }"> disabled </c:if>"><button
+													class="page-link page-next">
+													next <img src="/resources/img/chevron-right.svg">
+												</button></li>
+										</ul>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -94,6 +224,142 @@
 	</div>
 
 	<script>
+		$("button#show-input").on("click", function(event) {
+			$("div#data-plan").addClass("hidden");
+
+			  var elem = '<div class="col-12"><div class="card" id="order-input">' + '    <div class="card-header">' + '        <h3 class="card-title"><span id="input-form-planNum"></span>번 계획 발주</h3>' + '    </div>' + '    <div class="card-body">' + '        <div class="form-group mb-4 row border-bottom p-3">' + '            <div class="col-lg-4">' + '                <label class="form-label col-3 col-form-label">품목</label>' + '                <input type="text" id="partName" class="form-control" value="" readonly>' + '            </div>' + '            <div class="col-lg-4">' + '                <label class="form-label col-3 col-form-label">조달납기</label>' + '                <input type="date" id="dueDate" class="form-control" value="" readonly>' + '            </div>' + '            <div class="col-lg-4">' + '                <label class="form-label col-3 col-form-label">요구량</label>' + '                <input type="number" id="requirement" class="form-control" value="" readonly>' + '            </div>'
+					+ '        </div>' + '        <div class="form-group mb-3 row">' + '            <label class="form-label col-3 col-form-label">업체</label>' + '            <div class="col">' + '            <button type="button" id="company-selector" class="btn w-100">업체 확인</button>' + '            <!-- ' + '                업체 선택시 업체 이름으로 바뀜' + '                <input type="text" id="companyName" class="form-control" value="" readonly>' + '                <input type="hidden" id="companyCode" value="">' + '            -->' + '            <small class="form-hint">클릭시 업체 선택으로 이동합니다.</small>' + '            </div>' + '        </div>' + '        <div class="form-group mb-3 row">' + '            <label class="form-label col-3 col-form-label">발주일자</label>' + '            <div class="col">' + '                <input type="date" id="orderDate" class="form-control">' + '            </div>' + '        </div>' + '        <div class="form-group mb-3 row">'
+					+ '             <label class="form-label col-3 col-form-label">발주수량</label>' + '            <div class="col">' + '                <input type="number" id="orderQuantity" class="form-control">' + '            </div>' + '        </div>' + '        <div class="form-footer">' + '            <div class="card-body py-3 ms-auto d-print-none btn-list float-end px-0">' + '                <span class="d-none d-sm-inline">' + '                    <button type="button" class="btn btn-white" id="order-cancel">' + '                        <img src="/resources/img/x.svg" class="icon"> 입력 취소' + '                    </button>' + '                </span>' + '                <button type="button" class="btn btn-primary d-none d-sm-inline-block" id="order-insert">' + '                    <img src="/resources/img/row-insert-top.svg" class="icon"> 입력' + '                </button>' + '            </div>' + '        </div>' + '    </div>' + '</div>' + '</div>';
+
+
+			$("div#data-area").append(elem);
+			$("div#plan-input").focus();
+			
+			$curPlan = $(event.target).closest("tr.plan-data");
+			
+			$("span#input-form-planNum").text($curPlan.find("td#partNum").text());
+			$("input#partName").val($curPlan.find("td#partName").text());
+			$("input#dueDate").val($curPlan.find("td#dueDate").text());
+			$("input#requirement").val($curPlan.find("td#requirement").text());
+
+			$("button#order-cancel").on("click", function() {
+				$("div#order-input").remove();
+				$("div#data-plan").removeClass("hidden");
+
+			});
+
+			$("button#company-selector").on("click", function(event) {
+				if ($("div.col-company-card").length != 0) {
+					$("div.col-company-card").remove();
+					$(event.target).text("접기");
+				} else {
+					$(event.target).text("업체 확인");
+					$.ajax({
+						url : "/api/companyInfo",
+						type : "get",
+						data : {
+							"planNum" : $("span#input-form-planNum").text()
+						},
+						success : function(data) {
+							for (var i = 0; i < Object.keys(data).length; i++) {
+	
+								var elem = makeCompanyCard(data[i]);
+	
+								$("div#data-area").append(elem);
+	
+								var companyName = data[i].companyName;
+	
+								for (var j = 0; j < emplNumArray.length; j++) {
+									var $selectEmplNum = $('#' + companyName + " select[name=emplNum]");
+									$selectEmplNum.append(emplNumArray[j]);
+								}
+	
+								if (data[i].existance != 0) {
+									$("#" + companyName + " div.card-plan").addClass("bg-primary-lt");
+									$.ajax({
+										url : "/api/currentOrder",
+										type : "POST",
+										async : false,
+										data : {
+											"planNum" : $("select[name=planNum]").val(),
+											"contractNum" : data[i].contractNum
+										},
+										success : function(data) {
+											var $orderDateTag = $("#" + companyName + " input[name=orderDate]");
+											var $dueDateTag = $("#" + companyName + " input[name=dueDate]");
+											var $emplNumTag = $("#" + companyName + " select[name=emplNum]");
+											var $emailTag = $("#" + companyName + " div#email");
+											var $orderQuantityTag = $("#" + companyName + " input[name=orderQuantity]");
+											var $sumTag = $("#" + companyName + " span#sum");
+	
+											$orderDateTag.val(data.orderDate);
+											$dueDateTag.val(data.dueDate);
+											$emplNumTag.val(data.emplNum);
+											$emailTag.text(data.email);
+											$orderQuantityTag.val(data.orderQuantity);
+											$sumTag.text(parseInt(data.orderQuantity) * parseInt(data.unitPrice));
+	
+											$orderDateTag.prop("disabled", "true");
+											$dueDateTag.prop("disabled", "true");
+											$emplNumTag.prop("disabled", "true");
+											$orderQuantityTag.prop("disabled", "true");
+										}
+									});
+								}
+							}
+						}
+					});
+				}
+			});
+		});
+		
+		
+		$("button.page-number").on("click", function(event) {
+			var url = window.location.href;
+			
+			if (url.indexOf("pageNum=") != -1) {
+				url = url.replace(/pageNum=\d+/, "pageNum=" + $(event.target).text());
+			} else if (url.match("/[?].+[=].+")) {
+				url = url + "&pageNum=" + $(event.target).text();
+			} else {
+				url = url + "?pageNum=" + $(event.target).text();
+			}
+			
+			location.href = url;
+		});
+		
+		$("button.page-prev").on("click", function(event) {
+			var url = window.location.href;
+			
+
+			if (url.indexOf("pageNum=") != -1) {
+				url = url.replace(/pageNum=\d+/, "pageNum=" + ${ pageInfo.curFirstPage - 1 });
+			} else if (url.match("/[?].+[=].+")) {
+				url = url + "&pageNum=" + ${ pageInfo.curFirstPage - 1 };
+			} else {
+				url = url + "?pageNum=" + ${ pageInfo.curFirstPage - 1 };
+			}
+			
+			location.href = url;
+		});
+		
+		$("button.page-next").on("click", function(event) {
+			var url = window.location.href;
+			
+
+			if (url.indexOf("pageNum=") != -1) {
+				url = url.replace(/pageNum=\d+/, "pageNum=" + ${ pageInfo.curLastPage + 1 });
+			} else if (url.match("/[?].+[=].+")) {
+				url = url + "&pageNum=" + ${ pageInfo.curLastPage + 1 };
+			} else {
+				url = url + "?pageNum=" + ${ pageInfo.curLastPage + 1 };
+			}
+			
+			location.href = url;
+		});
+		
+		
+
 		$("select[name=planNum]").on("change", function() {
 			$("div.col-company-card").each(function(index, value) {
 				$(value).remove();
@@ -109,11 +375,11 @@
 					success : function(data) {
 						if (data == null) {
 							$("#partName").text("");
-							$("#deliveryDate").text("");
+							$("#dueDate").text("");
 						}
 
 						$("#partName").text(data.partName);
-						$("#deliveryDate").text(data.deliveryDate);
+						$("#dueDate").text(data.dueDate);
 						$("#requirement").text(data.requirement);
 
 						remainQuantity();
@@ -152,7 +418,7 @@
 								var elem = makeCompanyCard(data[i]);
 
 								$("div#orders").after(elem);
-								
+
 								var companyName = data[i].companyName;
 
 								for (var j = 0; j < emplNumArray.length; j++) {
@@ -177,7 +443,7 @@
 											var $emailTag = $("#" + companyName + " div#email");
 											var $orderQuantityTag = $("#" + companyName + " input[name=orderQuantity]");
 											var $sumTag = $("#" + companyName + " span#sum");
-											
+
 											$orderDateTag.val(data.orderDate);
 											$dueDateTag.val(data.dueDate);
 											$emplNumTag.val(data.emplNum);
@@ -273,7 +539,7 @@
 
 							$("input[name=orderQuantity]").on("focus keyup change", function(event) {
 								var $thisCard = $(event.target).closest("div.card-plan");
-								
+
 								$thisCard.find("span#sum").text($thisCard.find("span#unitPrice").text() * $(event.target).val());
 							});
 						}

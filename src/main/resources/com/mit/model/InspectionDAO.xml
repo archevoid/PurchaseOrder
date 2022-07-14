@@ -13,7 +13,7 @@
 		        FROM inspection i INNER JOIN inspection_result ir ON i.order_num = ir.order_num
 		        GROUP BY i.order_num) sc ON p.order_num = sc.order_num
 		<![CDATA[
-			WHERE sysdate < sp.deliverydate OR sc.countInspection != sc.countResult
+			WHERE sysdate < sp.dueDate OR sc.countInspection != sc.countResult
 		]]>
 	</select>
 	
