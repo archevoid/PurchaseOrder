@@ -3,6 +3,13 @@ package com.mit.model;
 import java.util.List;
 
 public interface PlanDAO {
+	List<PlanDTO> getPlan(CurPageDTO curPageDto);
+	
+	Long countPlan();
+
+	
+	
+	
 	Long[] getAllPlanNum();
 	
 	PlanDTO getPlanByPlanNum(String planNum);

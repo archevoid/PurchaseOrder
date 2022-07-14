@@ -121,7 +121,7 @@
 													<div class="col-lg-6">
 														<div class="mb-3">
 															<div class="form-label">매출액</div>
-															<input type="text" class="form-control"
+															<input type="number" class="form-control"
 																name="companySales">
 														</div>
 													</div>
