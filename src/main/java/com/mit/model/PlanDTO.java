@@ -22,9 +22,21 @@ public class PlanDTO {
 	
 	
 	/**/
+	private CurPageDTO curPageDto;
+	
+	
 	private String planNum;
 	private Long requirement;
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date dueDate;
 	private String partName;
+	
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
+	private Date initialDueDate;
+	
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
+	private Date finalDueDate;
+	
+	
+	/* 대분류 중분류 추가 */
 }

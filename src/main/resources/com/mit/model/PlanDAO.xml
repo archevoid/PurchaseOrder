@@ -7,14 +7,22 @@
 
 	<sql id="searchPlan">
 		<trim prefixOverrides="AND">
-			<choose>
-				<when test="productName != null">
-					AND pd.productname = #{ productName }
-				</when>
-				<when test="dueDate != null">
-					AND sp.deliveryDate = #{ dueDate }
-				</when>
-			</choose>
+			<if test="initialDueDate != null">
+			<![CDATA[
+				AND #{ initialDueDate } < dueDate
+			]]>
+			</if>
+			<if test="finalDueDate != null">
+			<![CDATA[
+				AND dueDate < #{ finalDueDate }
+			]]>
+			</if>
+			<if test="partName != null">
+				AND partname LIKE '%'||#{ partName }||'%'
+			</if>
+			<if test="partCode != null">
+				AND partcode = #{ partCode }
+			</if>
 		</trim>
 	</sql>
 
@@ -29,14 +37,21 @@
 			, pt.partname AS partName
 			, ROWNUM as rn
 		FROM tbl_support sp INNER JOIN tbl_part pt ON sp.partcode = pt.partcode
+		<trim prefix="WHERE">
+			<include refid="searchPlan" />
+		</trim>
 		ORDER BY sp.deliverydate DESC, sp.supportno) tbl
 	<![CDATA[
-		WHERE (#{ pageNum } - 1) * #{ amount } < tbl.rn AND tbl.rn <= (#{ pageNum }) * #{ amount }
+		WHERE (#{ curPageDto.pageNum } - 1) * #{ curPageDto.amount } < tbl.rn AND tbl.rn <= (#{ curPageDto.pageNum }) * #{ curPageDto.amount }
 	]]>
 	</select>
 	
 	<select id="countPlan" resultType="long">
-		SELECT COUNT(*) FROM tbl_support sp
+		SELECT COUNT(*)
+		FROM tbl_support sp INNER JOIN tbl_part pt ON sp.partcode = pt.partcode
+		<trim prefix="WHERE">
+			<include refid="searchPlan" />
+		</trim>
 	</select>
 
 

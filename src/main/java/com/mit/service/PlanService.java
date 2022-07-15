@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.mit.model.CompanyDTO;
-import com.mit.model.CurPageDTO;
 import com.mit.model.OrderDTO;
 import com.mit.model.PlanDAO;
 import com.mit.model.PlanDTO;
@@ -21,12 +20,12 @@ public class PlanService extends com.mit.service.Service {
 	PlanDAO planDao;
 	
 	
-	public List<PlanDTO> getPlan(CurPageDTO curPageDto) {
-		return planDao.getPlan(curPageDto);
+	public List<PlanDTO> getPlan(PlanDTO planDto) {
+		return planDao.getPlan(planDto);
 	}
 	
-	public Long countPlan() {
-		return planDao.countPlan();
+	public Long countPlan(PlanDTO planDto) {
+		return planDao.countPlan(planDto);
 	}
 	
 	
