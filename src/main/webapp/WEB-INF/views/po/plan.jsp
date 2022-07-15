@@ -46,7 +46,7 @@
 							<div class="d-flex">
 								<ol class="breadcrumb breadcrumb-arrows"
 									aria-label="breadcrumbs">
-									<li class="breadcrumb-item"><a href="#">Purchase Order</a></li>
+									<li class="breadcrumb-item"><a href="dashboard">Purchase Order</a></li>
 									<li class="breadcrumb-item active" aria-current="page"><a
 										href="#">Plan</a></li>
 								</ol>
@@ -293,7 +293,7 @@
 	
 		$("button#show-input").on("click", function(event) {
 			$("div#data-plan").addClass("hidden");
-
+			
 			var elem = '<div class="col-12">'
 		        + '<div class="card" id="order-input">' 
 		        + ' <div class="card-header">' 
@@ -381,10 +381,15 @@
 			
 			$curPlan = $(event.target).closest("tr.plan-data");
 			
-			$("span#input-form-planNum").text($curPlan.find("td#partCode").text());
-			$("input#partName").val($curPlan.find("td#partName").text());
-			$("input#dueDate").val($curPlan.find("td#dueDate").text());
-			$("input#requirement").val($curPlan.find("td#requirement").text());
+			const planNum = $curPlan.find("td#planNum").text();
+			const partName = $curPlan.find("td#partName").text();
+			const dueDate = $curPlan.find("td#dueDate").text();
+			const requirement = $curPlan.find("td#requirement").text();
+			
+			$("span#input-form-planNum").text(planNum);
+			$("input#partName").val(partName);
+			$("input#dueDate").val(dueDate);
+			$("input#requirement").val(requirement);
 
 			$("button#order-cancel").on("click", function() {
 				$("div#order-input").remove();
@@ -400,10 +405,9 @@
 					url : "/api/inputOrder",
 					type : "POST",
 					data : {
-						"planNum" : $closeCard.find("span#input-form-planNum").text(),
+						"planNum" : planNum,
 						"contractNum" : $closeCard.find("input[name=contractNum]").val(),
 						"orderDate" : $closeCard.find("input[name=orderDate]").val(),
-						"dueDate" : $closeCard.find("input[name=dueDate]").val(),
 						"orderQuantity" : $closeCard.find("input[name=orderQuantity]").val(),
 						"emplNum" : $closeCard.find("select[name=emplNum]").val()
 					},

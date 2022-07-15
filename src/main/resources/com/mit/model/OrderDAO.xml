@@ -4,6 +4,87 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
 <mapper namespace="com.mit.model.OrderDAO">
+	<sql id="searchOrder">
+		<trim prefixOverrides="AND">
+			<if test="initialDueDate != null">
+			<![CDATA[
+				AND #{ initialDueDate } < sp.deliverydate
+			]]>
+			</if>
+			<if test="finalDueDate != null">
+			<![CDATA[
+				AND sp.deliverydate < #{ finalDueDate }
+			]]>
+			</if>
+			<if test="partName != null">
+				AND pt.partname LIKE '%'||#{ partName }||'%'
+			</if>
+			<if test="partCode != null">
+				AND pt.partcode = #{ partCode }
+			</if>
+			<if test="companyCode != null">
+				AND cp.code = #{ companyCode }
+			</if>
+			<if test="companyName != null">
+				AND cp.name LIKE '%'||#{ companyName }||'%'
+			</if>
+			<if test="emplNum != null">
+				AND e.empl_num = #{ emplNum }
+			</if>
+			<if test="emplName != null">
+				AND e.empl_name LIKE '%'||#{ emplName }||'%'
+			</if>
+		</trim>
+	</sql>
+
+	<select id="getOrder" resultType="com.mit.model.OrderDTO">
+		SELECT *
+		FROM (SELECT p.order_num AS orderNum
+				, e.empl_name AS emplName
+				, e.empl_email AS email
+				, cp.name AS companyName
+				, cp.code AS companyCode
+				, cp.owner AS owner
+				, cp.contact AS contact
+				, cp.business_number AS businessNumber
+				, p.order_date AS orderDate
+				, sp.deliverydate AS dueDate
+				, ct.unitprice AS unitPrice
+				, pt.partname AS partName
+				, p.order_quantity AS orderQuantity
+				, cp.account AS account
+				, cp.currency AS currency
+				, 0 AS emergency
+				, ROWNUM AS rn
+			FROM purchase_order p INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
+				INNER JOIN tbl_company cp ON ct.code = cp.code
+				INNER JOIN employee e ON e.empl_num = p.empl_num
+				INNER JOIN tbl_support sp ON p.support_num = sp.supportno
+				INNER JOIN tbl_part pt ON ct.partcode = pt.partcode
+				<trim prefix="WHERE">
+					<include refid="searchOrder" />
+				</trim>
+				ORDER BY sp.deliverydate DESC, order_num
+				) tbl
+		<![CDATA[
+		WHERE (#{ curPageDto.pageNum } - 1) * #{ curPageDto.amount } < tbl.rn AND tbl.rn <= (#{ curPageDto.pageNum }) * #{ curPageDto.amount }
+		]]>
+	</select>
+
+	<select id="countOrder" resultType="long">
+		SELECT COUNT(*)
+		FROM purchase_order p INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
+			INNER JOIN tbl_company cp ON ct.code = cp.code
+			INNER JOIN employee e ON e.empl_num = p.empl_num
+			INNER JOIN tbl_support sp ON p.support_num = sp.supportno
+			INNER JOIN tbl_part pt ON ct.partcode = pt.partcode
+		<trim prefix="WHERE">
+			<include refid="searchOrder" />
+		</trim>
+	</select>
+
+
+
 	<select id="getCompany" resultType="com.mit.model.CompanyDTO">
 		SELECT DISTINCT ct.code AS companyCode
 			, (SELECT cp.name FROM tbl_company cp WHERE cp.code = ct.code) AS companyName
@@ -27,11 +108,11 @@
 		SELECT e.empl_name AS emplName
 			, e.empl_email AS email
 			, cp.name AS companyName
-			, cp.owner AS charge
+			, cp.owner AS owner
 			, cp.contact AS contact
 			, cp.business_number AS businessNumber
 			, p.order_date AS orderDate
-			, p.due_date AS dueDate
+			, sp.deliverydate AS dueDate
 			, ct.unitprice AS unitPrice
 			, (SELECT pt.partname FROM tbl_part pt WHERE pt.partcode = ct.partcode) AS partName
 			, p.order_quantity AS orderQuantity
@@ -40,6 +121,7 @@
 		FROM purchase_order p INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
 			INNER JOIN tbl_company cp ON ct.code = cp.code
 			INNER JOIN employee e ON e.empl_num = p.empl_num
+			INNER JOIN tbl_support sp ON sp.supportno = p.support_num
 		WHERE cp.code = #{ companyCode } AND p.order_date = #{ orderDate }
 	</select>
 	
@@ -49,7 +131,7 @@
 		    , e.empl_email AS email
 		    , cp.name AS companyName
 		    , p.order_date AS orderDate
-		    , p.due_date AS dueDate
+		    , sp.due_date AS dueDate
 		    , p.order_quantity AS orderQuantity
 		    , NVL((SELECT SUM(i.inspection_quantity) AS completeQuantity FROM inspection i 
                 WHERE (i.order_num, i.inspection_num) 
@@ -58,6 +140,7 @@
 		    INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
 		    INNER JOIN tbl_part pt ON ct.partcode = pt.partcode
 		    INNER JOIN tbl_company cp ON ct.code = cp.code
+			INNER JOIN tbl_support sp ON p.support_num = sp.supportno
 
 		    
 	    <where>

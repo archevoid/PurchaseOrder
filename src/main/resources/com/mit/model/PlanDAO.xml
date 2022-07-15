@@ -9,19 +9,19 @@
 		<trim prefixOverrides="AND">
 			<if test="initialDueDate != null">
 			<![CDATA[
-				AND #{ initialDueDate } < dueDate
+				AND #{ initialDueDate } < sp.deliverydate
 			]]>
 			</if>
 			<if test="finalDueDate != null">
 			<![CDATA[
-				AND dueDate < #{ finalDueDate }
+				AND sp.deliverydate < #{ finalDueDate }
 			]]>
 			</if>
 			<if test="partName != null">
-				AND partname LIKE '%'||#{ partName }||'%'
+				AND pt.partname LIKE '%'||#{ partName }||'%'
 			</if>
 			<if test="partCode != null">
-				AND partcode = #{ partCode }
+				AND pt.partcode = #{ partCode }
 			</if>
 		</trim>
 	</sql>
@@ -91,8 +91,8 @@
 		<selectKey keyProperty="orderNum" order="BEFORE" resultType="long">
 			SELECT order_num_seq.NEXTVAL FROM dual
 		</selectKey>
-		INSERT INTO purchase_order(order_num, order_date, order_quantity, empl_num, support_num, contract_num, due_date)
-		VALUES (#{ orderNum }, #{ orderDate }, #{ orderQuantity }, #{ emplNum }, #{ planNum }, #{ contractNum }, #{ dueDate })
+		INSERT INTO purchase_order(order_num, order_date, order_quantity, empl_num, support_num, contract_num)
+		VALUES (#{ orderNum }, #{ orderDate }, #{ orderQuantity }, #{ emplNum }, #{ planNum }, #{ contractNum })
 	</insert>
 	
 	<select id="getEmpl" resultType="com.mit.model.UserDTO">
@@ -133,20 +133,21 @@
 	</select>
 	
 	<select id="getRemainQuantity" resultType="long">
-		SELECT NVL(sp.requirement - (SELECT SUM(p.order_quantity) FROM purchase_order p GROUP BY p.support_num), sp.requirement)
+		SELECT NVL(sp.requirement - (SELECT SUM(p.order_quantity) FROM purchase_order p WHERE p.support_num = sp.supportno GROUP BY p.support_num), sp.requirement)
 		FROM tbl_support sp
 		WHERE supportno = #{ planNum }
 	</select>
 	
 	<select id="getCurrentOrder" resultType="com.mit.model.OrderDTO">
 		SELECT p.order_date AS orderDate
-			, p.due_date AS dueDate
+			, sp.due_date AS dueDate
 			, p.order_quantity AS orderQuantity
 			, e.empl_num AS emplNum
 			, e.empl_name AS emplName
 			, e.empl_email AS email
 			, (SELECT c.unitprice FROM tbl_contract c WHERE c.contractno = p.contract_num) AS unitPrice
 		FROM purchase_order p INNER JOIN employee e ON p.empl_num = e.empl_num
+			INNER JOIN tbl_support sp ON p.support_num = sp.supportno
 		WHERE p.support_num = #{ planNum } AND p.contract_num = #{ contractNum }
 	</select>
 </mapper>

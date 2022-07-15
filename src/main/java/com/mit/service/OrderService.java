@@ -18,6 +18,14 @@ public class OrderService extends com.mit.service.Service {
 	OrderDAO orderDao;
 	
 	
+	public List<OrderDTO> getOrder(OrderDTO orderDto) {
+		return orderDao.getOrder(orderDto);
+	}
+	
+	public Long countOrder(OrderDTO orderDto) {
+		return orderDao.countOrder(orderDto);
+	}
+	
 	public List<CompanyDTO> getCompany() {
 		return orderDao.getCompany();
 	}

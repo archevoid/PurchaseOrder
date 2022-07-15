@@ -8,6 +8,9 @@ import lombok.Data;
 
 @Data
 public class OrderDTO {
+	private CurPageDTO curPageDto;
+	
+	
 	private String contractNum;
 	private String planNum;
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
@@ -18,6 +21,7 @@ public class OrderDTO {
 	private Date dueDate;
 	
 	private String partName;
+	private String partCode;
 	
 	/* insertOrder() */
 	private Long orderNum;
@@ -32,7 +36,7 @@ public class OrderDTO {
 	private Long unitPrice;
 	
 	/* getOrderInfo() */
-	private String charge;
+	private String owner;
 	private String contact;
 	private String businessNumber;
 	private String account;
@@ -57,4 +61,9 @@ public class OrderDTO {
 	
 	/* progress */
 	private Long completeQuantity;
+	
+	
+	private String leadTime;
+	
+	private Byte emergency;
 }

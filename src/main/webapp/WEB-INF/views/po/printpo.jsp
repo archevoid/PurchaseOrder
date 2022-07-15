@@ -89,7 +89,7 @@ String[] aboutUs = new String[]{"Team FoS", "", "010-4242-4242", "031-4242-4242"
 														</tr>
 														<tr>
 															<th>대표</th>
-															<td>${ orderInfo[0].charge }</td>
+															<td>${ orderInfo[0].owner }</td>
 														</tr>
 														<tr>
 															<th>연락처</th>
