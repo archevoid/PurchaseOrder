@@ -28,7 +28,10 @@
 		    , i.inspection_quantity AS inspectionQuantity
 		    , i.sample_quantity AS sampleQuantity
 	    	, CASE 
-                WHEN (SELECT COUNT(*) FROM inspection ip INNER JOIN inspection_result ipr ON ip.order_num = ipr.order_num AND ip.inspection_num = ipr.inspection_num WHERE ip.order_num = p.order_num) != 0 THEN '종료'
+                WHEN (SELECT COUNT(*) 
+                	FROM inspection ip INNER JOIN inspection_result ipr 
+                		ON ip.order_num = ipr.order_num AND ip.inspection_num = ipr.inspection_num 
+                		WHERE ip.order_num = p.order_num) != 0 THEN '종료'
             <![CDATA[
 	    		WHEN sysdate < i.inspection_date THEN '시작 전'
 	    		WHEN sysdate > p.due_date THEN '종료 후'
@@ -38,6 +41,7 @@
 		    INNER JOIN employee e ON p.empl_num = e.empl_num
 		    INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
 		    INNER JOIN tbl_part pt ON ct.partcode = pt.partcode
+		    INNER JOIN tbl_support sp ON sp.supportno = p.support_num
 		WHERE p.order_num = #{ orderNum }
 		<choose>
 			<when test="inspectionNum != null">

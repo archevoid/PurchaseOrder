@@ -148,7 +148,8 @@
 																data-sort="sort-companyName">조달납기</button></th>
 														<th><button class="table-sort"
 																data-sort="sort-orderDate">소요량</button></th>
-														<th>입력 금액 합계</th>
+														<th><button class="table-sort"
+																data-sort="sort-sum">입력 금액 합계</button></th>
 														<th></th>
 													</tr>
 												</thead>

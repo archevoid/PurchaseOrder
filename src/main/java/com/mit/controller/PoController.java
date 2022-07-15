@@ -21,6 +21,7 @@ import com.mit.model.PlanDTO;
 import com.mit.service.InspectionService;
 import com.mit.service.OrderService;
 import com.mit.service.PlanService;
+import com.mit.service.UserService;
 
 import lombok.AllArgsConstructor;
 
@@ -32,6 +33,7 @@ public class PoController {
 	PlanService ps;
 	OrderService os;
 	InspectionService is;
+	UserService us;
 	
 	/* 파일 저장 경로 (root-context에 선언) */
 	@Resource(name = "pathOfInspectionFile")
@@ -79,6 +81,8 @@ public class PoController {
 		m.addAttribute("numberOfOrder", numberOfOrder);
 		
 		m.addAttribute("pageInfo", new PageDTO(curPageDto, numberOfOrder));
+		
+		m.addAttribute("emplList", us.getEmpl());
 	}
 	
 	@GetMapping("partner")

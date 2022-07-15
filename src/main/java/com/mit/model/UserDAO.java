@@ -1,5 +1,7 @@
 package com.mit.model;
 
+import java.util.List;
+
 public interface UserDAO {
 	UserDTO getUserById(UserDTO userDTO);
 	
@@ -7,4 +9,6 @@ public interface UserDAO {
 	int doRegistEmpl(UserDTO userDTO);
 	
 	int updatePasswordByEmail(UserDTO userDto);
+	
+	List<UserDTO> getEmpl();
 }

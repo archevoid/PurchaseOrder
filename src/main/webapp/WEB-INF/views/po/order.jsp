@@ -95,7 +95,9 @@
 									<div class="mb-3">
 										<select id="employee" class="form-select" name="emplNum">
 											<option value="0">선택</option>
-											<%-- foreach문 으로 가져오기 --%>
+											<c:forEach items="${ emplList }" var="empl">
+												<option value="${ empl.emplNum }">${ empl.emplName }</option>
+											</c:forEach>
 										</select>
 									</div>
 								</div>
@@ -320,11 +322,6 @@
 			location.href = url;
 		});
 	
-		$("button#show-order-page").on("click", function(event) {
-			
-		});
-		
-		
 		$("button.page-number").on("click", function(event) {
 			var url = window.location.href;
 			
@@ -368,200 +365,8 @@
 			
 			location.href = url;
 		});
+
 		
-		
-		
-		
-		
-		
-
-		$("select[name=planNum]").on("change", function() {
-			$("div.col-company-card").each(function(index, value) {
-				$(value).remove();
-			});
-
-			if ($("select[name=planNum]").val() != 0) {
-				$.ajax({
-					url : "/api/plan",
-					type : "GET",
-					data : {
-						"planNum" : $("select[name=planNum]").val()
-					},
-					success : function(data) {
-						if (data == null) {
-							$("#partName").text("");
-							$("#dueDate").text("");
-						}
-
-						$("#partName").text(data.partName);
-						$("#dueDate").text(data.dueDate);
-						$("#requirement").text(data.requirement);
-
-						remainQuantity();
-						refreshTotalPrice();
-					}
-				})
-
-				var emplNumArray = [];
-
-				$.ajax({
-					url : "/api/empl",
-					type : "POST",
-					async : false,
-					success : function(data) {
-						for (var i = 0; i < Object.keys(data).length; i++) {
-							var id = "white";
-
-							emplNumArray[i] = "<option " + "id=" + id + " value='" + data[i].emplNum + "'>" + data[i].emplName + " (" + data[i].emplNum + ") " + data[i].email + "</option>";
-						}
-					}
-				});
-
-				if ($("div.col-company-card").length > 0) {
-					return;
-				} else {
-					$.ajax({
-						url : "/api/companyInfo",
-						type : "GET",
-						data : {
-							"planNum" : $("select[name=planNum]").val()
-						},
-						success : function(data) {
-
-							for (var i = 0; i < Object.keys(data).length; i++) {
-
-								var elem = makeCompanyCard(data[i]);
-
-								$("div#orders").after(elem);
-
-								var companyName = data[i].companyName;
-
-								for (var j = 0; j < emplNumArray.length; j++) {
-									var $selectEmplNum = $('#' + companyName + " select[name=emplNum]");
-									$selectEmplNum.append(emplNumArray[j]);
-								}
-
-								if (data[i].existance != 0) {
-									$("#" + companyName + " div.card-plan").addClass("bg-primary-lt");
-									$.ajax({
-										url : "/api/currentOrder",
-										type : "POST",
-										async : false,
-										data : {
-											"planNum" : $("select[name=planNum]").val(),
-											"contractNum" : data[i].contractNum
-										},
-										success : function(data) {
-											var $orderDateTag = $("#" + companyName + " input[name=orderDate]");
-											var $dueDateTag = $("#" + companyName + " input[name=dueDate]");
-											var $emplNumTag = $("#" + companyName + " select[name=emplNum]");
-											var $emailTag = $("#" + companyName + " div#email");
-											var $orderQuantityTag = $("#" + companyName + " input[name=orderQuantity]");
-											var $sumTag = $("#" + companyName + " span#sum");
-
-											$orderDateTag.val(data.orderDate);
-											$dueDateTag.val(data.dueDate);
-											$emplNumTag.val(data.emplNum);
-											$emailTag.text(data.email);
-											$orderQuantityTag.val(data.orderQuantity);
-											$sumTag.text(parseInt(data.orderQuantity) * parseInt(data.unitPrice));
-
-											$orderDateTag.prop("disabled", "true");
-											$dueDateTag.prop("disabled", "true");
-											$emplNumTag.prop("disabled", "true");
-											$orderQuantityTag.prop("disabled", "true");
-										}
-									});
-								}
-							}
-
-							$("select[name=emplNum]").on("change", function(event) {
-								if ($(event.target).val() != '0') {
-									$.ajax({
-										url : "/api/emplEmail",
-										type : "POST",
-										data : {
-											"emplNum" : $(this).val()
-										},
-										success : function(data) {
-											$(event.target).closest("div.card-plan").find("div#email").text(data);
-										}
-									});
-								}
-							});
-
-							$("button#inputOrder").on("click", function() {
-								var closeCard = $(this).closest("div.card-plan");
-								$.ajax({
-									url : "/api/inputOrder",
-									type : "POST",
-									data : {
-										"planNum" : $("select[name=planNum]").val(),
-										"contractNum" : closeCard.find("input[name=contractNum]").val(),
-										"orderDate" : closeCard.find("input[name=orderDate]").val(),
-										"dueDate" : closeCard.find("input[name=dueDate]").val(),
-										"orderQuantity" : closeCard.find("input[name=orderQuantity]").val(),
-										"emplNum" : closeCard.find("select[name=emplNum]").val()
-									},
-									success : function(data) {
-										remainQuantity();
-										refreshTotalPrice();
-									}
-								});
-							});
-
-							$("input[name=orderDate]").on("change", function(event) {
-								var closeCard = $(event.target).closest("div.card-plan");
-								$.ajax({
-									url : "/api/empl",
-									type : "POST",
-									data : {
-										"orderDate" : $("input[name=orderDate]").val()
-									},
-									success : function(data) {
-										closeCard.find("div#email").text("");
-
-										for (var i = 0; i < Object.keys(data).length; i++) {
-
-											var id = "white";
-
-											if (data[i].sameCompanyAtSameDay > 0) {
-												id = "green";
-											} else if (data[i].sameDay > 0) {
-												id = "red";
-											} else if (data[i].sameCompany > 0) {
-												id = "blue";
-											}
-
-											var elem = "<option " + "id=" + id + " value='" + data[i].emplNum + "'>" + data[i].emplName + "(" + data[i].emplNum + ")</option>";
-
-											closeCard.find("select[name=emplNum] option:not([value=0])").remove();
-
-											closeCard.find("select[name=emplNum]").each(function() {
-												for (var i = 0; i < Object.keys(data).length; i++) {
-
-													var id = "white";
-
-													var elem = "<option " + "id=" + id + " value='" + data[i].emplNum + "'>" + data[i].emplName + "(" + data[i].emplNum + ")</option>";
-
-													closeCard.find("select[name=emplNum]").append(elem);
-												}
-											});
-										}
-									}
-								});
-							});
-
-							$("input[name=orderQuantity]").on("focus keyup change", function(event) {
-								var $thisCard = $(event.target).closest("div.card-plan");
-
-								$thisCard.find("span#sum").text($thisCard.find("span#unitPrice").text() * $(event.target).val());
-							});
-						}
-					});
-				}
-			}
-		});
 	</script>
 
 

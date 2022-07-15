@@ -33,4 +33,13 @@
 			(SELECT empl_num FROM employee AS e
 				WHERE e.empl_email = #{ email })
 	</update>
+	
+	
+	<select id="getEmpl" resultType="com.mit.model.UserDTO">
+		SELECT DISTINCT e.empl_num AS emplNum
+			, e.empl_name AS emplName
+		    , e.empl_email AS email
+		FROM employee e
+		ORDER BY e.empl_num ASC
+	</select>
 </mapper>
