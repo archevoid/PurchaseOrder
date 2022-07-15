@@ -54,17 +54,18 @@
 				, p.order_quantity AS orderQuantity
 				, cp.account AS account
 				, cp.currency AS currency
-				, 0 AS emergency
+				, CASE WHEN wh.ware_num != null THEN 1 ELSE 0 END AS emergency
 				, ROWNUM AS rn
 			FROM purchase_order p INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
 				INNER JOIN tbl_company cp ON ct.code = cp.code
 				INNER JOIN employee e ON e.empl_num = p.empl_num
 				INNER JOIN tbl_support sp ON p.support_num = sp.supportno
 				INNER JOIN tbl_part pt ON ct.partcode = pt.partcode
+				LEFT JOIN warehousing wh ON p.order_num = wh.order_num
 				<trim prefix="WHERE">
 					<include refid="searchOrder" />
 				</trim>
-				ORDER BY sp.deliverydate DESC, order_num
+				ORDER BY emergency DESC, sp.deliverydate DESC, p.order_num
 				) tbl
 		<![CDATA[
 		WHERE (#{ curPageDto.pageNum } - 1) * #{ curPageDto.amount } < tbl.rn AND tbl.rn <= (#{ curPageDto.pageNum }) * #{ curPageDto.amount }
@@ -131,7 +132,7 @@
 		    , e.empl_email AS email
 		    , cp.name AS companyName
 		    , p.order_date AS orderDate
-		    , sp.due_date AS dueDate
+		    , sp.deliverydate AS dueDate
 		    , p.order_quantity AS orderQuantity
 		    , NVL((SELECT SUM(i.inspection_quantity) AS completeQuantity FROM inspection i 
                 WHERE (i.order_num, i.inspection_num) 

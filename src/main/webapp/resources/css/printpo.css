@@ -12,6 +12,10 @@
 	text-align: center;
 }
 
+.tx-l {
+	text-align: left !important;
+}
+
 div#content {
 	width: 21cm;
 	min-height: 29.7cm;

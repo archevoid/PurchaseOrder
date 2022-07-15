@@ -21,7 +21,7 @@ String[] aboutUs = new String[]{"Team FoS", "", "010-4242-4242", "031-4242-4242"
 
 <body>
 	<div class="page">
-		<%@ include file="../includes/verticalNav.jsp"%>
+		<%@ include file="../includes/horizontalNav.jsp"%>
 
 		<div class="page-wrapper">
 			<div class="container-xl">
@@ -29,7 +29,7 @@ String[] aboutUs = new String[]{"Team FoS", "", "010-4242-4242", "031-4242-4242"
 				<div class="page-header d-print-none">
 					<div class="row g-2 align-items-center">
 						<div class="col">
-							<div class="page-pretitle">Purchase Order</div>
+							<div class="page-pretitle tx-l">Purchase Order</div>
 							<h2 class="page-title">Print Order</h2>
 						</div>
 						<div class="col-12 col-md-auto ms-auto d-print-none">
@@ -204,10 +204,6 @@ String[] aboutUs = new String[]{"Team FoS", "", "010-4242-4242", "031-4242-4242"
 										</div>
 									</div>
 								</div>
-
-
-
-
 							</div>
 						</div>
 					</div>
