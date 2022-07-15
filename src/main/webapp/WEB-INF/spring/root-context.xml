@@ -37,6 +37,8 @@
 		<!-- 스프링에서 관리되는 hikariConfig 객체 -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+		
+		
 		<!-- <property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.0.30:1521:xe"></property>
 		<property name="username" value="k2" />
 		<property name="password" value="mit" /> -->

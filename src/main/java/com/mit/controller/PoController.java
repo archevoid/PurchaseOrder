@@ -69,8 +69,16 @@ public class PoController {
 	}
 	
 	@GetMapping("order")
-	public void goOrder(Model m) {
-		m.addAttribute("companies", os.getCompany());
+	public void goOrder(OrderDTO orderDto, CurPageDTO curPageDto, Model m) {
+		orderDto.setCurPageDto(curPageDto);
+		
+		m.addAttribute("orderList", os.getOrder(orderDto));
+		
+		Long numberOfOrder = os.countOrder(orderDto);
+		
+		m.addAttribute("numberOfOrder", numberOfOrder);
+		
+		m.addAttribute("pageInfo", new PageDTO(curPageDto, numberOfOrder));
 	}
 	
 	@GetMapping("partner")

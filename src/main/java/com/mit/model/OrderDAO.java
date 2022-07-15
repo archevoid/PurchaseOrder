@@ -4,6 +4,12 @@ import java.sql.Date;
 import java.util.List;
 
 public interface OrderDAO {
+	List<OrderDTO> getOrder(OrderDTO orderDto);
+	
+	Long countOrder(OrderDTO orderDto);
+	
+	
+	
 	List<CompanyDTO> getCompany();
 	
 	List<OrderDTO> getOrderByMonth(Date date);
