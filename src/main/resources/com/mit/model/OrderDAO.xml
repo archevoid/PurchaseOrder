@@ -179,17 +179,17 @@
 		    		</when>
 		    		<when test="initialDueDate != null and finalDueDate != null">
 		    			<![CDATA[
-		    				AND #{ initialDueDate } < p.due_date AND p.due_date < #{ finalDueDate }
+		    				AND #{ initialDueDate } < sp.deliverydate AND sp.deliverydate < #{ finalDueDate }
 		    			]]>
 		    		</when>
 		    		<when test="initialDueDate == null and finalDueDate != null">
 		    			<![CDATA[
-		    				AND sysdate < p.due_date AND p.due_date < #{ finalDueDate }
+		    				AND sysdate < sp.deliverydate AND sp.deliverydate < #{ finalDueDate }
 		    			]]>
 		    		</when>
 		    		<when test="initialDueDate != null and finalDueDate == null">
 		    			<![CDATA[
-		    				AND #{ initialDueDate } < p.due_date AND p.due_date < sysdate
+		    				AND #{ initialDueDate } < sp.deliverydate AND sp.deliverydate < sysdate
 		    			]]>
 		    		</when>
 		    	</choose>

@@ -1,5 +1,7 @@
 package com.mit.service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +53,10 @@ public class UserService extends NEmailService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public List<UserDTO> getEmpl() {
+		return userDao.getEmpl();
 	}
 	
 	
