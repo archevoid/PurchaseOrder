@@ -3,9 +3,9 @@ package com.mit.model;
 import java.util.List;
 
 public interface PlanDAO {
-	List<PlanDTO> getPlan(CurPageDTO curPageDto);
+	List<PlanDTO> getPlan(PlanDTO planDto);
 	
-	Long countPlan();
+	Long countPlan(PlanDTO planDto);
 
 	
 	

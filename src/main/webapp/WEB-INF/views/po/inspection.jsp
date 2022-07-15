@@ -351,8 +351,10 @@
 						if (data[key].inspectionNum != null) {
 
 							elem += '<tr id="inspectionInfo">' + '<td>' + '<input class="form-check-input m-0 align-middle"'
-									+			'type="checkbox" aria-label="Select invoice" name="selectedInspection" value="' + data[key].inspectionNum +'">' + '</td>' + '<td id="inspectionNum">' + '<span class="text-muted" id="inspectionNum">' + data[key].inspectionNum + '</span>' + '</td>' + '<td id="inspectionDate">' + data[key].inspectionDate + '</td>' + '<td id="inspectionQuantity">' + data[key].inspectionQuantity + '</td>' + '<td id="sampleQuantity">' + data[key].sampleQuantity + '</td>' + '<td id="progress">' + data[key].progress + '</td>' + '<td class="text-end">' + '<span class="dropdown">' + '<button class="btn dropdown-toggle align-text-top"'
-									+				'data-bs-boundary="viewport" data-bs-toggle="dropdown">Actions' + '</button>' + '<div class="dropdown-menu dropdown-menu-end">'
+									+			'type="checkbox" aria-label="Select invoice" name="selectedInspection" value="' + data[key].inspectionNum +'">' + '</td>' + '<td id="inspectionNum">' + '<span class="text-muted" id="inspectionNum">' + data[key].inspectionNum + '</span>' + '</td>' + '<td id="inspectionDate">' + data[key].inspectionDate + '</td>' + '<td id="inspectionQuantity">' + data[key].inspectionQuantity + '</td>' + '<td id="sampleQuantity">' + data[key].sampleQuantity + '</td>' + '<td id="progress">' + data[key].progress + '</td>' 
+									+ '<td class="text-end">' + '<span class="dropdown">' + '<button class="btn dropdown-toggle align-text-top"'
+									+				'data-bs-boundary="viewport" data-bs-toggle="dropdown">Actions' + '</button>'
+									+ '<div class="dropdown-menu dropdown-menu-end">'
 									+ '<button type="button" class="dropdown-item"'
 									+					'data-bs-toggle="modal" data-bs-target="#modal-report" id="showResultModal">' + '결과입력' + '</button>' + '<button type="button" class="dropdown-item" id="downloadResult">' + '결과 다운로드' + '</button>' + '</div>' + '</span>' + '</td>' + '</tr>';
 

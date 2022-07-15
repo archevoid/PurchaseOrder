@@ -44,10 +44,12 @@ public class PoController {
 	}
 	
 	@GetMapping("plan")
-	public void goPlan(CurPageDTO curPageDto, Model m) {
-		m.addAttribute("planList", ps.getPlan(curPageDto));
+	public void goPlan(CurPageDTO curPageDto, PlanDTO planDto, Model m) {
+		planDto.setCurPageDto(curPageDto);
 		
-		Long numberOfPlan = ps.countPlan();
+		m.addAttribute("planList", ps.getPlan(planDto));
+		
+		Long numberOfPlan = ps.countPlan(planDto);
 		
 		m.addAttribute("numberOfPlan", numberOfPlan);
 		

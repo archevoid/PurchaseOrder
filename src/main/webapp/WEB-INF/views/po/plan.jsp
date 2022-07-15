@@ -58,63 +58,66 @@
 			<div class="page-body">
 				<div class="container-xl">
 					<div class="row g-4">
-						<div class="col-3" id="search-div">
+						<div class="col-3 searcher" id="plan-searcher">
 
 							<div class="subheader mb-2">대분류</div>
-							<div class="row">
+							<div class="row row-searcher">
 								<div class="col-6">
 									<div class="mb-3">
-										<select name="" class="form-select">
+										<%-- DB 생성 후 name 추가 --%>
+										<select id="product-widest" class="form-select" name="widest">
 											<option value="0">선택</option>
 										</select>
 									</div>
 								</div>
 								<div class="col-6">
 									<div class="mb-3">
-										<input type="text" name="" class="form-control">
+										<input type="text" id="product-selecteor-widest" class="form-control select-searcher" name="widestName" value="${ widestName }">
 									</div>
 								</div>
 							</div>
 							<div class="subheader mb-2">중분류</div>
-							<div class="row">
+							<div class="row row-searcher">
 								<div class="col-6">
 									<div class="mb-3">
-										<select name="" class="form-select">
+										<%-- DB 생성 후 name 추가 --%>
+										<select id="product-middle" class="form-select" name="middle">
 											<option value="0">선택</option>
 										</select>
 									</div>
 								</div>
 								<div class="col-6">
 									<div class="mb-3">
-										<input type="text" name="" class="form-control">
+										<input type="text" id="product-selector-middle" class="form-control select-searcher" name="middleName" value="${ param.middleName }">
 									</div>
 								</div>
 							</div>
 							<div class="subheader mb-2">소분류</div>
-							<div class="row">
+							<div class="row row-searcher">
 								<div class="col-6">
 									<div class="mb-3">
-										<select name="" class="form-select">
+										<select id="product-narrowest" class="form-select" name="partCode">
 											<option value="0">선택</option>
+											<%-- foreach문 으로 가져오기 --%>
 										</select>
 									</div>
 								</div>
 								<div class="col-6">
 									<div class="mb-3">
-										<input type="text" name="" class="form-control">
+										<input type="text" id="product-selector-narrowest" class="form-control select-searcher" name="partName" value="${ param.partName }">
 									</div>
 								</div>
 							</div>
 							<div class="subheader mb-2">조달납기</div>
-							<div class="row">
+							<div class="row row-searcher">
 								<div class="col-6">
 									<div class="mb-3">
-										<input type="date" name="" class="form-control">
+										<input type="date" id="initialDueDate" class="form-control" name="initialDueDate" value="${ param.initialDueDate }">
 									</div>
 								</div>
 								<div class="col-6">
 									<div class="mb-3">
-										<input type="date" name="" class="form-control">
+										<input type="date" id="finalDueDate" class="form-control" name="finalDueDate" value="${ param.finalDueDate }">
 									</div>
 								</div>
 							</div>
@@ -122,7 +125,7 @@
 							<div class="mt-5">
 								<button type="button" class="btn btn-primary w-100"
 									id="search-button">Confirm changes</button>
-								<a href="progress" class="btn btn-link w-100"> Reset to
+								<a href="plan" class="btn btn-link w-100"> Reset to
 									defaults </a>
 							</div>
 						</div>
@@ -152,7 +155,7 @@
 												<tbody class="table-tbody">
 													<c:forEach items="${ planList }" var="plan">
 														<tr class="plan-data">
-															<td class="sort-planNum" id="partNum">${ plan.planNum }</td>
+															<td class="sort-planNum" id="planNum">${ plan.planNum }</td>
 															<td class="sort-partName" id="partName">${ plan.partName }</td>
 															<td class="sort-dueDate" id="dueDate">${ plan.dueDate }</td>
 															<td class="sort-requirement" id="requirement">${ plan.requirement }</td>
@@ -171,7 +174,16 @@
 									</div>
 									<div class="card-footer d-flex align-items-center">
 										<p class="m-0 text-muted">
-											Showing <span>${ (pageNum - 1) * amount + 1  }</span> to <span>${ (pageNum - 1) * amount + planList.size() }</span>
+											Showing <span>
+												<c:choose>
+													<c:when test="${ (pageNum - 1) * amount + planList.size() eq 0}">
+														0
+													</c:when>
+													<c:otherwise>
+														${ (pageNum - 1) * amount + 1  }
+													</c:otherwise>
+												</c:choose>
+											</span> to <span>${ (pageNum - 1) * amount + planList.size() }</span>
 											of <span>${ numberOfPlan }</span> entries
 										</p>
 										<ul class="pagination m-0 ms-auto">
@@ -226,6 +238,58 @@
 	</div>
 
 	<script>
+		var $searcher = $("div.searcher");
+		
+		$searcher.find("input.select-searcher").on("change keyup focus", function(event) {
+			$selectTag = $(event.target).closest("div.row-searcher").find("select");
+			
+			$($selectTag).find("span.hidden-option option").unwrap();
+			
+			if ($(event.target).val() != "") {
+				$selectTag.find("option").each(function(index, value) {
+					if (!$(value).text().includes($(event.target).val()) && $(value).val != 0) {
+						$(value).wrap('<span class="hidden-option" style="display: none;" />');
+					}
+				});
+			}
+		});
+		
+		$("button#search-button").on("click", function() {
+			// var url = window.location.href;
+			var url = window.location.protocol + "//" + window.location.host + window.location.pathname;
+			
+			$("div.row-searcher select").each(function(index, value) {
+				if ($(value).val() != 0 && $(value).val() != null) {
+					var inputName = $(value).attr("name");
+					
+					if (url.indexOf(inputName) != -1) {
+						var regex = new RegExp(inputName + "=[^&]+", "g");
+						url = url.replace(regex, inputName + "=" + $(value).val());
+					} else if (url.match(/[?].+[=].+/)) {
+						url = url + "&" + inputName + "=" + $(value).val();
+					} else {
+						url = url + "?" + inputName + "=" + $(value).val();
+					}
+				}
+			});
+			
+			$("div.row-searcher input").each(function(index, value) {
+				var inputName = $(value).attr("name");
+				
+				if (!(/^\s*$/).test($(value).val())) {
+					
+					if (url.indexOf(inputName) != -1) {
+						var regex = new RegExp(inputName + "=[^&]+", "g");
+						url = url.replace(regex, inputName + "=" + $(value).val());
+					} else if (url.match(/[?].+[=].+/)) {
+						url = url + "&" + inputName + "=" + $(value).val();
+					} else {
+						url = url + "?" + inputName + "=" + $(value).val();
+					}
+				}
+			});
+			location.href = url;
+		});
 	
 		$("button#show-input").on("click", function(event) {
 			$("div#data-plan").addClass("hidden");
@@ -317,7 +381,7 @@
 			
 			$curPlan = $(event.target).closest("tr.plan-data");
 			
-			$("span#input-form-planNum").text($curPlan.find("td#partNum").text());
+			$("span#input-form-planNum").text($curPlan.find("td#partCode").text());
 			$("input#partName").val($curPlan.find("td#partName").text());
 			$("input#dueDate").val($curPlan.find("td#dueDate").text());
 			$("input#requirement").val($curPlan.find("td#requirement").text());
