@@ -8,6 +8,8 @@ public interface OrderDAO {
 	
 	Long countOrder(OrderDTO orderDto);
 	
+	Integer updatePublished(OrderDTO orderDto);
+	
 	
 	
 	List<CompanyDTO> getCompany();

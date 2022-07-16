@@ -48,12 +48,14 @@
 				, cp.contact AS contact
 				, cp.business_number AS businessNumber
 				, p.order_date AS orderDate
+				, p.published AS published
 				, sp.deliverydate AS dueDate
 				, ct.unitprice AS unitPrice
 				, pt.partname AS partName
 				, p.order_quantity AS orderQuantity
 				, cp.account AS account
 				, cp.currency AS currency
+				, ct.partsSupply AS leadTime
 				, CASE WHEN wh.ware_num != null THEN 1 ELSE 0 END AS emergency
 				, ROWNUM AS rn
 			FROM purchase_order p INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
@@ -83,6 +85,11 @@
 			<include refid="searchOrder" />
 		</trim>
 	</select>
+	
+	<update id="updatePublished">
+		UPDATE purchase_order SET published = (SELECT p.published + 1 FROM purchase_order p WHERE p.order_num = #{ orderNum })
+		WHERE order_num = #{ orderNum }
+	</update>
 
 
 

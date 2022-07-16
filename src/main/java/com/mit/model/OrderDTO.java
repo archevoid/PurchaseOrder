@@ -66,4 +66,6 @@ public class OrderDTO {
 	private String leadTime;
 	
 	private Byte emergency;
+	
+	public String published;
 }
