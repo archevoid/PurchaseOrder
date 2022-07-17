@@ -12,7 +12,7 @@
 
 <body>
 	<div class="page">
-		<%@ include file="../includes/verticalNav.jsp"%>
+		<%@ include file="../includes/horizontalNav.jsp"%>
 		<div class="page-wrapper">
 			<div class="container-xl">
 				<!-- Page title -->
@@ -39,96 +39,216 @@
 
 			<div class="page-body">
 				<div class="container-xl">
-					<div class="row row-cards">
-						<div class="col-12">
-							<div class="card">
-								<div class="card-header">
-									<h3 class="card-title">검수 일정</h3>
-									<div class="ms-auto">
-										<select class="form-select" name="orderNum">
+					<div class="row g-4">
+						<div class="col-3 searcher" id="inspection-searcher">
+							<div class="subheader mb-2">발주번호</div>
+							<div class="row row-searcher">
+								<div class="col-12">
+									<div class="mb-3">
+										<select id="orderNum" class="form-select" name="orderNum">
 											<option value="0">발주계획번호</option>
-											<c:forEach items="${ orderList }" var="order">
-												<option value="${ order.orderNum }">${ order.orderNum }.${
-																order.partName }</option>
+											<c:forEach items="${ orderNumList }" var="orderNum">
+												<option value="${ orderNum.orderNum }">${ orderNum.orderNum }</option>
 											</c:forEach>
 										</select>
 									</div>
 								</div>
-								<div class="card-body">
-									<table class="table table-vcenter card-table">
-										<thead>
-											<tr>
-												<th>발주번호</th>
-												<th>담당자</th>
-												<th>이메일</th>
-												<th>품목</th>
-												<th>계획 수량</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td id="orderNum"></td>
-												<td id="emplName"></td>
-												<td id="email"></td>
-												<td id="partName"></td>
-												<td id="orderQuantity"></td>
-											</tr>
-										</tbody>
-									</table>
+							</div>
+							<div class="subheader mb-2">발주일자</div>
+							<div class="row row-searcher">
+								<div class="col-6">
+									<div class="mb-3">
+										<input type="date" id="initialOrderDate" class="form-control" name="initialOrderDate" value="${ param.initialOrderDate }">
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="mb-3">
+										<input type="date" id="finalOrderDate" class="form-control" name="finalOrderDate" value="${ param.finalOrderDate }">
+									</div>
 								</div>
 							</div>
+							<div class="subheader mb-2">조달납기</div>
+							<div class="row row-searcher">
+								<div class="col-6">
+									<div class="mb-3">
+										<input type="date" id="initialDueDate" class="form-control" name="initialDueDate" value="${ param.initialDueDate }">
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="mb-3">
+										<input type="date" id="finalDueDate" class="form-control" name="finalDueDate" value="${ param.finalDueDate }">
+									</div>
+								</div>
+							</div>
+							<div class="subheader mb-2">검수일자</div>
+							<div class="row row-searcher">
+								<div class="col-6">
+									<div class="mb-3">
+										<input type="date" id="initialInspectionDate" class="form-control" name="initialInspectionDate" value="${ param.initialInspectionDate }">
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="mb-3">
+										<input type="date" id="finalInspectionDate" class="form-control" name="finalInspectionDate" value="${ param.finalInspectionDate }">
+									</div>
+								</div>
+							</div>
+							<div class="mt-5">
+								<button type="button" class="btn btn-primary w-100"
+									id="search-button">Confirm changes</button>
+								<a href="inspection" class="btn btn-link w-100"> Reset to
+									defaults </a>
+							</div>
 						</div>
-
-						<div class="col-12">
-							<div class="card">
-								<div class="card-body py-3 ms-auto d-print-none btn-list">
-									<span class="d-none d-sm-inline">
-										<button type="button" class="btn btn-white" id="downloadSchedule">
-											<img src="/resources/img/download.svg" class="icon"> 선택
-											일정 다운로드
+						<div class="col-9 row row-cards" id="data-area">
+					
+							<div class="col-12">
+								<div class="card">
+									<div class="card-header">
+										<h3 class="card-title">검수 일정</h3>
+									</div>
+									<div class="card-body py-3 ms-auto d-print-none btn-list">
+										<span class="d-none d-sm-inline">
+											<button type="button" class="btn btn-white" id="downloadSchedule">
+												<img src="/resources/img/download.svg" class="icon"> 선택
+												일정 다운로드
+											</button>
+										</span>
+										<button type="button"
+											class="btn btn-primary d-none d-sm-inline-block"
+											id="inputInspection">
+											<img src="/resources/img/upload.svg" class="icon"> 계획입력
 										</button>
-									</span>
-									<button type="button"
-										class="btn btn-primary d-none d-sm-inline-block"
-										id="inputInspection">
-										<img src="/resources/img/upload.svg" class="icon"> 계획입력
-									</button>
-								</div>
-								<div>
-									<table
-										class="table card-table table-vcenter text-nowrap datatable"
-										id="inspectionSchedule">
-										<thead>
-											<tr>
-												<th class="w-1"><input
-													class="form-check-input m-0 align-middle" type="checkbox"
-													aria-label="Select all invoices" name="selectedOrder"></th>
-												<th class="w-1">차수 <!-- Download SVG icon from http://tabler-icons.io/i/chevron-up -->
-													<svg xmlns="http://www.w3.org/2000/svg"
-														class="icon icon-sm text-dark icon-thick" width="24"
-														height="24" viewBox="0 0 24 24" stroke-width="2"
-														stroke="currentColor" fill="none" stroke-linecap="round"
-														stroke-linejoin="round">
-																			<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-																			<polyline points="6 15 12 9 18 15">
-																			</polyline>
-																		</svg>
-												</th>
-												<th>검수일자</th>
-												<th>수량</th>
-												<th>샘플개수</th>
-												<th>상태</th>
-												<th></th>
-											</tr>
-										</thead>
-										<tbody></tbody>
-									</table>
-								</div>
-								<div class="card-footer d-flex align-items-center">
-									<p class="m-0 text-muted hidden" id="entryInfo">
-										Showing <span id="showingEntry"></span> entries
-									</p>
+									</div>
+									<div>
+										<table
+											class="table card-table table-vcenter text-nowrap datatable"
+											id="inspectionSchedule">
+											<thead>
+												<tr>
+													<th class="w-1"><input
+														class="form-check-input m-0 align-middle" type="checkbox"
+														aria-label="Select all invoices" name="selectedOrder" id="select-all-checkbox"></th>
+														
+													<th>발주번호</th>
+													
+													<th class="w-1">차수 <!-- Download SVG icon from http://tabler-icons.io/i/chevron-up -->
+														<svg xmlns="http://www.w3.org/2000/svg"
+															class="icon icon-sm text-dark icon-thick" width="24"
+															height="24" viewBox="0 0 24 24" stroke-width="2"
+															stroke="currentColor" fill="none" stroke-linecap="round"
+															stroke-linejoin="round">
+																				<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+																				<polyline points="6 15 12 9 18 15">
+																				</polyline>
+																			</svg>
+													</th>
+													<th>검수일자</th>
+													<th>품목</th>
+													<th>발주 수량</th>
+													<th>검수 수량</th>
+													<th>샘플 수량</th>
+													<th>담당자</th>
+													<th>이메일</th>
+													<th>상태</th>
+													<th></th>
+												</tr>
+											</thead>
+											<tbody>
+												<c:forEach items="${ inspectionList }" var="inspection">
+													<tr id="inspectionInfo">
+													    <td>
+													        <input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select invoice" name="selectedInspection" value="${ inspection.inspectionNum }">
+													    </td>
+													    <td id="orderNum">${ inspection.orderNum }</td>
+													    <td id="inspectionNum">
+													        <span class="text-muted" id="inspectionNum">
+													            ${ inspection.inspectionNum }
+													        </span>
+													    </td>
+													    <td id="inspectionDate">${ inspection.inspectionDate }</td>
+													    <td id="partName">${ inspection.partName }</td>
+													    <td id="orderQuantity">${ inspection.orderQuantity }</td>
+													    <td id="inspectionQuantity">${ inspection.inspectionQuantity }</td>
+													    <td id="sampleQuantity">${ inspection.sampleQuantity }</td>
+													    <td id="emplName">${ inspection.emplName }</td>
+													    <td id="email">${ inspection.email }</td>
+													    <td id="progress">${ inspection.status }</td>
+													    <td class="text-end">
+													        <span class="dropdown">
+													            <button class="btn dropdown-toggle align-text-top" data-bs-boundary="viewport" data-bs-toggle="dropdown">
+													                Actions
+													            </button>
+													            <div class="dropdown-menu dropdown-menu-end">
+													                <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-report" id="showResultModal">
+													                    결과입력
+													                </button>
+													                <button type="button" class="dropdown-item" id="downloadResult">
+													                    결과 다운로드
+													                </button>
+													            </div>
+													        </span>
+													    </td>
+													    <input type="hidden" id="progress" name="progress" value="${data[key].progress}">
+													</tr>
+												</c:forEach>
+											</tbody>
+										</table>
+									</div>
+									<div class="card-footer d-flex align-items-center">
+										<p class="m-0 text-muted">
+											Showing <span>
+												<c:choose>
+													<c:when test="${ (pageNum - 1) * amount + inspectionList.size() eq 0}">
+														0
+													</c:when>
+													<c:otherwise>
+														${ (pageNum - 1) * amount + 1  }
+													</c:otherwise>
+												</c:choose>
+											</span> to <span>${ (pageNum - 1) * amount + inspectionList.size() }</span>
+											of <span>${ numberOfInspection }</span> entries
+										</p>
+										<ul class="pagination m-0 ms-auto">
+											<li
+												class="page-item <c:if test="${ pageInfo.curFirstPage le 1 }"> disabled </c:if>"><button
+													class="page-link page-prev" tabindex="-1"
+													aria-disabled="true">
+													<img src="/resources/img/chevron-left.svg"> prev
+												</button></li>
+											<c:forEach begin="${ pageInfo.curFirstPage }"
+												end="${ pageInfo.curLastPage }" var="num">
+												<c:if test="${ num eq pageInfo.curPageDto.pageNum }">
 
+												</c:if>
+												<c:choose>
+													<c:when test="${ num eq pageInfo.curPageDto.pageNum }">
+														<li class="page-item active"><button
+																class="page-link page-number">${ num }</button></li>
+													</c:when>
+													<c:otherwise>
+														<c:choose>
+															<c:when
+																test="${ pageInfo.curLastPage le pageInfo.lastPage }">
+																<li class="page-item"><button
+																		class="page-link page-number">${ num }</button></li>
+															</c:when>
+															<c:otherwise>
+																<li class="page-item disabled"><button
+																		class="page-link page-number">${ num }</button></li>
+															</c:otherwise>
+														</c:choose>
+													</c:otherwise>
+												</c:choose>
+											</c:forEach>
+
+											<li
+												class="page-item <c:if test="${ pageInfo.curLastPage ge pageInfo.lastPage }"> disabled </c:if>"><button
+													class="page-link page-next">
+													next <img src="/resources/img/chevron-right.svg">
+												</button></li>
+										</ul>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -163,9 +283,33 @@
 									</div>
 								</div>
 								<div class="mb-3">
-									<label class="form-label">검수수량</label> <input type="number"
+									<label class="form-label">발주수량</label> <input type="number"
 										id="inspectionQuantityModal" class="form-control rm-side"
 										readonly>
+								</div>
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="mb-3">
+											<label class="form-label">검수수량</label> <input type="number"
+												id="inspectionQuantityModal" class="form-control rm-side"
+												readonly>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="mb-3">
+											<label class="form-label">진도율
+												<label class="form-check form-check-inline float-end">
+					                                <input class="form-check-input" type="checkbox" id="self-insert-progress">
+					                                <span class="form-check-label">직접 입력</span>
+					                              </label>
+											</label>
+											<div class="input-group input-group-flat">
+												<input type="number" id="progressModal" step="0.1"
+													class="form-control rm-side" readonly> <span
+													class="input-group-text"> % </span>
+											</div>
+										</div>
+									</div>
 								</div>
 								<div class="row">
 									<div class="col-lg-6">
@@ -249,11 +393,6 @@
 	<script>
 		var orderNumVal = -1;
 
-		$("select[name=orderNum]").on("change", function() {
-			orderNumVal = $(this).val();
-			createRow (orderNumVal);
-		});
-
 		$("button#inputInspection").on("click", function() {
 			if ($("tr#inspectionInputTr").length != 0 || $("select[name=orderNum]").val() == 0) {
 				$("tr#inspectionInputTr").remove();
@@ -267,8 +406,37 @@
 					"orderNum" : orderNumVal
 				},
 				success : function(data) {
-					var elem = '<tr id="inspectionInputTr">' + '<td>' + '<input class="form-check-input m-0 align-middle"'
-						+			'type="checkbox" aria-label="Select invoice" name="selectedInspection">' + '</td>' + '<td id="inspectionNum">' + '<span class="text-muted" id="inspectionNum">' + data + '</span>' + '</td>' + '<td id="inspectionDate"><input type="date" class="form-control" name="inspectionDate"></td>' + '<td id="inspectionQuantity"><input type="number" class="form-control" name="inspectionQuantity"></td>' + '<td id="sampleQuantity"><input type="number" class="form-control" name="sampleQuantity"></td>' + '<td id="progress"></td>' + '<td class="text-end">' + '<span class="dropdown">' + '<button class="btn align-text-top" id="inspectionInputBtn">입력' + '</button>' + '</span>' + '</td>' + '</tr>';
+					var elem = '<tr id="inspectionInputTr">'
+					    + '    <td></td>'
+					    + '    <td id="orderNum">'
+					    + '        <select id="orderNum" class="form-select" name="orderNum">'
+					    + '            <option value="0">발주번호</option>'
+					    + '        </select>'
+					    + '    </td>'
+					    + '    <td id="inspectionNum"> '
+					    + '        <span class="text-muted" id="inspectionNum"> '
+					    + '        data'
+					    + '        </span> '
+					    + '    </td>'
+					    + '    <td id="inspectionDate"><input type="date" class="form-control" name="inspectionDate"></td> '
+					    + ''
+					    + '    <td id="partName"></td>'
+					    + '    <td id="orderQuantity"></td>'
+					    + '    '
+					    + '    <td id="inspectionQuantity"><input type="number" class="form-control" name="inspectionQuantity"></td> '
+					    + '    <td id="sampleQuantity"><input type="number" class="form-control" name="sampleQuantity"></td> '
+					    + ''
+					    + '    <td id="emplName"></td>'
+					    + '    <td id="email"></td>'
+					    + ''
+					    + '    <td id="status"></td> '
+					    + '    <td class="text-end"> '
+					    + '        <span class="dropdown">'
+					    + '            <button class="btn align-text-top" id="inspectionInputBtn">입력 '
+					    + '            </button> '
+					    + '        </span> '
+					    + '    </td> '
+					    + '</tr>';
 
 					$("table#inspectionSchedule tbody").append(elem);
 
@@ -290,6 +458,14 @@
 					});
 				}
 			});
+		});
+		
+		$("input#select-all-checkbox").on("change", function(event) {
+			if ($(event.target).is(":checked")) {
+				$("input[name=selectedInspection]").prop("checked", true);
+			} else {
+				$("input[name=selectedInspection]").prop("checked", false);
+			}
 		});
 
 		$("textarea#complementModal").on("click keyup focus", function(event) {
@@ -319,6 +495,14 @@
 			}
 			
 			location.href = url;
+		});
+		
+		$("input#self-insert-progress").on("change", function(event) {
+			if ($(event.target).is(":checked")) {
+				$(event.target).closest(".col-lg-6").find("input#progressModal").prop("readonly", false);
+			} else {
+				$(event.target).closest(".col-lg-6").find("input#progressModal").prop("readonly", true);
+			}
 		});
 		
 		function createRow(orderNumVal) {
@@ -351,12 +535,24 @@
 						if (data[key].inspectionNum != null) {
 
 							elem += '<tr id="inspectionInfo">' + '<td>' + '<input class="form-check-input m-0 align-middle"'
-									+			'type="checkbox" aria-label="Select invoice" name="selectedInspection" value="' + data[key].inspectionNum +'">' + '</td>' + '<td id="inspectionNum">' + '<span class="text-muted" id="inspectionNum">' + data[key].inspectionNum + '</span>' + '</td>' + '<td id="inspectionDate">' + data[key].inspectionDate + '</td>' + '<td id="inspectionQuantity">' + data[key].inspectionQuantity + '</td>' + '<td id="sampleQuantity">' + data[key].sampleQuantity + '</td>' + '<td id="progress">' + data[key].progress + '</td>' 
+									+			'type="checkbox" aria-label="Select invoice" name="selectedInspection" value="' + data[key].inspectionNum +'">' + '</td>'
+									+ '<td id="orderNum">' + data[key].orderNum + '</td>'
+									+ '<td id="inspectionNum">' + '<span class="text-muted" id="inspectionNum">' + data[key].inspectionNum + '</span>' + '</td>'
+									+ '<td id="inspectionDate">' + data[key].inspectionDate + '</td>'
+									+ '<td id="partName">' + data[key].partName + '</td>'
+									+ '<td id="orderQuantity">' + data[key].orderQuantity + '</td>' 
+									+ '<td id="inspectionQuantity">' + data[key].inspectionQuantity + '</td>' 
+									+ '<td id="sampleQuantity">' + data[key].sampleQuantity + '</td>'
+									+ '<td id="emplName">' + data[key].emplName + '</td>'
+									+ '<td id="email">' + data[key].email + '</td>'
+									+ '<td id="progress">' + data[key].status + '</td>'
 									+ '<td class="text-end">' + '<span class="dropdown">' + '<button class="btn dropdown-toggle align-text-top"'
 									+				'data-bs-boundary="viewport" data-bs-toggle="dropdown">Actions' + '</button>'
 									+ '<div class="dropdown-menu dropdown-menu-end">'
 									+ '<button type="button" class="dropdown-item"'
-									+					'data-bs-toggle="modal" data-bs-target="#modal-report" id="showResultModal">' + '결과입력' + '</button>' + '<button type="button" class="dropdown-item" id="downloadResult">' + '결과 다운로드' + '</button>' + '</div>' + '</span>' + '</td>' + '</tr>';
+									+					'data-bs-toggle="modal" data-bs-target="#modal-report" id="showResultModal">' + '결과입력' + '</button>' + '<button type="button" class="dropdown-item" id="downloadResult">' + '결과 다운로드' + '</button>' + '</div>' + '</span>' + '</td>'
+									+ '<input type="hidden" id="progress" name="progress" value="' + data[key].progress + '">'
+							 		+ '</tr>';
 
 						}
 					}
@@ -379,6 +575,7 @@
 
 						$("input#orderNumModal").val(orderNumVal);
 						$("input#inspectionNumModal").val($thisInspection.find("span#inspectionNum").text());
+						$("input#progressModal").val(parseInt($thisInspection.find("input#progress").val()));
 						$("input#inspectionQuantityModal").val($thisInspection.find("td#inspectionQuantity").text());
 						$("input#sampleQuantityModal").val($thisInspection.find("td#sampleQuantity").text());
 						$("input#sampleRatioModal").val(parseInt($thisInspection.find("td#sampleQuantity").text()) * 1.0 / parseInt($thisInspection.find("td#inspectionQuantity").text()) * 100);
@@ -407,6 +604,43 @@
 				}
 			});
 		}
+		
+		$("button#search-button").on("click", function() {
+			// var url = window.location.href;
+			var url = window.location.protocol + "//" + window.location.host + window.location.pathname;
+			
+			$("div.row-searcher select").each(function(index, value) {
+				if ($(value).val() != 0 && $(value).val() != null) {
+					var inputName = $(value).attr("name");
+					
+					if (url.indexOf(inputName) != -1) {
+						var regex = new RegExp(inputName + "=[^&]+", "g");
+						url = url.replace(regex, inputName + "=" + $(value).val());
+					} else if (url.match(/[?].+[=].+/)) {
+						url = url + "&" + inputName + "=" + $(value).val();
+					} else {
+						url = url + "?" + inputName + "=" + $(value).val();
+					}
+				}
+			});
+			
+			$("div.row-searcher input").each(function(index, value) {
+				var inputName = $(value).attr("name");
+				
+				if (!(/^\s*$/).test($(value).val())) {
+					
+					if (url.indexOf(inputName) != -1) {
+						var regex = new RegExp(inputName + "=[^&]+", "g");
+						url = url.replace(regex, inputName + "=" + $(value).val());
+					} else if (url.match(/[?].+[=].+/)) {
+						url = url + "&" + inputName + "=" + $(value).val();
+					} else {
+						url = url + "?" + inputName + "=" + $(value).val();
+					}
+				}
+			});
+			location.href = url;
+		});
 	</script>
 </body>
 </html>
