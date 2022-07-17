@@ -17,8 +17,16 @@ public class InspectionService extends com.mit.service.Service {
 	InspectionDAO inspectionDao;
 	
 	
-	public List<OrderDTO> getNotFinishedOrder() {
-		return inspectionDao.getNotFinishedOrder();
+	public List<OrderDTO> getOrderAllNum() {
+		return inspectionDao.getOrderAllNum();
+	}
+	
+	public Long countInspection(InspectionDTO inspectionDto) {
+		return inspectionDao.countInspection(inspectionDto);
+	}
+	
+	public List<InspectionDTO> getInspection(InspectionDTO inspectionDto) {
+		return inspectionDao.getInspection(inspectionDto);
 	}
 	
 	public List<InspectionDTO> getInspectionByOrderNum(InspectionDTO inspectionDto) {

@@ -3,7 +3,11 @@ package com.mit.model;
 import java.util.List;
 
 public interface InspectionDAO {
-	public List<OrderDTO> getNotFinishedOrder();
+	public List<OrderDTO> getOrderAllNum();
+	
+	public List<InspectionDTO> getInspection(InspectionDTO inspectionDto);
+	
+	public Long countInspection(InspectionDTO inspectionDto);
 	
 	public List<InspectionDTO> getInspectionByOrderNum(InspectionDTO inspectionDto);
 	

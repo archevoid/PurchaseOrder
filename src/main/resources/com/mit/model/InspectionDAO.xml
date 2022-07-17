@@ -4,17 +4,34 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
 <mapper namespace="com.mit.model.InspectionDAO">
-	<select id="getNotFinishedOrder" resultType="com.mit.model.OrderDTO">
-		SELECT p.order_num AS orderNum
-		    , pt.partname AS partName
-		FROM purchase_order p INNER JOIN tbl_support sp ON p.support_num = sp.supportno
-		    INNER JOIN tbl_part pt ON pt.partcode = sp.partcode
-		    LEFT JOIN (SELECT i.order_num AS order_num, COUNT(i.inspection_num) AS countInspection, COUNT(ir.inspection_num) AS countResult
-		        FROM inspection i INNER JOIN inspection_result ir ON i.order_num = ir.order_num
-		        GROUP BY i.order_num) sc ON p.order_num = sc.order_num
-		<![CDATA[
-			WHERE sysdate < sp.deliverydate OR sc.countInspection != sc.countResult
-		]]>
+		
+	<sql id="searchInspection">
+		<trim prefixOverrides="AND">
+			<if test="initialInspectionDate != null">
+			<![CDATA[
+				AND #{ initialInspectionDate } < i.inspection_date
+			]]>
+			</if>
+			<if test="finalInspectionDate != null">
+			<![CDATA[
+				AND i.inspection_date < #{ finalInspectionDate }
+			]]>
+			</if>
+			<if test="orderNum != null">
+				AND i.order_num = #{ orderNum }
+			</if>
+			<if test="inspectionNum != null">
+				AND i.inspection_num = #{ inspectionNum }
+			</if>
+		</trim>
+	</sql>
+
+
+	<select id="getOrderAllNum" resultType="com.mit.model.OrderDTO">
+		SELECT i.order_num AS orderNum
+		    , MAX(ir.close)
+		FROM inspection i INNER JOIN inspection_result ir ON i.order_num = ir.order_num
+		GROUP BY i.order_num
 	</select>
 	
 	<select id="getInspectionByOrderNum" resultType="com.mit.model.InspectionDTO">
@@ -27,37 +44,77 @@
 		    , i.inspection_date AS inspectionDate
 		    , i.inspection_quantity AS inspectionQuantity
 		    , i.sample_quantity AS sampleQuantity
-	    	, CASE 
-                WHEN (SELECT COUNT(*) 
-                	FROM inspection ip INNER JOIN inspection_result ipr 
-                		ON ip.order_num = ipr.order_num AND ip.inspection_num = ipr.inspection_num 
-                		WHERE ip.order_num = p.order_num) != 0 THEN '종료'
-            <![CDATA[
-	    		WHEN sysdate < i.inspection_date THEN '시작 전'
-	    		WHEN sysdate > p.due_date THEN '종료 후'
-    		]]>
-	    		ELSE '진행 중' END AS progress
+		    , NVL((SELECT SUM(ip.inspection_quantity) FROM inspection ip WHERE ip.order_num = p.order_num) / sp.requirement * 100, 0) AS progress
+	    	, CASE WHEN (SELECT 1 FROM inspection ip 
+				WHERE ip.order_num = i.order_num 
+					AND ip.inspection_num = i.inspection_num 
+					AND ip.inspection_num IN (SELECT ipr.inspection_num FROM inspection_result ipr WHERE ipr.order_num = ip.order_num))
+				= 1 THEN '종료'
+		<![CDATA[
+    		WHEN sysdate < i.inspection_date THEN '시작 전'
+    		WHEN sysdate > sp.deliverydate THEN '종료 후'
+		]]>
+    		ELSE '진행 중' END AS status
 		FROM inspection i RIGHT JOIN purchase_order p ON p.order_num = i.order_num 
 		    INNER JOIN employee e ON p.empl_num = e.empl_num
 		    INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
 		    INNER JOIN tbl_part pt ON ct.partcode = pt.partcode
 		    INNER JOIN tbl_support sp ON sp.supportno = p.support_num
-		WHERE p.order_num = #{ orderNum }
-		<choose>
-			<when test="inspectionNum != null">
-				AND i.inspection_num = #{ inspectionNum }
-			</when>
-			<when test="inspectionNumList != null">
-				<trim prefix="AND (" suffix=")">
-					<trim prefixOverrides="OR">
-						<foreach collection="inspectionNumList" item="unitNum">
-							OR i.inspection_num = #{ unitNum }
-						</foreach>
-					</trim>
+		
+		<if test="inspectionNumList != null">
+			<trim prefix="AND (" suffix=")">
+				<trim prefixOverrides="OR">
+					<foreach collection="inspectionNumList" item="unitNum">
+						OR i.inspection_num = #{ unitNum }
+					</foreach>
 				</trim>
-			</when>
-		</choose>
+			</trim>
+		</if>
 		ORDER BY i.inspection_num ASC
+	</select>
+	
+	<select id="getInspection" resultType="com.mit.model.InspectionDTO">
+		SELECT p.order_num AS orderNum
+		    , e.empl_name AS emplName
+		    , e.empl_email AS email
+		    , pt.partName AS partName
+		    , p.order_quantity AS orderQuantity
+		    , i.inspection_num AS inspectionNum
+		    , i.inspection_date AS inspectionDate
+		    , i.inspection_quantity AS inspectionQuantity
+		    , i.sample_quantity AS sampleQuantity
+		    , NVL((SELECT SUM(ip.inspection_quantity) FROM inspection ip WHERE ip.order_num = p.order_num) / sp.requirement * 100, 0) AS progress
+	    	, CASE WHEN (SELECT 1 FROM inspection ip 
+				WHERE ip.order_num = i.order_num
+					AND ip.inspection_num = i.inspection_num 
+					AND ip.inspection_num IN (SELECT ipr.inspection_num FROM inspection_result ipr WHERE ipr.order_num = ip.order_num))
+				= 1 THEN '종료'
+		<![CDATA[
+    		WHEN sysdate < i.inspection_date THEN '시작 전'
+    		WHEN sysdate > sp.deliverydate THEN '종료 후'
+		]]>
+    		ELSE '진행 중' END AS status
+		FROM purchase_order p INNER JOIN inspection i ON p.order_num = i.order_num 
+		    INNER JOIN employee e ON p.empl_num = e.empl_num
+		    INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
+		    INNER JOIN tbl_part pt ON ct.partcode = pt.partcode
+		    INNER JOIN tbl_support sp ON sp.supportno = p.support_num
+		<trim prefix="WHERE">
+			<include refid="searchInspection" />
+		</trim>
+		ORDER BY i.inspection_num ASC
+	</select>
+	
+	<select id="countInspection" resultType="long">
+		SELECT COUNT(*)
+		FROM purchase_order p INNER JOIN inspection i ON p.order_num = i.order_num 
+		    INNER JOIN employee e ON p.empl_num = e.empl_num
+		    INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
+		    INNER JOIN tbl_part pt ON ct.partcode = pt.partcode
+		    INNER JOIN tbl_support sp ON sp.supportno = p.support_num
+		<trim prefix="WHERE">
+			<include refid="searchInspection" />
+		</trim>
 	</select>
 	
 	<select id="getInspectionResult" resultType="com.mit.model.InspectionDTO">

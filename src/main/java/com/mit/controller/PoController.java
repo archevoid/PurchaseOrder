@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mit.model.CurPageDTO;
+import com.mit.model.InspectionDTO;
 import com.mit.model.OrderDTO;
 import com.mit.model.PageDTO;
 import com.mit.model.PlanDTO;
@@ -120,8 +121,17 @@ public class PoController {
 	}
 	
 	@GetMapping("/inspection")
-	public void goInspection(Model m) {
-		m.addAttribute("orderList", is.getNotFinishedOrder());
+	public void goInspection(CurPageDTO curPageDto, InspectionDTO inspectionDto, Model m) {
+		
+		m.addAttribute("orderNumList", is.getOrderAllNum());
+		
+		inspectionDto.setCurPageDto(curPageDto);
+		
+		Long numberOfInspection = is.countInspection(inspectionDto);
+		
+		m.addAttribute("pageInfo", new PageDTO(curPageDto, numberOfInspection));
+		
+		m.addAttribute("inspectionList", is.getInspection(inspectionDto));
 	}
 	
 	

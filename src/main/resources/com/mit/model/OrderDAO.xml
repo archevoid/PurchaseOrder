@@ -16,6 +16,16 @@
 				AND sp.deliverydate < #{ finalDueDate }
 			]]>
 			</if>
+			<if test="initialOrderDate != null">
+			<![CDATA[
+				AND #{ initialOrderDate } < p.order_date
+			]]>
+			</if>
+			<if test="finalOrderDate != null">
+			<![CDATA[
+				AND p.order_date < #{ finalOrderDate }
+			]]>
+			</if>
 			<if test="partName != null">
 				AND pt.partname LIKE '%'||#{ partName }||'%'
 			</if>
