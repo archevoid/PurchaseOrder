@@ -133,10 +133,18 @@
 															<td class="sort-requirement" id="requirement">${ plan.requirement }</td>
 															<td class="sort-sum" id="sum">${ plan.sum }</td>
 															<td class="text-end">
-																<button type="button" class="btn" id="show-input">
-																	<img src="/resources/img/row-insert-top.svg"
-																		class="icon"> 발주 입력
-																</button>
+																<c:if test="${ plan.inputQuantity eq plan.requirement }">
+																	<button type="button" class="btn" id="show-input" disabled>
+																		<img src="/resources/img/row-insert-top.svg"
+																			class="icon"> 입력 완료
+																	</button>
+																</c:if>
+																<c:if test="${ plan.inputQuantity ne plan.requirement }">
+																	<button type="button" class="btn" id="show-input">
+																			<img src="/resources/img/row-insert-top.svg"
+																				class="icon"> 발주 입력
+																	</button>
+																</c:if>
 															</td>
 														</tr>
 													</c:forEach>
@@ -379,6 +387,20 @@
 			$("button#order-insert").on("click", function(event) {
 				var $closeCard = $(event.target).closest("div#order-input");
 				
+				if ($("input#companyName").length == 0) {
+					alert("협력회사를 선택해주세요");
+					return;
+				} else if ($closeCard.find("select[name=emplNum]").val() == 0) {
+					alert("담당자를 선택해주세요");
+					return;
+				} else if ($closeCard.find("input[name=orderDate]").val() == null || $closeCard.find("input[name=orderDate]").val() == "") {
+					alert("발주일자를 입력해주세요");
+					return;
+				} else if ($closeCard.find("input[name=orderQuantity]").val() == null || $closeCard.find("input[name=orderQuantity]").val() == "") {
+					alert("발주수량을 입력해주세요");
+					return;
+				} 
+				
 				$.ajax({
 					url : "/api/inputOrder",
 					type : "POST",
@@ -412,6 +434,11 @@
 							"planNum" : $("span#input-form-planNum").text()
 						},
 						success : function(data) {
+							if (Object.keys(data).length == 0) {
+								alert("해당물품을 계약한 회사가 없습니다.");
+							}
+							
+							
 							for (var i = 0; i < Object.keys(data).length; i++) {
 	
 								var elem = makeCompanyCard(data[i]);
