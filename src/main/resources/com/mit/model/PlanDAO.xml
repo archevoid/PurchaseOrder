@@ -69,6 +69,12 @@
 		WHERE s.supportno = #{ planNum }
 	</select>
 	
+	<select id="getPartInPlan" resultType="com.mit.model.PlanDTO">
+		SELECT pt.partname
+			, pt.partcode
+		FROM tbl_part pt
+	</select>
+	
 	<select id="getCompanyInfo" resultType="com.mit.model.CompanyDTO">
 		SELECT ct.contractNo AS contractNum
 			, ct.unitprice AS unitPrice

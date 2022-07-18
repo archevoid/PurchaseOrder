@@ -19,18 +19,26 @@
 	
 	<!-- SMTP 이메일 / 비밀번호 -->
 	<bean id="SMTP_ID" class="java.lang.String">
-		<constructor-arg value="id" />
+		<constructor-arg value="jicmu" />
 	</bean>
 	<bean id="SMTP_PW" class="java.lang.String">
-		<constructor-arg value="pw" />
+		<constructor-arg value="" />
 	</bean>
 	
 	<!-- Password찾기 페이지 이메일 -->
 	<bean id="FROM_PASSWORD" class="java.lang.String">
-		<constructor-arg value="email" />
+		<constructor-arg value="" />
 	</bean>
 	<bean id="FROM_NAME_PASSWORD" class="java.lang.String">
-		<constructor-arg value= "name" />
+		<constructor-arg value= "jicmu" />
+	</bean>
+	
+	<!-- 발주서 페이지 이메일 -->
+	<bean id="FROM_ORDER" class="java.lang.String">
+		<constructor-arg value="jicmu@naver.com" />
+	</bean>
+	<bean id="FROM_NAME_ORDER" class="java.lang.String">
+		<constructor-arg value= "jicmu" />
 	</bean>
 	
 	
@@ -39,13 +47,13 @@
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
 		
 		
-		<!-- <property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.0.30:1521:xe"></property>
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.0.30:1521:xe"></property>
 		<property name="username" value="k2" />
-		<property name="password" value="mit" /> -->
+		<property name="password" value="mit" />
 		
-		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:xe"></property>
+		<!-- <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:xe"></property>
 		<property name="username" value="teamfos" />
-		<property name="password" value="teamfos1234" />
+		<property name="password" value="teamfos1234" /> -->
 	</bean>
 	
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">

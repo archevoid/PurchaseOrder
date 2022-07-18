@@ -28,6 +28,10 @@ public class PlanService extends com.mit.service.Service {
 		return planDao.countPlan(planDto);
 	}
 	
+	public List<PlanDTO> getPartInPlan(PlanDTO planDto) {
+		return planDao.getPartInPlan();
+	}
+	
 	
 	
 	public Long[] getAllPlanNum() {

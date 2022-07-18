@@ -86,6 +86,8 @@ public class FileController {
 	
 	@GetMapping("inspectionResult")
 	public String getInspectionResultExcel(InspectionDTO inspectionDto, HttpServletResponse response) {
+		System.out.println(inspectionDto);
+		
 		InspectionDTO valueList = is.getInspectionResult(inspectionDto);
 		
 		HashMap<String, InspectionDTO> valueMap = new HashMap<String, InspectionDTO>();

@@ -170,6 +170,45 @@
 		    <version>${com.mit.poi-version}</version>
 		</dependency>
 		
+		
+		<!-- pdf 라이브러리 -->
+		<!-- https://mvnrepository.com/artifact/com.itextpdf/itextpdf -->
+	  <dependency>
+	      <groupId>com.itextpdf</groupId>
+	      <artifactId>itextpdf</artifactId>
+	      <version>5.5.13</version>
+	  </dependency>
+	  
+	  <!-- https://mvnrepository.com/artifact/com.itextpdf/itext-pdfa -->
+	  <dependency>
+	      <groupId>com.itextpdf</groupId>
+	      <artifactId>itext-pdfa</artifactId>
+	      <version>5.5.13</version>
+	  </dependency>
+	  
+	  <!-- https://mvnrepository.com/artifact/com.itextpdf/itext-xtra -->
+	  <dependency>
+	      <groupId>com.itextpdf</groupId>
+	      <artifactId>itext-xtra</artifactId>
+	      <version>5.5.13</version>
+	  </dependency>
+	    
+	  <!-- https://mvnrepository.com/artifact/com.itextpdf.tool/xmlworker -->
+	  <dependency>
+	      <groupId>com.itextpdf.tool</groupId>
+	      <artifactId>xmlworker</artifactId>
+	      <version>5.5.13</version>
+	  </dependency>
+	  
+	  <!--  hwp 라이브러리 -->
+	  <!-- https://mvnrepository.com/artifact/kr.dogfoot/hwplib -->
+		<dependency>
+		    <groupId>kr.dogfoot</groupId>
+		    <artifactId>hwplib</artifactId>
+		    <version>1.1.1</version>
+		</dependency>
+	  
+		
 		<!-- /추가한 라이브러리 -->
 		
 		<!-- Spring -->

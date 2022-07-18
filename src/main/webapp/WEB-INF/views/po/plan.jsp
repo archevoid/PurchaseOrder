@@ -72,7 +72,7 @@
 								</div>
 								<div class="col-6">
 									<div class="mb-3">
-										<input type="text" id="product-selecteor-widest" class="form-control select-searcher" name="widestName" value="${ widestName }">
+										<input type="text" id="product-selecteor-widest" class="form-control select-searcher" name="widestName" value="${ param.widestName }">
 									</div>
 								</div>
 							</div>
@@ -98,7 +98,12 @@
 									<div class="mb-3">
 										<select id="product-narrowest" class="form-select" name="partCode">
 											<option value="0">선택</option>
-											<%-- foreach문 으로 가져오기 --%>
+											<c:forEach items="${ partList }" var="part">
+												<option value="${ part.partCode }" <c:if test="${ param.partCode eq part.partCode }">selected</c:if>>
+													${ part.partName }
+												</option>
+											</c:forEach>
+											
 										</select>
 									</div>
 								</div>
@@ -301,15 +306,19 @@
 		        + ' </div>' 
 		        + ' <div class="card-body">' 
 		        + ' <div class="form-group mb-4 row border-bottom p-3">' 
-		        + ' <div class="col-lg-4">' 
+		        + ' <div class="col-lg-3">' 
 		        + ' <label class="form-label col-3 col-form-label">품목</label>' 
 		        + ' <input type="text" id="partName" class="form-control" value="" readonly>' 
 		        + ' </div>' 
-		        + ' <div class="col-lg-4">' 
-		        + ' <label class="form-label col-3 col-form-label">조달납기</label>' 
+		        + ' <div class="col-lg-3">' 
+		        + ' <label class="form-label col-3 col-form-label">납기</label>' 
 		        + ' <input type="date" id="dueDate" class="form-control" value="" name="dueDate" readonly>' 
 		        + ' </div>' 
-		        + ' <div class="col-lg-4">' 
+		        + ' <div class="col-lg-3">' 
+		        + ' <label class="form-label col-3 col-form-label">잔여량</label>' 
+		        + ' <input type="number" id="remainQuantity" class="form-control" value="" name="remainQuantity" readonly>' 
+		        + ' </div>' 
+		        + ' <div class="col-lg-3">' 
 		        + ' <label class="form-label col-3 col-form-label">요구량</label>' 
 		        + ' <input type="number" id="requirement" class="form-control" value="" readonly>' 
 		        + ' </div>'
@@ -398,6 +407,8 @@
 
 			});
 			
+			remainQuantity();
+			
 			$("button#order-insert").on("click", function(event) {
 				var $closeCard = $(event.target).closest("div#order-input");
 				
@@ -417,7 +428,6 @@
 						setTimeout(function() { $closeCard.removeClass("bg-primary-lt") }, 1000);
 						
 						remainQuantity();
-						refreshTotalPrice();
 					}
 				});
 			});
@@ -449,7 +459,7 @@
 									$selectedCompany = $(event.target).closest("div.card-plan");
 									
 									var companyName = $selectedCompany.find("h3.card-title").text();
-									var contractNum = $selectedCompany.find("input[name=code]").val();
+									var contractNum = $selectedCompany.find("input[name=contractNum]").val();
 									var unitPrice = $selectedCompany.find("span#unitPrice").text();
 									
 									var companyNameTag = '<input type="text" id="companyName" class="form-control" value="' + companyName + '" name="companyName" readonly>'
@@ -542,7 +552,6 @@
 						$("#requirement").text(data.requirement);
 
 						remainQuantity();
-						refreshTotalPrice();
 					}
 				})
 

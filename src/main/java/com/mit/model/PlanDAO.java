@@ -7,7 +7,7 @@ public interface PlanDAO {
 	
 	Long countPlan(PlanDTO planDto);
 
-	
+	List<PlanDTO> getPartInPlan();
 	
 	
 	Long[] getAllPlanNum();
