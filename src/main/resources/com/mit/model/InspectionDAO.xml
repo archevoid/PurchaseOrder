@@ -28,10 +28,8 @@
 
 
 	<select id="getOrderAllNum" resultType="com.mit.model.OrderDTO">
-		SELECT i.order_num AS orderNum
-		    , MAX(ir.close)
-		FROM inspection i INNER JOIN inspection_result ir ON i.order_num = ir.order_num
-		GROUP BY i.order_num
+		SELECT DISTINCT p.order_num AS orderNum
+		FROM purchase_order p
 	</select>
 	
 	<select id="getInspectionByOrderNum" resultType="com.mit.model.InspectionDTO">
@@ -115,6 +113,22 @@
 		<trim prefix="WHERE">
 			<include refid="searchInspection" />
 		</trim>
+	</select>
+	
+	<select id="getOrderNum" resultType="com.mit.model.InspectionDTO">
+		SELECT DISTINCT p.order_num AS orderNum
+			, CASE WHEN (SELECT 1 FROM inspection ip 
+				WHERE ip.order_num = i.order_num
+					AND ip.inspection_num = i.inspection_num 
+					AND ip.inspection_num IN (SELECT ipr.inspection_num FROM inspection_result ipr WHERE ipr.order_num = ip.order_num))
+				= 1 THEN '종료'
+			<![CDATA[
+	    		WHEN sysdate < i.inspection_date THEN '시작 전'
+    			WHEN sysdate > sp.deliverydate THEN '종료 후'
+			]]>
+    			ELSE '진행 중' END AS status
+		FROM purchase_order p LEFT JOIN inspection i ON p.order_num = i.order_num
+			INNER JOIN tbl_support sp ON sp.supportno = p.support_num 
 	</select>
 	
 	<select id="getInspectionResult" resultType="com.mit.model.InspectionDTO">
