@@ -80,12 +80,18 @@ public class ApiController {
 	
 	@PostMapping("remainQuantity")
 	public String getRemainQuantity(PlanDTO planDto) {
+		System.out.println(planDto);
 		return ps.getRemainQuantity(planDto) + "";
 	}
 	
 	@PostMapping("orderList")
 	public List<OrderDTO> getOrderList(Date date) {
 		return os.getOrderByMonth(date);
+	}
+	
+	@PostMapping("orderNum")
+	public List<InspectionDTO> getOrderNum() {
+		return is.getOrderNum();
 	}
 	
 	@PostMapping("currentOrder")
@@ -105,11 +111,21 @@ public class ApiController {
 	
 	@PostMapping("inputInspection")
 	public Integer insertInspection(InspectionDTO inspectionDto) {
+		System.out.println(inspectionDto);
 		return is.insertInspectionSchedule(inspectionDto);
 	}
 	
 	@PostMapping("inputResult")
 	public Integer insertInspectionResult(InspectionDTO inspectionDto) {
 		return is.insertInspectionResult(inspectionDto);
+	}
+	
+	@PostMapping("sendOrder")
+	public void sendOrder(String elem, String to) {
+		try {
+			os.sendOrder(elem, to);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

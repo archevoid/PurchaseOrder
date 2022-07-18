@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 public class PlanDTO {
 	// planNum: support_num or supportNo를 위한 변수
-	private Long partCode;
+	private String partCode;
 	
 	/* TBL_Contract */
 	private Long contractNo;

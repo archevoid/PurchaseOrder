@@ -220,9 +220,9 @@ function remainQuantity() {
 	$.ajax({
 		url: "/api/remainQuantity",
 		type: "POST",
-		data: { "planNum" : $("select[name=planNum]").val() },
+		data: { "planNum" : $("span#input-form-planNum").text() },
 		success: function(data) {
-			$("td#remainQuantity").text(data);
+			$("input#remainQuantity").val(data);
 		}
 	});
 }

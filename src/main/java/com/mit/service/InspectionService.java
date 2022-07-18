@@ -33,6 +33,10 @@ public class InspectionService extends com.mit.service.Service {
 		return inspectionDao.getInspectionByOrderNum(inspectionDto);
 	}
 	
+	public List<InspectionDTO> getOrderNum() {
+		return inspectionDao.getOrderNum();
+	}
+	
 	public InspectionDTO getInspectionResult(InspectionDTO inspectionDto) {
 		return inspectionDao.getInspectionResult(inspectionDto);
 	}

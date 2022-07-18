@@ -35,7 +35,6 @@ public abstract class NEmailService extends EmailService {
 	}
 	
 	public void sendMail(MimeMessage message) throws Exception {
-		
 		Transport transport = this.getSession().getTransport();
 		
 		transport.connect(this.HOST, this.SMTP_ID, this.SMTP_PW);
