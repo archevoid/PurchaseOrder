@@ -32,15 +32,18 @@
 			, tbl.dueDate AS dueDate
 			, tbl.partname AS partName
 			, tbl.sum AS sum
+			, tbl.inputQuantity AS inputQuantity
 		FROM (SELECT sp.supportno AS planNum
 			, sp.requirement AS requirement
 			, sp.deliverydate AS dueDate
 			, pt.partname AS partName
 			, tbl.sum AS sum
+			, tb.inputQuantity AS inputQuantity
 			, ROWNUM as rn
 		FROM tbl_support sp INNER JOIN tbl_part pt ON sp.partcode = pt.partcode
 			LEFT JOIN (SELECT p.support_num AS planNum,  ct.unitprice * p.order_quantity AS sum FROM purchase_order p INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno) tbl
 				ON tbl.planNum = sp.supportno
+			LEFT JOIN (SELECT SUM(p.order_quantity) AS inputQuantity, p.support_num AS support_num FROM purchase_order p GROUP BY p.support_num) tb ON tb.support_num = sp.supportno
 		<trim prefix="WHERE">
 			<include refid="searchPlan" />
 		</trim>

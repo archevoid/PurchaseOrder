@@ -80,7 +80,6 @@ public class ApiController {
 	
 	@PostMapping("remainQuantity")
 	public String getRemainQuantity(PlanDTO planDto) {
-		System.out.println(planDto);
 		return ps.getRemainQuantity(planDto) + "";
 	}
 	

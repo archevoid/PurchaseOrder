@@ -182,12 +182,12 @@
 													            </button>
 													            <div class="dropdown-menu dropdown-menu-end">
 													                <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-report" id="showResultModal"
-													                <c:if test="${ inspection.status.equals("종료") }">disabled</c:if>
+													                <c:if test="${ inspection.status eq '종료' }">disabled</c:if>
 													                >
 													                    결과입력
 													                </button>
 													                <button type="button" class="dropdown-item" id="downloadResult"
-													                <c:if test="${ !inspection.status.equals("종료") }">disabled</c:if>>
+													                <c:if test="${ inspection.status ne '종료' }">disabled</c:if>>
 													                    결과 다운로드
 													                </button>
 													            </div>
@@ -477,6 +477,10 @@
 		</div>
 	</div>
 	<script>
+		$("input#sampleQuantityModalInput, input#inspectionQuantityModalInput").on("change keyup focus", function(event) {
+			$("input#sampleRatioModalInput").val($("input#sampleQuantityModalInput").val() / $("input#inspectionQuantityModalInput").val() * 100);
+		});
+	
 		var orderNumVal = -1;
 		$("select#selectedOrderNum").on("change", function(event) {
 			$.ajax({
@@ -500,6 +504,20 @@
 		});
 
 		$("button#inspectionInputBtn").on("click", function() {
+			if ($("select[name=selectedOrderNum]").val() == 0) {
+				alert("발주번호를 선택해주세요");
+				return;
+			} else if ($("input[name=inspectionDateModalInput]").val() == null || $("input[name=inspectionDateModalInput]").val() == "") {
+				alert("발주일자를 입력해주세요");
+				return;
+			} else if ($("input[name=inspectionQuantityModalInput]").val() == null || $("input[name=inspectionQuantityModalInput]").val() == "") {
+				alert("검수수량을 입력해주세요");
+				return;
+			} else if ($("input[name=sampleQuantityModalInput]").val() == null || $("input[name=sampleQuantityModalInput]").val() == "") {
+				alert("샘플수량을 입력해주세요");
+				return;
+			}
+			
 			$.ajax({
 				url : "/api/inputInspection",
 				type : "post",
@@ -510,11 +528,10 @@
 					"sampleQuantity" : $("input[name=sampleQuantityModalInput]").val()
 				},
 				success : function(data) {
-					
+					location.reload();
 				}
 			});
 			
-			location.reload();
 		});
 		
 		$("input#select-all-checkbox").on("change", function(event) {
@@ -539,6 +556,10 @@
 		});
 		
 		$("button#downloadSchedule").on("click", function() {
+			if ($("input[name=selectedInspection]:checked").length == 0) {
+				alert("검수를 선택해주세요");
+				return;
+			}
 			
 			var checkedNum = [];
 			$("input[name=selectedInspection]:checked").each(function(index) {
@@ -600,7 +621,11 @@
 			});
 
 			$("button#insertResultBtn").on("click", function() {
-
+				if ($("input#defectQuantityModal").val() == null || $("input#defectQuantityModal").val() == "") {
+					alert("불량수량을 입력하세요");ㅣ
+					return;
+				}
+				
 				var checked = $("input#finalInspection").is(":checked") ? 1 : 0;
 				$.ajax({
 					url : "/api/inputResult",
@@ -611,10 +636,13 @@
 						"inspectionDefect" : $("input#defectQuantityModal").val(),
 						"complement" : $("textarea#complementModal").val(),
 						"close" : checked
+					},
+					success : function(data) {
+						location.reload();
 					}
+				
 				});
 				
-				location.reload();
 			});
 		});
 		

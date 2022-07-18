@@ -39,6 +39,8 @@ public class PlanDTO {
 	
 	private Long sum;
 	
+	private Long inputQuantity;
+	
 	
 	/* 대분류 중분류 추가 */
 }
