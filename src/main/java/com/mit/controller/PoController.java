@@ -69,6 +69,8 @@ public class PoController {
 		currency.put("other", '\u00A4');
 		
 		m.addAttribute("currency", currency);
+		
+		m.addAttribute("partList", ps.getPartInPlan(planDto));
 	}
 	
 	@GetMapping("order")
@@ -84,6 +86,8 @@ public class PoController {
 		m.addAttribute("pageInfo", new PageDTO(curPageDto, numberOfOrder));
 		
 		m.addAttribute("emplList", us.getEmpl());
+		m.addAttribute("partList", os.getAllPart());
+		m.addAttribute("companyList", os.getAllCompany());
 	}
 	
 	@GetMapping("partner")
@@ -123,7 +127,7 @@ public class PoController {
 	@GetMapping("/inspection")
 	public void goInspection(CurPageDTO curPageDto, InspectionDTO inspectionDto, Model m) {
 		
-		m.addAttribute("orderNumList", is.getOrderAllNum());
+//		m.addAttribute("orderNumList", is.getOrderAllNum());
 		
 		inspectionDto.setCurPageDto(curPageDto);
 		
@@ -132,6 +136,9 @@ public class PoController {
 		m.addAttribute("pageInfo", new PageDTO(curPageDto, numberOfInspection));
 		
 		m.addAttribute("inspectionList", is.getInspection(inspectionDto));
+		
+		m.addAttribute("orderNumList", is.getOrderNum());
+		
 	}
 	
 	

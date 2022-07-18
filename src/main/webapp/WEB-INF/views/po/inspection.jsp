@@ -48,7 +48,9 @@
 										<select id="orderNum" class="form-select" name="orderNum">
 											<option value="0">발주계획번호</option>
 											<c:forEach items="${ orderNumList }" var="orderNum">
-												<option value="${ orderNum.orderNum }">${ orderNum.orderNum }</option>
+												<option value="${ orderNum.orderNum }" <c:if test="${ param.orderNum eq orderNum.orderNum }">selected</c:if>>
+													${ orderNum.orderNum }
+												</option>
 											</c:forEach>
 										</select>
 									</div>
@@ -95,8 +97,9 @@
 							</div>
 							<div class="mt-5">
 								<button type="button" class="btn btn-primary w-100"
-									id="search-button">조회하기</button>
-								<a href="inspection" class="btn btn-link w-100"> 초기화 </a>
+									id="search-button">Confirm changes</button>
+								<a href="inspection" class="btn btn-link w-100"> Reset to
+									defaults </a>
 							</div>
 						</div>
 						<div class="col-9 row row-cards" id="data-area">
@@ -115,6 +118,7 @@
 										</span>
 										<button type="button"
 											class="btn btn-primary d-none d-sm-inline-block"
+											data-bs-toggle="modal" data-bs-target="#modal-input"
 											id="inputInspection">
 											<img src="/resources/img/upload.svg" class="icon"> 계획입력
 										</button>
@@ -161,9 +165,7 @@
 													    </td>
 													    <td id="orderNum">${ inspection.orderNum }</td>
 													    <td id="inspectionNum">
-													        <span class="text-muted" id="inspectionNum">
-													            ${ inspection.inspectionNum }
-													        </span>
+													        <span class="text-muted" id="inspectionNum">${ inspection.inspectionNum }</span>
 													    </td>
 													    <td id="inspectionDate">${ inspection.inspectionDate }</td>
 													    <td id="partName">${ inspection.partName }</td>
@@ -188,7 +190,7 @@
 													            </div>
 													        </span>
 													    </td>
-													    <input type="hidden" id="progress" name="progress" value="${data[key].progress}">
+													    <input type="hidden" id="progress" name="progress" value="${ inspection.progress }">
 													</tr>
 												</c:forEach>
 											</tbody>
@@ -254,6 +256,88 @@
 					</div>
 				</div>
 
+				
+				<%-- modal 창 시작 modal-report (계획입력 버튼) --%>
+				<div class="modal modal-blur fade" id="modal-input" tabindex="-1"
+					role="dialog" aria-hidden="true">
+					<div class="modal-dialog modal-lg modal-dialog-centered"
+						role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">검수 일정 입력</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="mb-3">
+											<label class="form-label">발주번호</label>
+											<select id="selectedOrderNum" class="form-select" name="selectedOrderNum">
+											<option value="0">발주계획번호</option>
+											<c:forEach items="${ orderNumList }" var="orderNum">
+												<option value="${ orderNum.orderNum }">${ orderNum.orderNum }</option>
+											</c:forEach>
+										</select>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="mb-3">
+											<label class="form-label">차수</label> <input type="number"
+												id="inspectionNumModalInput" class="form-control rm-side"
+												readonly>
+										</div>
+									</div>
+								</div>
+								<div class="mb-3">
+									<label class="form-label">검수일자</label> <input type="date"
+										id="inspectionDateModalInput" class="form-control rm-side" name="inspectionDateModalInput">
+								</div>
+									<div class="mb-3">
+										<label class="form-label">검수수량</label> <input type="number"
+											id="inspectionQuantityModalInput" class="form-control rm-side" name="inspectionQuantityModalInput">
+								</div>
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="mb-3">
+											<label class="form-label">샘플수량</label> <input type="number"
+												id="sampleQuantityModalInput" class="form-control rm-side" name="sampleQuantityModalInput">
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="mb-3">
+											<label class="form-label">샘플비율</label>
+											<div class="input-group input-group-flat">
+												<input type="number" id="sampleRatioModalInput" step="0.1"
+													class="form-control rm-side" readonly> <span
+													class="input-group-text"> % </span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="modal-footer">
+								<button class="btn btn-link link-secondary"
+									data-bs-dismiss="modal">Cancel</button>
+								<button id="inspectionInputBtn" class="btn btn-primary ms-auto"
+									data-bs-dismiss="modal">
+									<!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+									<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+										height="24" viewBox="0 0 24 24" stroke-width="2"
+										stroke="currentColor" fill="none" stroke-linecap="round"
+										stroke-linejoin="round">
+										<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+										<line x1="12" y1="5" x2="12" y2="19" />
+										<line x1="5" y1="12" x2="19" y2="12" /></svg>
+									입력
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<%-- modal 창 끝 --%>
+				
 				<%-- modal 창 시작 modal-report (Modal with form 버튼) --%>
 				<div class="modal modal-blur fade" id="modal-report" tabindex="-1"
 					role="dialog" aria-hidden="true">
@@ -391,72 +475,43 @@
 	</div>
 	<script>
 		var orderNumVal = -1;
-
-		$("button#inputInspection").on("click", function() {
-			if ($("tr#inspectionInputTr").length != 0 || $("select[name=orderNum]").val() == 0) {
-				$("tr#inspectionInputTr").remove();
-				return;
-			}
-
+		$("select#selectedOrderNum").on("change", function(event) {
 			$.ajax({
 				url : "/api/nextInspectionNum",
 				type : "post",
 				data : {
-					"orderNum" : orderNumVal
+					"orderNum" : $(event.target).val()
 				},
 				success : function(data) {
-					var elem = '<tr id="inspectionInputTr">'
-					    + '    <td></td>'
-					    + '    <td id="orderNum">'
-					    + '        <select id="orderNum" class="form-select" name="orderNum">'
-					    + '            <option value="0">발주번호</option>'
-					    + '        </select>'
-					    + '    </td>'
-					    + '    <td id="inspectionNum"> '
-					    + '        <span class="text-muted" id="inspectionNum"> '
-					    + '        data'
-					    + '        </span> '
-					    + '    </td>'
-					    + '    <td id="inspectionDate"><input type="date" class="form-control" name="inspectionDate"></td> '
-					    + ''
-					    + '    <td id="partName"></td>'
-					    + '    <td id="orderQuantity"></td>'
-					    + '    '
-					    + '    <td id="inspectionQuantity"><input type="number" class="form-control" name="inspectionQuantity"></td> '
-					    + '    <td id="sampleQuantity"><input type="number" class="form-control" name="sampleQuantity"></td> '
-					    + ''
-					    + '    <td id="emplName"></td>'
-					    + '    <td id="email"></td>'
-					    + ''
-					    + '    <td id="status"></td> '
-					    + '    <td class="text-end"> '
-					    + '        <span class="dropdown">'
-					    + '            <button class="btn align-text-top" id="inspectionInputBtn">입력 '
-					    + '            </button> '
-					    + '        </span> '
-					    + '    </td> '
-					    + '</tr>';
-
-					$("table#inspectionSchedule tbody").append(elem);
-
-					$("button#inspectionInputBtn").on("click", function() {
-						$.ajax({
-							url : "/api/inputInspection",
-							type : "post",
-							data : {
-								"orderNum" : $("select[name=orderNum]").val(),
-								"inspectionDate" : $("input[name='inspectionDate']").val(),
-								"inspectionQuantity" : $("input[name='inspectionQuantity']").val(),
-								"sampleQuantity" : $("input[name='sampleQuantity']").val()
-							},
-							success : function(data) {
-								$("tr#inspectionInputTr").remove();
-								createRow (orderNumVal);
-							}
-						});
-					});
+					$("input#inspectionNumModalInput").val(data);
 				}
 			});
+		});
+		
+		$("input#select-all-checkbox").on("change", function(event) {
+			if ($(event.target).is(":checked")) {
+				$("input[name=selectedInspection]").prop("checked", true);
+			} else {
+				$("input[name=selectedInspection]").prop("checked", false);
+			}
+		});
+
+		$("button#inspectionInputBtn").on("click", function() {
+			$.ajax({
+				url : "/api/inputInspection",
+				type : "post",
+				data : {
+					"orderNum" : $("select[name=selectedOrderNum]").val(),
+					"inspectionDate" : $("input[name=inspectionDateModalInput]").val(),
+					"inspectionQuantity" : $("input[name=inspectionQuantityModalInput]").val(),
+					"sampleQuantity" : $("input[name=sampleQuantityModalInput]").val()
+				},
+				success : function(data) {
+					
+				}
+			});
+			
+			location.reload();
 		});
 		
 		$("input#select-all-checkbox").on("change", function(event) {
@@ -504,105 +559,48 @@
 			}
 		});
 		
-		function createRow(orderNumVal) {
-			$("tr#inspectionInfo").remove();
-			$("tr#inspectionInputTr").remove();
+		
+		$("button#downloadResult").on("click", function(event) {
+			$thisInspection = $(event.target).closest("tr#inspectionInfo");
+			
+			var url = "/file/inspectionResult?orderNum=" + $thisInspection.find("td#orderNum").text();
+			url += "&inspectionNum=" + $thisInspection.find("span#inspectionNum").text();
+			
+			location.href = url;
+		});
 
-			if ($("select[name=orderNum]").val() == 0) {
-				$("p#entryInfo").addClass("hidden")
-				return;
-			}
+		$("button#showResultModal").on("click", function(event) {
+			$thisInspection = $(event.target).closest("tr#inspectionInfo");
 
-			$.ajax({
-				url : "/api/inspection",
-				type : "post",
-				data : {
-					"orderNum" : orderNumVal
-				},
-				success : function(data) {
-					$("td#orderNum").text(data[0].orderNum);
-					$("td#emplName").text(data[0].emplName);
-					$("td#email").text(data[0].email);
-					$("td#partName").text(data[0].partName);
-					$("td#orderQuantity").text(data[0].orderQuantity);
+			$("input#orderNumModal").val($thisInspection.find("td#orderNum").text());
+			$("input#inspectionNumModal").val($thisInspection.find("span#inspectionNum").text());
+			$("input#progressModal").val(parseInt($thisInspection.find("input#progress").val()));
+			$("input#inspectionQuantityModal").val($thisInspection.find("td#inspectionQuantity").text());
+			$("input#sampleQuantityModal").val($thisInspection.find("td#sampleQuantity").text());
+			$("input#sampleRatioModal").val(parseInt($thisInspection.find("td#sampleQuantity").text()) * 1.0 / parseInt($thisInspection.find("td#inspectionQuantity").text()) * 100);
 
-					$("table #inspectionSchedule tr").remove();
-
-					var elem = "";
-
-					for ( var key in data) {
-						if (data[key].inspectionNum != null) {
-
-							elem += '<tr id="inspectionInfo">' + '<td>' + '<input class="form-check-input m-0 align-middle"'
-									+			'type="checkbox" aria-label="Select invoice" name="selectedInspection" value="' + data[key].inspectionNum +'">' + '</td>'
-									+ '<td id="orderNum">' + data[key].orderNum + '</td>'
-									+ '<td id="inspectionNum">' + '<span class="text-muted" id="inspectionNum">' + data[key].inspectionNum + '</span>' + '</td>'
-									+ '<td id="inspectionDate">' + data[key].inspectionDate + '</td>'
-									+ '<td id="partName">' + data[key].partName + '</td>'
-									+ '<td id="orderQuantity">' + data[key].orderQuantity + '</td>' 
-									+ '<td id="inspectionQuantity">' + data[key].inspectionQuantity + '</td>' 
-									+ '<td id="sampleQuantity">' + data[key].sampleQuantity + '</td>'
-									+ '<td id="emplName">' + data[key].emplName + '</td>'
-									+ '<td id="email">' + data[key].email + '</td>'
-									+ '<td id="progress">' + data[key].status + '</td>'
-									+ '<td class="text-end">' + '<span class="dropdown">' + '<button class="btn dropdown-toggle align-text-top"'
-									+				'data-bs-boundary="viewport" data-bs-toggle="dropdown">Actions' + '</button>'
-									+ '<div class="dropdown-menu dropdown-menu-end">'
-									+ '<button type="button" class="dropdown-item"'
-									+					'data-bs-toggle="modal" data-bs-target="#modal-report" id="showResultModal">' + '결과입력' + '</button>' + '<button type="button" class="dropdown-item" id="downloadResult">' + '결과 다운로드' + '</button>' + '</div>' + '</span>' + '</td>'
-									+ '<input type="hidden" id="progress" name="progress" value="' + data[key].progress + '">'
-							 		+ '</tr>';
-
-						}
-					}
-
-					$("table#inspectionSchedule tbody").append(elem);
-
-					$("span#showingEntry").text(Object.keys(data).length);
-
-					$("p#entryInfo").removeClass("hidden");
-					
-					$("button#downloadResult").on("click", function(event) {
-						var url = "/file/inspectionResult?orderNum=" + $("select[name=orderNum]").val();
-						url += "&inspectionNum=" + $(event.target).closest("tr#inspectionInfo").find("span#inspectionNum").text();
-						
-						location.href = url;
-					});
-
-					$("button#showResultModal").on("click", function(event) {
-						$thisInspection = $(event.target).closest("tr#inspectionInfo");
-
-						$("input#orderNumModal").val(orderNumVal);
-						$("input#inspectionNumModal").val($thisInspection.find("span#inspectionNum").text());
-						$("input#progressModal").val(parseInt($thisInspection.find("input#progress").val()));
-						$("input#inspectionQuantityModal").val($thisInspection.find("td#inspectionQuantity").text());
-						$("input#sampleQuantityModal").val($thisInspection.find("td#sampleQuantity").text());
-						$("input#sampleRatioModal").val(parseInt($thisInspection.find("td#sampleQuantity").text()) * 1.0 / parseInt($thisInspection.find("td#inspectionQuantity").text()) * 100);
-
-						$("input#defectQuantityModal").on("change keyup focus", function() {
-							$("input#defectRatioModal").val((parseInt($(this).val())) * 1.0 / parseInt($("input#sampleQuantityModal").val()) * 100);
-						});
-
-						$("button#insertResultBtn").on("click", function() {
-
-							var checked = $("input#finalInspection").is(":checked") ? 1 : 0;
-
-							$.ajax({
-								url : "/api/inputResult",
-								type : "post",
-								data : {
-									"orderNum" : $("input#orderNumModal").val(),
-									"inspectionNum" : $("input#inspectionNumModal").val(),
-									"inspectionDefect" : $("input#defectQuantityModal").val(),
-									"complement" : $("textarea#complementModal").val(),
-									"close" : checked
-								}
-							});
-						});
-					});
-				}
+			$("input#defectQuantityModal").on("change keyup focus", function() {
+				$("input#defectRatioModal").val((parseInt($(this).val())) * 1.0 / parseInt($("input#sampleQuantityModal").val()) * 100);
 			});
-		}
+
+			$("button#insertResultBtn").on("click", function() {
+
+				var checked = $("input#finalInspection").is(":checked") ? 1 : 0;
+				$.ajax({
+					url : "/api/inputResult",
+					type : "post",
+					data : {
+						"orderNum" : $("input#orderNumModal").val(),
+						"inspectionNum" : $("input#inspectionNumModal").val(),
+						"inspectionDefect" : $("input#defectQuantityModal").val(),
+						"complement" : $("textarea#complementModal").val(),
+						"close" : checked
+					}
+				});
+				
+				location.reload();
+			});
+		});
 		
 		$("button#search-button").on("click", function() {
 			// var url = window.location.href;
@@ -622,7 +620,6 @@
 					}
 				}
 			});
-			
 			$("div.row-searcher input").each(function(index, value) {
 				var inputName = $(value).attr("name");
 				

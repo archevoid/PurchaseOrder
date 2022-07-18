@@ -62,8 +62,13 @@
 							<div class="row row-searcher">
 								<div class="col-6">
 									<div class="mb-3">
-										<select id="part" class="form-select" name="partNum">
+										<select id="part" class="form-select" name="partCode">
 											<option value="0">선택</option>
+											<c:forEach items="${ partList }" var="part">
+												<option value="${ part.partCode }" <c:if test="${ param.partCode eq part.partCode }">selected</c:if>>
+													${ part.partName }
+												</option>
+											</c:forEach>
 										</select>
 									</div>
 								</div>
@@ -79,7 +84,11 @@
 									<div class="mb-3">
 										<select id="company" class="form-select" name="companyCode">
 											<option value="0">선택</option>
-											<%-- foreach문 으로 가져오기 --%>
+											<c:forEach items="${ companyList }" var="company">
+												<option value="${ company.companyCode }" <c:if test="${ param.companyCode eq company.companyCode }">selected</c:if>>
+													${ company.companyName }
+												</option>
+											</c:forEach>
 										</select>
 									</div>
 								</div>
@@ -96,7 +105,9 @@
 										<select id="employee" class="form-select" name="emplNum">
 											<option value="0">선택</option>
 											<c:forEach items="${ emplList }" var="empl">
-												<option value="${ empl.emplNum }">${ empl.emplName }</option>
+												<option value="${ empl.emplNum }" <c:if test="${ param.emplNum eq empl.emplNum }">selected</c:if>>
+													${ empl.emplName }
+												</option>
 											</c:forEach>
 										</select>
 									</div>

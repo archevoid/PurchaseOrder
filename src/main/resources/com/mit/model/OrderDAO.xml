@@ -100,6 +100,18 @@
 		UPDATE purchase_order SET published = (SELECT p.published + 1 FROM purchase_order p WHERE p.order_num = #{ orderNum })
 		WHERE order_num = #{ orderNum }
 	</update>
+	
+	<select id="getAllPart" resultType="com.mit.model.OrderDTO">
+		SELECT pt.partname AS partName
+			, pt.partcode AS partCode
+		FROM tbl_part pt
+	</select>
+	
+	<select id="getAllCompany" resultType="com.mit.model.OrderDTO">
+		SELECT cp.code AS companyCode
+			, cp.name AS companyName
+		FROM tbl_company cp
+	</select>
 
 
 
