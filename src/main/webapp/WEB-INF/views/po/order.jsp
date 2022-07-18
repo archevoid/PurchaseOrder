@@ -197,12 +197,20 @@
 															<td class="sort-orderDate" id="orderDate">${ order.orderDate }</td>
 															<td class="sort-dueDate" id="dueDate">${ order.dueDate }</td>
 															<td class="sort-price" id="price"></td>
-															<td class="sort-status" id="status">${ order.published }</td> 
+															<td class="sort-status" id="status">${ order.published }</td>
 															<td class="text-end">
-																<button type="submit" class="btn" id="show-order-page">
+																<c:if test="${ order.emergency eq 1 }">
+																	<button type="submit" class="btn btn-danger" id="show-order-page">
 																	<img src="/resources/img/row-insert-top.svg"
-																		class="icon"> 발주서 발행
-																</button>
+																		class="icon"> 긴급 발주서 발행
+																	</button>
+																</c:if>
+																<c:if test="${ order.emergency ne 1 }">
+																	<button type="submit" class="btn" id="show-order-page">
+																		<img src="/resources/img/row-insert-top.svg"
+																			class="icon"> 발주서 발행
+																	</button>
+																</c:if>
 															</td>
 														</tr>
 														<input type="hidden" name="companyCode" value="${ order.companyCode }">

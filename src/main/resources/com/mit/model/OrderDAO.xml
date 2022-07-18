@@ -66,7 +66,8 @@
 				, cp.account AS account
 				, cp.currency AS currency
 				, ct.partsSupply AS leadTime
-				, CASE WHEN wh.ware_num != null THEN 1 ELSE 0 END AS emergency
+<!-- 			, CASE WHEN wh.return = 'Y' THEN 1 ELSE 0 END AS emergency  -->
+				, p.emergency AS emergency
 				, ROWNUM AS rn
 			FROM purchase_order p INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
 				INNER JOIN tbl_company cp ON ct.code = cp.code
@@ -112,7 +113,7 @@
 			, cp.name AS companyName
 		FROM tbl_company cp
 	</select>
-
+	
 
 
 	<select id="getCompany" resultType="com.mit.model.CompanyDTO">

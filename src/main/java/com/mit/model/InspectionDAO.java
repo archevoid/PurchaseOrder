@@ -22,4 +22,6 @@ public interface InspectionDAO {
 	public Integer getNextInspectionNum(InspectionDTO inspectionDto);
 	
 	public Integer getNextInspectionResultNum(InspectionDTO inspectionDto);
+	
+	public Byte isFinalInspection(OrderDTO orderDto);
 }

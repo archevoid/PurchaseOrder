@@ -128,4 +128,9 @@ public class ApiController {
 			e.printStackTrace();
 		}
 	}
+	
+	@PostMapping("finalInspection")
+	public Byte isFinalInspection(OrderDTO orderDto) {
+		return is.isFinalInspection(orderDto);
+	}
 }

@@ -26,6 +26,16 @@
 		</trim>
 	</sql>
 
+	<select id="isFinalInspection" resultType="byte">
+		SELECT 
+			CASE
+				WHEN (SELECT SUM(i.inspection_quantity) FROM inspection i WHERE i.order_num = p.order_num) = p.order_quantity
+					THEN 1
+				ELSE 0
+            END AS finalInspection
+		FROM purchase_order p
+		WHERE p.order_num = #{ orderNum }
+	</select>
 
 	<select id="getOrderAllNum" resultType="com.mit.model.OrderDTO">
 		SELECT DISTINCT p.order_num AS orderNum
