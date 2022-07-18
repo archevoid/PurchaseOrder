@@ -124,9 +124,8 @@
 
 							<div class="mt-5">
 								<button type="button" class="btn btn-primary w-100"
-									id="search-button">Confirm changes</button>
-								<a href="plan" class="btn btn-link w-100"> Reset to
-									defaults </a>
+									id="search-button">조회하기</button>
+								<a href="plan" class="btn btn-link w-100"> 초기화 </a>
 							</div>
 						</div>
 						<div class="col-9 row row-cards" id="data-area">
