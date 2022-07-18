@@ -164,8 +164,8 @@
 		    , sp.deliverydate AS dueDate
 		    , p.order_quantity AS orderQuantity
 		    , NVL((SELECT SUM(i.inspection_quantity) AS completeQuantity FROM inspection i 
-                WHERE (i.order_num, i.inspection_num) 
-                    IN (SELECT ir.order_num, ir.inspection_num FROM inspection_result ir WHERE i.order_num = ir.order_num AND i.inspection_num = ir.inspection_num)), 0) AS completeQuantity
+                WHERE i.order_num = p.order_num
+                GROUP BY i.order_num), 0) AS completeQuantity
 		FROM purchase_order p INNER JOIN employee e ON p.empl_num = e.empl_num
 		    INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
 		    INNER JOIN tbl_part pt ON ct.partcode = pt.partcode
