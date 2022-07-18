@@ -56,4 +56,8 @@ public class InspectionService extends com.mit.service.Service {
 	public Integer getNextInspectionResultNum(InspectionDTO inspectionDto) {
 		return inspectionDao.getNextInspectionResultNum(inspectionDto);
 	}
+	
+	public Byte isFinalInspection(OrderDTO orderDto) {
+		return inspectionDao.isFinalInspection(orderDto);
+	}
 }

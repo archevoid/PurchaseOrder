@@ -59,40 +59,7 @@
 				<div class="container-xl">
 					<div class="row g-4">
 						<div class="col-3 searcher" id="plan-searcher">
-
-							<div class="subheader mb-2">대분류</div>
-							<div class="row row-searcher">
-								<div class="col-6">
-									<div class="mb-3">
-										<%-- DB 생성 후 name 추가 --%>
-										<select id="product-widest" class="form-select" name="widest">
-											<option value="0">선택</option>
-										</select>
-									</div>
-								</div>
-								<div class="col-6">
-									<div class="mb-3">
-										<input type="text" id="product-selecteor-widest" class="form-control select-searcher" name="widestName" value="${ param.widestName }">
-									</div>
-								</div>
-							</div>
-							<div class="subheader mb-2">중분류</div>
-							<div class="row row-searcher">
-								<div class="col-6">
-									<div class="mb-3">
-										<%-- DB 생성 후 name 추가 --%>
-										<select id="product-middle" class="form-select" name="middle">
-											<option value="0">선택</option>
-										</select>
-									</div>
-								</div>
-								<div class="col-6">
-									<div class="mb-3">
-										<input type="text" id="product-selector-middle" class="form-control select-searcher" name="middleName" value="${ param.middleName }">
-									</div>
-								</div>
-							</div>
-							<div class="subheader mb-2">소분류</div>
+							<div class="subheader mb-2">품목</div>
 							<div class="row row-searcher">
 								<div class="col-6">
 									<div class="mb-3">
@@ -164,7 +131,7 @@
 															<td class="sort-partName" id="partName">${ plan.partName }</td>
 															<td class="sort-dueDate" id="dueDate">${ plan.dueDate }</td>
 															<td class="sort-requirement" id="requirement">${ plan.requirement }</td>
-															<td class="sort-sum" id="sum"></td>
+															<td class="sort-sum" id="sum">${ plan.sum }</td>
 															<td class="text-end">
 																<button type="button" class="btn" id="show-input">
 																	<img src="/resources/img/row-insert-top.svg"

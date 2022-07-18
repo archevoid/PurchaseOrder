@@ -174,17 +174,20 @@
 													    <td id="sampleQuantity">${ inspection.sampleQuantity }</td>
 													    <td id="emplName">${ inspection.emplName }</td>
 													    <td id="email">${ inspection.email }</td>
-													    <td id="progress">${ inspection.status }</td>
+													    <td id="status">${ inspection.status }</td>
 													    <td class="text-end">
 													        <span class="dropdown">
 													            <button class="btn dropdown-toggle align-text-top" data-bs-boundary="viewport" data-bs-toggle="dropdown">
 													                Actions
 													            </button>
 													            <div class="dropdown-menu dropdown-menu-end">
-													                <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-report" id="showResultModal">
+													                <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-report" id="showResultModal"
+													                <c:if test="${ inspection.status.equals("종료") }">disabled</c:if>
+													                >
 													                    결과입력
 													                </button>
-													                <button type="button" class="dropdown-item" id="downloadResult">
+													                <button type="button" class="dropdown-item" id="downloadResult"
+													                <c:if test="${ !inspection.status.equals("종료") }">disabled</c:if>>
 													                    결과 다운로드
 													                </button>
 													            </div>
@@ -578,6 +581,19 @@
 			$("input#inspectionQuantityModal").val($thisInspection.find("td#inspectionQuantity").text());
 			$("input#sampleQuantityModal").val($thisInspection.find("td#sampleQuantity").text());
 			$("input#sampleRatioModal").val(parseInt($thisInspection.find("td#sampleQuantity").text()) * 1.0 / parseInt($thisInspection.find("td#inspectionQuantity").text()) * 100);
+			
+			$.ajax({
+				url : "/api/finalInspection",
+				type : "post",
+				data : {
+					"orderNum" : $thisInspection.find("td#orderNum").text()
+				},
+				success : function(data) {
+					if (data == 1) {
+						$("input#finalInspection").prop("checked", true);
+					}
+				}
+			});
 
 			$("input#defectQuantityModal").on("change keyup focus", function() {
 				$("input#defectRatioModal").val((parseInt($(this).val())) * 1.0 / parseInt($("input#sampleQuantityModal").val()) * 100);

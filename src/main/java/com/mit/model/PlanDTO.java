@@ -37,6 +37,8 @@ public class PlanDTO {
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date finalDueDate;
 	
+	private Long sum;
+	
 	
 	/* 대분류 중분류 추가 */
 }
