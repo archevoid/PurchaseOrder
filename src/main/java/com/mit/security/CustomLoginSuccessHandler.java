@@ -33,7 +33,8 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 			response.sendRedirect("/po/partner");
 			return;
 		} else {
-			response.sendRedirect("/po/dashboard");
+//			response.sendRedirect("/po/dashboard");
+			response.sendRedirect("http://192.168.0.104:8888/index/board");
 			return;
 		}
 	}

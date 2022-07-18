@@ -266,7 +266,7 @@
 							</div>
 						</div>
 					</div></li>
-					<li class="nav-item"><a class="nav-link" href="./a">
+					<li class="nav-item"><a class="nav-link" href="192.168.0.120:8079/po/dashboard">
 						<span class="nav-link-icon d-md-none d-lg-inline-block">
 							<!-- Download SVG icon from http://tabler-icons.io/i/home --> <svg
 								xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
@@ -292,7 +292,7 @@
 								<path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg>
 					</span>
 					<span class="b"> 자재 입고 </span>
-					<li class="nav-item"><a class="nav-link" href="./c">
+					<li class="nav-item"><a class="nav-link" href="http://192.168.0.115:8081/orderStatus">
 						<span class="nav-link-icon d-md-none d-lg-inline-block">
 							<!-- Download SVG icon from http://tabler-icons.io/i/home --> <svg
 								xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
@@ -304,7 +304,7 @@
 								<path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
 								<path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg>
 					</span>
-					<span class="c"> 자재 출고 </span>		
+					<span class=""> 자재 출고 </span>		
 			</ul>
 		</div>
 	</div>
