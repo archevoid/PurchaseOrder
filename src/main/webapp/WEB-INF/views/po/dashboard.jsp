@@ -9,7 +9,7 @@
 </head>
 <body>
 	<div class="page">
-		<%@ include file="../includes/verticalNav.jsp"%>
+		<%@ include file="../includes/horizontalNav.jsp"%>
 
 		<div class="page-wrapper">
 			<div class="container-xl">
@@ -42,14 +42,7 @@
 							<div class="card">
 								<form action="printpo" method="post">
 									<div class="card-header">
-										<h3 class="card-title">계획 선택</h3>
-										<div class="ms-auto d-print-none">
-											<button type="submit"
-												class="btn btn-primary d-none d-sm-inline-block">
-												<img src="/resources/img/arrow-big-right.svg" class="icon">
-												출력 화면 이동
-											</button>
-										</div>
+										<h3 class="card-title">발주 목록</h3>
 									</div>
 									<table class="table table-vcenter card-table" id="calendar">
 										<caption
@@ -57,25 +50,6 @@
 											<button type="button" id="prev">&lt;</button>
 											<span id="year"></span>년 <span id="month"></span>월
 											<button type="button" id="next">&gt;</button>
-											<div class="d-flex mr-1">
-												<div class="ms-auto d-print-none">
-													<div class="d-inline-block input-icon">
-														<select class="form-control form-control-sm"
-															name="companyCode">
-															<option value="0">협력업체</option>
-															<c:forEach items="${ companies }" var="company">
-																<option value="${ company.companyCode }">${ company.companyName }</option>
-															</c:forEach>
-														</select> <span class="input-icon-addon"> <img
-															src="/resources/img/chevron-down.svg" class="icon">
-														</span>
-													</div>
-													<div class="ms-2 d-inline-block">
-														<input type="date" class="form-control form-control-sm"
-															name="orderDate">
-													</div>
-												</div>
-											</div>
 										</caption>
 										<thead>
 											<tr>

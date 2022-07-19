@@ -76,7 +76,7 @@
 								</div>
 								<div class="col-6">
 									<div class="mb-3">
-										<input type="text" id="product-selector-narrowest" class="form-control select-searcher" name="partName" value="${ param.partName }">
+										<input type="text" id="product-selector-narrowest" class="form-control select-searcher" name="partName" value="${ param.partName }" placeholder="선택 목록 검색">
 									</div>
 								</div>
 							</div>
@@ -119,8 +119,6 @@
 																data-sort="sort-companyName">조달납기</button></th>
 														<th><button class="table-sort"
 																data-sort="sort-orderDate">소요량</button></th>
-														<th><button class="table-sort"
-																data-sort="sort-sum">입력 금액 합계</button></th>
 														<th></th>
 													</tr>
 												</thead>
@@ -131,7 +129,6 @@
 															<td class="sort-partName" id="partName">${ plan.partName }</td>
 															<td class="sort-dueDate" id="dueDate">${ plan.dueDate }</td>
 															<td class="sort-requirement" id="requirement">${ plan.requirement }</td>
-															<td class="sort-sum" id="sum">${ plan.sum }</td>
 															<td class="text-end">
 																<c:if test="${ plan.inputQuantity eq plan.requirement }">
 																	<button type="button" class="btn" id="show-input" disabled>
@@ -227,11 +224,14 @@
 			
 			if ($(event.target).val() != "") {
 				$selectTag.find("option").each(function(index, value) {
-					if (!$(value).text().includes($(event.target).val()) && $(value).val != 0) {
+					if (!$(value).text().includes($(event.target).val()) && $(value).val() != 0) {
 						$(value).wrap('<span class="hidden-option" style="display: none;" />');
 					}
 				});
 			}
+			
+			$selectTag.addClass("is-valid");
+			setTimeout(function() { $selectTag.removeClass("is-valid") }, 500);
 		});
 		
 		$("button#search-button").on("click", function() {

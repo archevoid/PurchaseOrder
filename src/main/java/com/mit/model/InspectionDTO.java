@@ -41,11 +41,15 @@ public class InspectionDTO {
 	
 	private Long inspectionDefect;
 	private String complement;
-	private Byte close;
+	private Integer close;
 	
 	/* 검수 일정 조회 */
 	private String emplName;
 	private String email;
+	
+	private String comEmployee;
+	private String comEmail;
+	
 	private String partName;
 	private String orderQuantity;
 	

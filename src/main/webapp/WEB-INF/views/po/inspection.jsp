@@ -151,7 +151,7 @@
 													<th>발주 수량</th>
 													<th>검수 수량</th>
 													<th>샘플 수량</th>
-													<th>담당자</th>
+													<th>협력회사 담당자</th>
 													<th>이메일</th>
 													<th>상태</th>
 													<th></th>
@@ -172,8 +172,8 @@
 													    <td id="orderQuantity">${ inspection.orderQuantity }</td>
 													    <td id="inspectionQuantity">${ inspection.inspectionQuantity }</td>
 													    <td id="sampleQuantity">${ inspection.sampleQuantity }</td>
-													    <td id="emplName">${ inspection.emplName }</td>
-													    <td id="email">${ inspection.email }</td>
+													    <td id="comEmployee">${ inspection.comEmployee }</td>
+													    <td id="comEmail">${ inspection.comEmail }</td>
 													    <td id="status">${ inspection.status }</td>
 													    <td class="text-end">
 													        <span class="dropdown">
@@ -279,7 +279,9 @@
 											<select id="selectedOrderNum" class="form-select" name="selectedOrderNum">
 											<option value="0">발주계획번호</option>
 											<c:forEach items="${ orderNumList }" var="orderNum">
-												<option value="${ orderNum.orderNum }">${ orderNum.orderNum }</option>
+												<c:if test="${ orderNum.close ne 1 }">
+													<option value="${ orderNum.orderNum }">${ orderNum.orderNum }</option>
+												</c:if>
 											</c:forEach>
 										</select>
 										</div>

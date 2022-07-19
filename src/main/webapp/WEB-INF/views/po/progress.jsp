@@ -97,6 +97,8 @@
 											<thead>
 												<tr>
 													<th><button class="table-sort"
+															data-sort="sort-partCode">발주번호</button></th>
+													<th><button class="table-sort"
 															data-sort="sort-partCode">품목명</button></th>
 													<th><button class="table-sort"
 															data-sort="sort-emplName">사원명</button></th>
@@ -117,6 +119,7 @@
 											<tbody class="table-tbody">
 												<c:forEach items="${ orders }" var="progress">
 													<tr>
+														<td class="sort-orderNum">${ progress.orderNum }</td>
 														<td class="sort-partCode">${ progress.partName }</td>
 														<td class="sort-emplName">${ progress.emplName }</td>
 														<td class="sort-companyName">${ progress.companyName }</td>

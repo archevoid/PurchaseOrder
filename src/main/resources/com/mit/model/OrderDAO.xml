@@ -66,6 +66,14 @@
 				, cp.account AS account
 				, cp.currency AS currency
 				, ct.partsSupply AS leadTime
+				, CASE
+					WHEN (SELECT MAX(ir.close) FROM inspection_result ir WHERE ir.order_num = p.order_num)
+						THEN 5
+					WHEN (SELECT MAX(ir.inspection_num) FROM inspection_result ir WHERE ir.order_num = p.order_num)
+						THEN 4
+					WHEN p.published != 0 THEN 1
+					ELSE 0
+				END
 <!-- 			, CASE WHEN wh.return = 'Y' THEN 1 ELSE 0 END AS emergency  -->
 				, p.emergency AS emergency
 				, ROWNUM AS rn
@@ -98,7 +106,7 @@
 	</select>
 	
 	<update id="updatePublished">
-		UPDATE purchase_order SET published = (SELECT p.published + 1 FROM purchase_order p WHERE p.order_num = #{ orderNum })
+		UPDATE purchase_order SET published = 1
 		WHERE order_num = #{ orderNum }
 	</update>
 	
@@ -160,6 +168,7 @@
 		SELECT pt.partname AS partName
 		    , e.empl_name AS emplName
 		    , e.empl_email AS email
+		    , p.order_num AS orderNum
 		    , cp.name AS companyName
 		    , p.order_date AS orderDate
 		    , sp.deliverydate AS dueDate

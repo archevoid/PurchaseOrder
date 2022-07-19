@@ -26,7 +26,7 @@
 		</trim>
 	</sql>
 
-	<select id="isFinalInspection" resultType="byte">
+	<select id="isFinalInspection" resultType="long">
 		SELECT 
 			CASE
 				WHEN (SELECT SUM(i.inspection_quantity) FROM inspection i WHERE i.order_num = p.order_num) = p.order_quantity
@@ -85,6 +85,8 @@
 		SELECT p.order_num AS orderNum
 		    , e.empl_name AS emplName
 		    , e.empl_email AS email
+		    , cp.comemployee AS comEmployee
+		    , cp.comemail AS comEmail
 		    , pt.partName AS partName
 		    , p.order_quantity AS orderQuantity
 		    , i.inspection_num AS inspectionNum
@@ -105,6 +107,7 @@
 		FROM purchase_order p INNER JOIN inspection i ON p.order_num = i.order_num 
 		    INNER JOIN employee e ON p.empl_num = e.empl_num
 		    INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
+		    INNER JOIN tbl_company cp ON cp.code = ct.code
 		    INNER JOIN tbl_part pt ON ct.partcode = pt.partcode
 		    INNER JOIN tbl_support sp ON sp.supportno = p.support_num
 		<trim prefix="WHERE">
@@ -127,6 +130,7 @@
 	
 	<select id="getOrderNum" resultType="com.mit.model.InspectionDTO">
 		SELECT DISTINCT p.order_num AS orderNum
+			, NVL((SELECT MAX(ir.close) FROM inspection_result ir WHERE ir.order_num = p.order_num), 0) AS close 
 			, CASE WHEN (SELECT 1 FROM inspection ip 
 				WHERE ip.order_num = i.order_num
 					AND ip.inspection_num = i.inspection_num 
