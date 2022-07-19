@@ -74,7 +74,7 @@
 								</div>
 								<div class="col-6">
 									<div class="mb-3">
-										<input type="text" id="part-selector" class="form-control select-searcher" name="partName" value="${ param.partName }">
+										<input type="text" id="part-selector" class="form-control select-searcher" name="partName" value="${ param.partName }"  placeholder="선택 목록 검색">
 									</div>
 								</div>
 							</div>
@@ -94,7 +94,7 @@
 								</div>
 								<div class="col-6">
 									<div class="mb-3">
-										<input type="text" id="company-selector" class="form-control select-searcher" name="companyName" value="${ param.companyName }">
+										<input type="text" id="company-selector" class="form-control select-searcher" name="companyName" value="${ param.companyName }"  placeholder="선택 목록 검색">
 									</div>
 								</div>
 							</div>
@@ -114,7 +114,7 @@
 								</div>
 								<div class="col-6">
 									<div class="mb-3">
-										<input type="text" id="employee-selecotr" class="form-control select-searcher" name="emplName" value="${ param.emplName }">
+										<input type="text" id="employee-selecotr" class="form-control select-searcher" name="emplName" value="${ param.emplName }" placeholder="선택 목록 검색">
 									</div>
 								</div>
 							</div>
@@ -178,9 +178,7 @@
 														<th><button class="table-sort"
 																data-sort="sort-dueDate">조달납기</button></th>
 														<th><button class="table-sort"
-																data-sort="sort-price">총 금액</button></th>
-														<th><button class="table-sort"
-																data-sort="sort-print">발주서 상태</button></th>
+																data-sort="sort-status">상태</button></th>
 														<th></th>
 													</tr>
 												</thead>
@@ -196,21 +194,48 @@
 															<td class="sort-orderQuantity" id="orderQuantity">${ order.orderQuantity }</td>
 															<td class="sort-orderDate" id="orderDate">${ order.orderDate }</td>
 															<td class="sort-dueDate" id="dueDate">${ order.dueDate }</td>
-															<td class="sort-price" id="price"></td>
-															<td class="sort-status" id="status">${ order.published }</td>
+															<td class="sort-status" id="status">
+																<c:choose>
+																	<c:when test="${ order.status eq 0 }">
+																		<div class="badge bg-yellow"></div> 발주 예정
+																	</c:when>
+																	<c:when test="${ order.status eq 1 }">
+																		<div class="badge bg-primary"></div> 발주 완료
+																	</c:when>
+																	<c:when test="${ order.status eq 2 }">
+																		<div class="badge bg-purple"></div> 1차 검수 중
+																	</c:when>
+																	<c:when test="${ order.status eq 3 }">
+																		<div class="badge bg-cyan"></div> 2차 검수 중
+																	</c:when>
+																	<c:when test="${ order.status eq 4 }">
+																		<div class="badge bg-red"></div> 검수 완료
+																	</c:when>
+																</c:choose>
+															</td>
 															<td class="text-end">
-																<c:if test="${ order.emergency eq 1 }">
-																	<button type="submit" class="btn btn-danger" id="show-order-page">
-																	<img src="/resources/img/row-insert-top.svg"
-																		class="icon"> 긴급 발주서 발행
-																	</button>
-																</c:if>
-																<c:if test="${ order.emergency ne 1 }">
-																	<button type="submit" class="btn" id="show-order-page">
-																		<img src="/resources/img/row-insert-top.svg"
-																			class="icon"> 발주서 발행
-																	</button>
-																</c:if>
+																<c:choose>
+																	<c:when test="${ order.published eq 0 }">
+																		<c:if test="${ order.emergency eq 1 }">
+																			<button type="submit" class="btn btn-danger" id="show-order-page">
+																			<img src="/resources/img/row-insert-top.svg"
+																				class="icon"> 긴급 발주서 발행
+																			</button>
+																		</c:if>
+																		<c:if test="${ order.emergency ne 1 }">
+																			<button type="submit" class="btn" id="show-order-page">
+																				<img src="/resources/img/row-insert-top.svg"
+																					class="icon"> 발주서 발행
+																			</button>
+																		</c:if>
+																	</c:when>
+																	<c:otherwise>
+																		<button type="submit" class="btn" id="show-order-page" disabled>
+																			<img src="/resources/img/row-insert-top.svg"
+																				class="icon"> 발행 완료
+																		</button>
+																	</c:otherwise>
+																</c:choose>
 															</td>
 														</tr>
 														<input type="hidden" name="companyCode" value="${ order.companyCode }">
@@ -297,11 +322,15 @@
 			
 			if ($(event.target).val() != "") {
 				$selectTag.find("option").each(function(index, value) {
-					if (!$(value).text().includes($(event.target).val()) && $(value).val != 0) {
+					if (!$(value).text().includes($(event.target).val()) && $(value).val() != 0) {
 						$(value).wrap('<span class="hidden-option" style="display: none;" />');
 					}
 				});
 			}
+			
+			$selectTag.addClass("is-valid");
+			setTimeout(function() { $selectTag.removeClass("is-valid") }, 500);
+			
 		});
 		
 		$("button#search-button").on("click", function() {

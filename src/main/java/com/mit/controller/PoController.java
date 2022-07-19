@@ -117,6 +117,7 @@ public class PoController {
 		
 		
 		m.addAttribute("orderInfo", os.getOrderInfo(orderDto));
+		
 		m.addAttribute("currency", currency);
 		
 		os.updatePublished(orderDto);

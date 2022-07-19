@@ -67,5 +67,9 @@ public class OrderDTO {
 	
 	private Byte emergency;
 	
-	public String published;
+	private String published;
+	
+	private Long sum;
+	
+	private String status;
 }
