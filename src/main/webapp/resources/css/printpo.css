@@ -43,6 +43,21 @@ div#company {
 	margin-bottom: 0.3cm;
 }
 
+table#companyTable th#title {
+    width: 49.5%;
+}
+
+table#companyTable #space {
+	background-color: transparent;
+	border-top: transparent;
+	border-bottom: transparent;
+	min-width: 10px;
+}
+
+th#company-data-title {
+    width: 20%;
+}
+
 div#planContent {
 	height: 80%;
 	width: 100%;
@@ -50,7 +65,7 @@ div#planContent {
 
 div#companyInfo {
 	display: inline-block;
-    width: 49.6%;
+    width: 100%;
     height: 25%;
 }
 
@@ -75,9 +90,6 @@ div#company tbody th {
 	text-indent: 10px;
 }
 
-div#company tbody td {
-	width: 6.65cm;
-}
 
 caption#paperNum {
    	text-align: right;

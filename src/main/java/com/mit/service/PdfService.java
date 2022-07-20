@@ -11,8 +11,13 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class PdfService {
+	
+	private String projectPath;
 	
 	public void makePdf(Document document, FileOutputStream os, String html) throws Exception {
 		PdfWriter writer = PdfWriter.getInstance(document, os);
@@ -22,13 +27,13 @@ public class PdfService {
 		XMLWorkerHelper helper = XMLWorkerHelper.getInstance();
 		
 		FontProvider fp = new FontProvider();
-		fp.addFont("C:\\Users\\ABC\\git\\PurchaseOrder\\src\\main\\webapp\\resources\\fonts\\MALGUN.TTF");
+		fp.addFont(projectPath + "/src/main/webapp/resources/fonts/MALGUN.TTF");
 		
 		ConverterProperties cp = new ConverterProperties();
 		cp.setCharset("utf-8");
 		cp.setFontProvider(fp);
 		
-		html = "<html><head><link href=\"C:\\Users\\ABC\\git\\PurchaseOrder\\src\\main\\webapp\\resources\\css\\printpo.css\" rel=\"stylesheet\"></head><body>" + html;
+		html = "<html><head><link href=\"" + projectPath + "/src/main/webapp/resources/css/printpo.css\" rel=\"stylesheet\"></head><body>" + html;
 		html += "</body></html>";
 		
 		HtmlConverter.convertToPdf(html, os, cp);

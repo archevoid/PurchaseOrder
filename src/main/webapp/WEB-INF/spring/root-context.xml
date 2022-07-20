@@ -17,6 +17,14 @@
 		<constructor-arg value="c:\\img" />
 	</bean>
 	
+	<bean id="projectPath" class="java.lang.String">
+		<constructor-arg value="C:/Users/Admin/git/PurchaseOrder" />
+	</bean>
+	
+	<bean id="orderPath" class="java.lang.String">
+		<constructor-arg value="/Orders" />
+	</bean>
+	
 	<!-- SMTP 이메일 / 비밀번호 -->
 	<bean id="SMTP_ID" class="java.lang.String">
 		<constructor-arg value="jicmu" />
@@ -46,12 +54,12 @@
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
 		
-		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.0.30:1521:xe"></property>
+		<!-- <property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.0.30:1521:xe" /> -->
 		<property name="username" value="k2" />
 		<property name="password" value="mit" />
 		
-		<!-- <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:xe"></property>
-		<property name="username" value="teamfos" />
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:xe"></property>
+		<!-- <property name="username" value="teamfos" />
 		<property name="password" value="teamfos1234" /> -->
 	</bean>
 	
