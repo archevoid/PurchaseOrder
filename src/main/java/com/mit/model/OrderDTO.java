@@ -14,7 +14,7 @@ public class OrderDTO {
 	private String contractNum;
 	private String planNum;
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
-	private Date orderDate;
+	private Date scheduledDate;
 	private Long orderQuantity;
 	private String emplNum;
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
@@ -50,9 +50,9 @@ public class OrderDTO {
 	private String supportNum;
 	
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
-	private Date initialOrderDate;
+	private Date initialScheduledDate;
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
-	private Date finalOrderDate;
+	private Date finalScheduledDate;
 	
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date initialDueDate;
@@ -72,4 +72,22 @@ public class OrderDTO {
 	private Long sum;
 	
 	private String status;
+	
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
+	private Date orderDate;
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
+	private Date initialOrderDate;
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
+	private Date finalOrderDate;
+	
+	
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
+	private Date today;
+	
+	private Boolean isActive;
+	
+	private String paperNum;
+	
+	private String comEmployee;
+	private String comEmail;
 }

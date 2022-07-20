@@ -19,9 +19,11 @@ public interface InspectionDAO {
 	
 	public Integer insertInspectionResult(InspectionDTO inspectionDto);
 	
+	public Integer updateInspectionQuantity(InspectionDTO inspectionDto);
+	
 	public Integer getNextInspectionNum(InspectionDTO inspectionDto);
 	
 	public Integer getNextInspectionResultNum(InspectionDTO inspectionDto);
 	
-	public Byte isFinalInspection(OrderDTO orderDto);
+	public InspectionDTO getTotalInspectionQuantity(OrderDTO orderDto);
 }

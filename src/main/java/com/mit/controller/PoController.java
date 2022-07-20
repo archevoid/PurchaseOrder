@@ -122,6 +122,10 @@ public class PoController {
 		
 		os.updatePublished(orderDto);
 		
+		m.addAttribute("paperNum", os.getPaperNum(orderDto));
+		
+		m.addAttribute("ourCompany", os.getOurCompany());
+		
 		return "/po/printpo";
 	}
 	

@@ -60,12 +60,12 @@
 							<div class="row row-searcher">
 								<div class="col-6">
 									<div class="mb-3">
-										<input type="date" id="initialOrderDate" class="form-control" name="initialOrderDate" value="${ param.initialOrderDate }">
+										<input type="date" id="initialScheduledDate" class="form-control" name="initialScheduledDate" value="${ param.initialScheduledDate }">
 									</div>
 								</div>
 								<div class="col-6">
 									<div class="mb-3">
-										<input type="date" id="finalOrderDate" class="form-control" name="finalOrderDate" value="${ param.finalOrderDate }">
+										<input type="date" id="finalScheduledDate" class="form-control" name="finalScheduledDate" value="${ param.finalScheduledDate }">
 									</div>
 								</div>
 							</div>
@@ -298,28 +298,6 @@
 									<label class="form-label">검수일자</label> <input type="date"
 										id="inspectionDateModalInput" class="form-control rm-side" name="inspectionDateModalInput">
 								</div>
-									<div class="mb-3">
-										<label class="form-label">검수수량</label> <input type="number"
-											id="inspectionQuantityModalInput" class="form-control rm-side" name="inspectionQuantityModalInput">
-								</div>
-								<div class="row">
-									<div class="col-lg-6">
-										<div class="mb-3">
-											<label class="form-label">샘플수량</label> <input type="number"
-												id="sampleQuantityModalInput" class="form-control rm-side" name="sampleQuantityModalInput">
-										</div>
-									</div>
-									<div class="col-lg-6">
-										<div class="mb-3">
-											<label class="form-label">샘플비율</label>
-											<div class="input-group input-group-flat">
-												<input type="number" id="sampleRatioModalInput" step="0.1"
-													class="form-control rm-side" readonly> <span
-													class="input-group-text"> % </span>
-											</div>
-										</div>
-									</div>
-								</div>
 							</div>
 
 							<div class="modal-footer">
@@ -372,15 +350,14 @@
 								</div>
 								<div class="mb-3">
 									<label class="form-label">발주수량</label> <input type="number"
-										id="inspectionQuantityModal" class="form-control rm-side"
+										id="orderQuantityModal" class="form-control rm-side"
 										readonly>
 								</div>
 								<div class="row">
 									<div class="col-lg-6">
 										<div class="mb-3">
 											<label class="form-label">검수수량</label> <input type="number"
-												id="inspectionQuantityModal" class="form-control rm-side"
-												readonly>
+												id="inspectionQuantityModal" class="form-control rm-side" name="inspectionQuantityModal">
 										</div>
 									</div>
 									<div class="col-lg-6">
@@ -403,8 +380,7 @@
 									<div class="col-lg-6">
 										<div class="mb-3">
 											<label class="form-label">샘플수량</label> <input type="number"
-												id="sampleQuantityModal" class="form-control rm-side"
-												readonly>
+												id="sampleQuantityModal" class="form-control rm-side" name="sampleQuantityModal">
 										</div>
 									</div>
 									<div class="col-lg-6">
@@ -437,6 +413,8 @@
 									</div>
 								</div>
 							</div>
+							<input type="hidden" id="orderDateModal">
+							<input type="hidden" id="inspectionDateModal">
 							<div class="modal-body">
 								<div class="mb-3">
 									<label class="form-label">보완사항 <span
@@ -479,8 +457,8 @@
 		</div>
 	</div>
 	<script>
-		$("input#sampleQuantityModalInput, input#inspectionQuantityModalInput").on("change keyup focus", function(event) {
-			$("input#sampleRatioModalInput").val($("input#sampleQuantityModalInput").val() / $("input#inspectionQuantityModalInput").val() * 100);
+		$("input#sampleQuantityModal, input#inspectionQuantityModal").on("change keyup focus", function(event) {
+			$("input#sampleRatioModal").val($("input#sampleQuantityModal").val() / $("input#inspectionQuantityModal").val() * 100);
 		});
 	
 		var orderNumVal = -1;
@@ -512,11 +490,8 @@
 			} else if ($("input[name=inspectionDateModalInput]").val() == null || $("input[name=inspectionDateModalInput]").val() == "") {
 				alert("발주일자를 입력해주세요");
 				return;
-			} else if ($("input[name=inspectionQuantityModalInput]").val() == null || $("input[name=inspectionQuantityModalInput]").val() == "") {
-				alert("검수수량을 입력해주세요");
-				return;
-			} else if ($("input[name=sampleQuantityModalInput]").val() == null || $("input[name=sampleQuantityModalInput]").val() == "") {
-				alert("샘플수량을 입력해주세요");
+			} else if ($("input[name=inspectionDateModalInput]").val() < orderDate || $("input[name=inspectionDateModalInput]").val() > dueDate) {
+				alert("발주일자와 조달납기 사이의 날짜를 입력해주세요");
 				return;
 			}
 			
@@ -526,8 +501,6 @@
 				data : {
 					"orderNum" : $("select[name=selectedOrderNum]").val(),
 					"inspectionDate" : $("input[name=inspectionDateModalInput]").val(),
-					"inspectionQuantity" : $("input[name=inspectionQuantityModalInput]").val(),
-					"sampleQuantity" : $("input[name=sampleQuantityModalInput]").val()
 				},
 				success : function(data) {
 					location.reload();
@@ -601,20 +574,31 @@
 			$("input#orderNumModal").val($thisInspection.find("td#orderNum").text());
 			$("input#inspectionNumModal").val($thisInspection.find("span#inspectionNum").text());
 			$("input#progressModal").val(parseInt($thisInspection.find("input#progress").val()));
-			$("input#inspectionQuantityModal").val($thisInspection.find("td#inspectionQuantity").text());
-			$("input#sampleQuantityModal").val($thisInspection.find("td#sampleQuantity").text());
-			$("input#sampleRatioModal").val(parseInt($thisInspection.find("td#sampleQuantity").text()) * 1.0 / parseInt($thisInspection.find("td#inspectionQuantity").text()) * 100);
+			$("input#orderDateModal").val($thisInspection.find("td#orderDate").text());
+			$("input#inspectionDateModal").val($thisInspection.find("td#inspectionDate").text());
+			
+			var orderQuantity;
+			var totalInspectionQuantity;
 			
 			$.ajax({
-				url : "/api/finalInspection",
+				url : "/api/totalInspectionQuantity",
 				type : "post",
+				async : false,
 				data : {
 					"orderNum" : $thisInspection.find("td#orderNum").text()
 				},
 				success : function(data) {
-					if (data == 1) {
-						$("input#finalInspection").prop("checked", true);
-					}
+					orderQuantity = parseInt(data.orderQuantity);
+					totalInspectionQuantity = parseInt(data.totalInspectionQuantity);
+				}
+			});
+			
+			
+			$("input#inspectionQuantityModal").on("change keyup focus", function(inputModal) {
+				if (totalInspectionQuantity + parseInt($(inputModal).val()) == orderQuantity) {
+					$("input#finalInspection").prop("checked", true);
+				} else {
+					$("input#finalInspection").prop("checked", false);
 				}
 			});
 
@@ -625,6 +609,12 @@
 			$("button#insertResultBtn").on("click", function() {
 				if ($("input#defectQuantityModal").val() == null || $("input#defectQuantityModal").val() == "") {
 					alert("불량수량을 입력하세요");ㅣ
+					return;
+				} else if ($("input[name=inspectionQuantityModal]").val() == null || $("input[name=inspectionQuantityModal]").val() == "") {
+					alert("검수수량을 입력해주세요");
+					return;
+				} else if ($("input[name=sampleQuantityModal]").val() == null || $("input[name=sampleQuantityModal]").val() == "") {
+					alert("샘플수량을 입력해주세요");
 					return;
 				}
 				
@@ -637,6 +627,8 @@
 						"inspectionNum" : $("input#inspectionNumModal").val(),
 						"inspectionDefect" : $("input#defectQuantityModal").val(),
 						"complement" : $("textarea#complementModal").val(),
+						"inspectionQuantity" : $("input[name=inspectionQuantityModal]").val(),
+						"sampleQuantity" : $("input[name=sampleQuantityModal]").val(),
 						"close" : checked
 					},
 					success : function(data) {

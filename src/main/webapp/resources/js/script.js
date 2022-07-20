@@ -238,7 +238,7 @@ function orderList() {
 			var colors = ["blueviolet", "cadetblue", "coral", "cornflowerblue", "darkcyan", "darkseagreen", "lightblue", "yellowgreen", "thistle", "orchid"];
 			for(var i = 0; i < Object.keys(data).length; i++) {
 				$("td div.date").each(function(index, value) {
-					if(parseInt(data[i].orderDate.split('-')[2]) == $(value).text()) {
+					if(parseInt(data[i].scheduledDate.split('-')[2]) == $(value).text()) {
 					
 						var $parent = $(value).closest('td');
 						

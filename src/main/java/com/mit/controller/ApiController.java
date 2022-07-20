@@ -110,7 +110,6 @@ public class ApiController {
 	
 	@PostMapping("inputInspection")
 	public Integer insertInspection(InspectionDTO inspectionDto) {
-		System.out.println(inspectionDto);
 		return is.insertInspectionSchedule(inspectionDto);
 	}
 	
@@ -128,8 +127,8 @@ public class ApiController {
 		}
 	}
 	
-	@PostMapping("finalInspection")
-	public Byte isFinalInspection(OrderDTO orderDto) {
-		return is.isFinalInspection(orderDto);
+	@PostMapping("totalInspectionQuantity")
+	public InspectionDTO getTotalInspectionQuantity(OrderDTO orderDto) {
+		return is.getTotalInspectionQuantity(orderDto);
 	}
 }

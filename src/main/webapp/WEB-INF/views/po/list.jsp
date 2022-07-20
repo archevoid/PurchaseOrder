@@ -91,8 +91,8 @@
 													<td id="orderNum">
 														${ order.orderNum }
 													</td>
-													<td id="orderDate">
-														${ order.orderDate }
+													<td id="scheduledDate">
+														${ order.scheduledDate }
 													</td>
 													<td id="dueDate">
 														${ order.dueDate }

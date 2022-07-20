@@ -58,13 +58,13 @@
 							<div class="row">
 								<div class="col-6">
 									<div class="mb-3">
-										<input type="date" name="initialOrderDate"
+										<input type="date" name="initialScheduledDate"
 											class="form-control">
 									</div>
 								</div>
 								<div class="col-6">
 									<div class="mb-3">
-										<input type="date" name="finalOrderDate" class="form-control">
+										<input type="date" name="finalScheduledDate" class="form-control">
 									</div>
 								</div>
 							</div>
@@ -105,7 +105,7 @@
 													<th><button class="table-sort"
 															data-sort="sort-companyName">협력회사</button></th>
 													<th><button class="table-sort"
-															data-sort="sort-orderDate">주문일자</button></th>
+															data-sort="sort-scheduledDate">주문일자</button></th>
 													<th><button class="table-sort"
 															data-sort="sort-duedate">납기일자</button></th>
 													<th><button class="table-sort"
@@ -123,7 +123,7 @@
 														<td class="sort-partCode">${ progress.partName }</td>
 														<td class="sort-emplName">${ progress.emplName }</td>
 														<td class="sort-companyName">${ progress.companyName }</td>
-														<td class="sort-orderDate">${ progress.orderDate }</td>
+														<td class="sort-scheduledDate">${ progress.scheduledDate }</td>
 														<td class="sort-duedate" data-date="1628071164">${ progress.dueDate }</td>
 														<td class="sort-completeQuantity">${ progress.completeQuantity }</td>
 														<td class="sort-orderQuantity">${ progress.orderQuantity }</td>

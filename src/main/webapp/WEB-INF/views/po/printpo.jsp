@@ -3,10 +3,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<%
+<%--
 	/* 사명, 참조, 전화번호, 팩스번호, 주소 */
 String[] aboutUs = new String[]{"Team FoS", "", "010-4242-4242", "031-4242-4242", "대한민국 경기도 수원시 권선구 1234-1234"};
-%>
+--%>
 
 
 <!DOCTYPE html>
@@ -202,22 +202,23 @@ String[] aboutUs = new String[]{"Team FoS", "", "010-4242-4242", "031-4242-4242"
 															<td>${ orderInfo[0].companyName }</td>
 														</tr>
 														<tr>
-															<th>대표</th>
-															<td>${ orderInfo[0].owner }</td>
-														</tr>
-														<tr>
-															<th>연락처</th>
-															<td>${ orderInfo[0].contact }</td>
-														</tr>
-														<tr>
 															<th>사업자번호</th>
 															<td>${ orderInfo[0].businessNumber }</td>
+														</tr>
+														<tr>
+															<th>담당자</th>
+															<td>${ orderInfo[0].comEmployee }</td>
+														</tr>
+														<tr>
+															<th>이메일</th>
+															<td>${ orderInfo[0].comEmail }</td>
 														</tr>
 													</tbody>
 												</table>
 											</div>
 											<div id="companyInfo">
 												<table id="companyTable">
+													<caption id="paperNum">발주번호: ${ paperNum }</caption>
 													<thead>
 														<tr>
 															<th colspan="2" id="title">발주처</th>
@@ -226,20 +227,19 @@ String[] aboutUs = new String[]{"Team FoS", "", "010-4242-4242", "031-4242-4242"
 													<tbody>
 														<tr>
 															<th>상호</th>
-															<td><%=aboutUs[0]%></td>
-														</tr>
-														<tr>
-															<th>담당자</th>
-															<td>${ orderInfo[0].email }</td>
+															<td>${ ourCompany.companyName }</td>
 														</tr>
 														<tr>
 															<th>전화</th>
-															<td><%=aboutUs[2]%></td>
+															<td>${ ourCompany.contact }</td>
 														</tr>
 														<tr>
-															<th>팩스</th>
-															<td><%=aboutUs[3]%></td>
-
+															<th>담당자</th>
+															<td>${ orderInfo[0].emplName }</td>
+														</tr>
+														<tr>
+															<th>이메일</th>
+															<td>${ orderInfo[0].email }</td>
 														</tr>
 													</tbody>
 												</table>
@@ -254,7 +254,7 @@ String[] aboutUs = new String[]{"Team FoS", "", "010-4242-4242", "031-4242-4242"
 													</tr>
 													<tr>
 														<th>납품장소</th>
-														<td><%=aboutUs[4]%></td>
+														<td>${ ourCompany.companyAddress }</td>
 													</tr>
 													<tr>
 														<th>합계금액</th>

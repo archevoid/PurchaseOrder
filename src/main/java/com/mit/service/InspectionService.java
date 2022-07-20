@@ -46,7 +46,11 @@ public class InspectionService extends com.mit.service.Service {
 	}
 	
 	public Integer insertInspectionResult(InspectionDTO inspectionDto) {
-		return inspectionDao.insertInspectionResult(inspectionDto);
+		if (inspectionDao.insertInspectionResult(inspectionDto) != 0) {
+			return inspectionDao.updateInspectionQuantity(inspectionDto);
+		}
+		
+		return 0;
 	}
 	
 	public Integer getNextInspectionNum(InspectionDTO inspectionDto) {
@@ -57,7 +61,7 @@ public class InspectionService extends com.mit.service.Service {
 		return inspectionDao.getNextInspectionResultNum(inspectionDto);
 	}
 	
-	public Byte isFinalInspection(OrderDTO orderDto) {
-		return inspectionDao.isFinalInspection(orderDto);
+	public InspectionDTO getTotalInspectionQuantity(OrderDTO orderDto) {
+		return inspectionDao.getTotalInspectionQuantity(orderDto);
 	}
 }

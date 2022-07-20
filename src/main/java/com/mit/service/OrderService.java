@@ -66,6 +66,14 @@ public class OrderService extends NEmailService {
 		return orderDao.updatePublished(orderDto);
 	}
 	
+	public String getPaperNum(OrderDTO orderDto) {
+		return orderDao.getPaperNum(orderDto).getPaperNum();
+	}
+	
+	public CompanyDTO getOurCompany() {
+		return orderDao.getOurCompany();
+	}
+	
 	public void sendOrder(String elem, String to) throws Exception {
 		superMaker();
 		

@@ -17,6 +17,6 @@ public class UserDTO {
 	/* getEmpl() */
 	private Long sameDay;
 	private Long sameCompany;
-	private Date orderDate;
+	private Date scheduledDate;
 	private Long sameCompanyAtSameDay;
 }
