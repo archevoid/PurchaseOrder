@@ -190,57 +190,43 @@ String[] aboutUs = new String[]{"Team FoS", "", "010-4242-4242", "031-4242-4242"
 									<div id="planContent">
 										<div id="company">
 											<div id="companyInfo">
-												<!-- company information -->
-												<table id="companyTable">
-													<caption id="paperNum">&nbsp;</caption>
-													<thead>
-														<tr>
-															<th colspan="2" id="title">수주처</th>
-														</tr>
-													</thead>
-													<tbody>
-														<tr>
-															<th>상호</th>
-															<td>${ orderInfo[0].companyName }</td>
-														</tr>
-														<tr>
-															<th class="longWord">사업자번호</th>
-															<td>${ orderInfo[0].businessNumber }</td>
-														</tr>
-														<tr>
-															<th>담당자</th>
-															<td>${ orderInfo[0].comEmployee }</td>
-														</tr>
-														<tr>
-															<th>이메일</th>
-															<td>${ orderInfo[0].comEmail }</td>
-														</tr>
-													</tbody>
-												</table>
-											</div>
-											<div id="companyInfo">
 												<table id="companyTable">
 													<caption id="paperNum">발주번호: ${ paperNum }</caption>
 													<thead>
 														<tr>
+															<th colspan="2" id="title">수주처</th>
+															<th id="space"></th>
 															<th colspan="2" id="title">발주처</th>
 														</tr>
 													</thead>
 													<tbody>
 														<tr>
-															<th>상호</th>
+															<th id="company-data-title">상호</th>
+															<td>${ orderInfo[0].companyName }</td>
+															<td id="space"></td>
+															<th id="company-data-title">상호</th>
 															<td>${ ourCompany.companyName }</td>
 														</tr>
 														<tr>
-															<th>전화</th>
+															<th class="company-data-title longWord">사업자번호</th>
+															<td>${ orderInfo[0].businessNumber }</td>
+															<td id="space"></td>
+															<th id="company-data-title">전화</th>
 															<td>${ ourCompany.contact }</td>
+															
 														</tr>
 														<tr>
-															<th>담당자</th>
+															<th id="company-data-title">담당자</th>
+															<td>${ orderInfo[0].comEmployee }</td>
+															<td id="space"></td>
+															<th id="company-data-title">담당자</th>
 															<td>${ orderInfo[0].emplName }</td>
 														</tr>
 														<tr>
-															<th>이메일</th>
+															<th id="company-data-title">이메일</th>
+															<td>${ orderInfo[0].comEmail }</td>
+															<td id="space"></td>
+															<th id="company-data-title">이메일</th>
 															<td>${ orderInfo[0].email }</td>
 														</tr>
 													</tbody>
@@ -402,14 +388,18 @@ String[] aboutUs = new String[]{"Team FoS", "", "010-4242-4242", "031-4242-4242"
 				}
 			}); */
 			
+			const orderNum = ${ orderInfo[0].orderNum };
+			
 			$.ajax({
 				url : "/api/sendOrder",
 				type : "post",
+				async : false,
 				data : {
-					"html" : $("div.document-order").html()
+					"html" : $("div.document-order").html(),
+					"orderNum" : orderNum
 				},
 				success : function(data) {
-					console.log("say hi");
+					
 				}
 			});
 		});

@@ -3,12 +3,18 @@ package com.mit.service;
 import java.sql.Date;
 import java.util.List;
 
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
 import javax.annotation.Resource;
+import javax.mail.Multipart;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itextpdf.text.zugferd.checkers.basic.LanguageCode;
 import com.mit.model.CompanyDTO;
 import com.mit.model.OrderDAO;
 import com.mit.model.OrderDTO;
@@ -74,17 +80,29 @@ public class OrderService extends NEmailService {
 		return orderDao.getOurCompany();
 	}
 	
-	public void sendOrder(String elem, String to) throws Exception {
+	public void sendOrder(String to, FileDataSource fds) throws Exception {
 		superMaker();
-		
-		elem = "<html><body style='font-family: MALGUNGothic;'>" + elem + "</body></html>";
-		
 		
 		MimeMessage message = makeMessage("jicmu@jicmu.org", "발주서입니다.");
 		
-		message.setHeader("Content-Type", "text/html;charset=utf-8");
+		Multipart mp = new MimeMultipart();
 		
-		message.setContent(elem, "text/html;charset=utf-8");
+		MimeBodyPart mbp0 = new MimeBodyPart();
+		mbp0.setContent(fds.getName() + "입니다.", "text/html;charset=utf-8");
+		
+		mp.addBodyPart(mbp0);
+		
+		if (fds != null) {
+			MimeBodyPart mbp = new MimeBodyPart();
+			
+			mbp.setDataHandler(new DataHandler(fds));
+			
+			mbp.setFileName(fds.getName());
+			
+			mp.addBodyPart(mbp);
+		}
+		
+		message.setContent(mp);
 		
 		sendMail(message);
 	}

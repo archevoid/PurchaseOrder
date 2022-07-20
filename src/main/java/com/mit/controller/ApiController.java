@@ -7,6 +7,8 @@ import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.activation.FileDataSource;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +38,8 @@ public class ApiController {
 	InspectionService is;
 	
 	PdfService pdfs;
+	
+	String orderPath;
 	
 	@GetMapping("plan")
 	public PlanDTO getPlan(String planNum) {
@@ -127,9 +131,7 @@ public class ApiController {
 	}
 	
 	@PostMapping("sendOrder")
-	public void sendOrder(String html) {
-		String orderPath = "/Orders";
-		
+	public void sendOrder(String html, OrderDTO orderDto) {
 		try {
 			File dir = new File(orderPath);
 			
@@ -137,13 +139,22 @@ public class ApiController {
 				dir.mkdirs();
 			}
 			
-			FileOutputStream fos = new FileOutputStream(orderPath + "/" + "발주서.pdf");
+			String fileName = os.getPaperNum(orderDto) + "_발주서";
+			fileName += ".pdf";
+			
+			FileOutputStream fos = new FileOutputStream(orderPath + "/" + fileName);
 			
 			Document document = new Document(PageSize.A4);
 			
 			pdfs.makePdf(document, fos, html);
 			
 			fos.close();
+			
+			File file = new File(orderPath + "/" + fileName);
+			
+			FileDataSource fds = new FileDataSource(file);
+			
+			os.sendOrder("jhkim987891@gmail.com", fds);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
