@@ -39,4 +39,7 @@ public class CompanyDTO {
 	
 	private String comEmployee;
 	private String comEmail;
+	
+	private String emplName;
+	private String email;
 }

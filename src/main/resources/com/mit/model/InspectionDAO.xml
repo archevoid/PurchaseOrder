@@ -26,15 +26,12 @@
 		</trim>
 	</sql>
 
-	<select id="isFinalInspection" resultType="long">
-		SELECT 
-			CASE
-				WHEN (SELECT SUM(i.inspection_quantity) FROM inspection i WHERE i.order_num = p.order_num) = p.order_quantity
-					THEN 1
-				ELSE 0
-            END AS finalInspection
-		FROM purchase_order p
-		WHERE p.order_num = #{ orderNum }
+	<select id="getTotalInspectionQuantity" resultType="com.mit.model.InspectionDTO">
+		SELECT p.order_quantity AS orderQuantity
+		    , (SELECT SUM(ir.inspection_quantity) AS totalInspectionQuantity
+				FROM inspection_result ir WHERE ir.order_num = p.order_num)
+		FROM purchase_order p 
+		WHERE p.order_num = #{ orderNum } 
 	</select>
 
 	<select id="getOrderAllNum" resultType="com.mit.model.OrderDTO">
@@ -156,14 +153,19 @@
 	</select>
 	
 	<insert id="insertInspectionSchedule">
-		INSERT INTO inspection (order_num, inspection_num, inspection_date, inspection_quantity, sample_quantity)
-		VALUES (#{ orderNum }, (SELECT NVL((MAX(i.inspection_num) + 1), 1) AS nextNum FROM inspection i WHERE i.order_num = #{ orderNum }), #{ inspectionDate }, #{ inspectionQuantity }, #{ sampleQuantity })
+		INSERT INTO inspection (order_num, inspection_num, inspection_date)
+		VALUES (#{ orderNum }, (SELECT NVL((MAX(i.inspection_num) + 1), 1) AS nextNum FROM inspection i WHERE i.order_num = #{ orderNum }), #{ inspectionDate })
 	</insert>
 	
 	<insert id="insertInspectionResult">
-		INSERT INTO inspection_result (order_num, inspection_num, inspection_defect, complement, close)
-		VALUES (#{ orderNum }, #{ inspectionNum }, #{ inspectionDefect }, #{ complement }, #{ close })
+		INSERT INTO inspection_result (order_num, inspection_num, inspection_defect, complement, close, inspection_quantity, sample_quantity)
+		VALUES (#{ orderNum }, #{ inspectionNum }, #{ inspectionDefect }, #{ complement }, #{ close }, #{ inspectionQuantity }, #{ sampleQuantity })
 	</insert>
+	
+	<update id="updateInspectionQuantity">
+		UPDATE inspection SET inspection_quantity = #{ inspectionQuantity }, sample_quantity = #{ sampleQuantity }
+		WHERE order_num = #{ orderNum } AND inspection_num = #{ inspectionNum }
+	</update>
 	
 	<select id="getNextInspectionNum" resultType="int">
 		SELECT NVL((MAX(i.inspection_num) + 1), 1) AS nextNum FROM inspection i WHERE i.order_num = #{ orderNum }

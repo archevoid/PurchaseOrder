@@ -87,7 +87,7 @@
 		drawCalendar(curYear, curMonth);
 
 		$("td.clickable").on("click", function() {
-			inputDay(curYear + "-" + curMonth.toString().padStart(2, "0") + "-" + $(this).children("div.date").text().padStart(2, "0"), "input[name=orderDate]");
+			inputDay(curYear + "-" + curMonth.toString().padStart(2, "0") + "-" + $(this).children("div.date").text().padStart(2, "0"), "input[name=scheduledDate]");
 		});
 
 		$("#prev").on("click", function() {

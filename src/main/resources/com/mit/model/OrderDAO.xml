@@ -16,14 +16,14 @@
 				AND sp.deliverydate < #{ finalDueDate }
 			]]>
 			</if>
-			<if test="initialOrderDate != null">
+			<if test="initialScheduledDate != null">
 			<![CDATA[
-				AND #{ initialOrderDate } < p.order_date
+				AND #{ initialScheduledDate } < p.scheduled_date
 			]]>
 			</if>
-			<if test="finalOrderDate != null">
+			<if test="finalScheduledDate != null">
 			<![CDATA[
-				AND p.order_date < #{ finalOrderDate }
+				AND p.scheduled_date < #{ finalScheduledDate }
 			]]>
 			</if>
 			<if test="partName != null">
@@ -57,7 +57,7 @@
 				, cp.owner AS owner
 				, cp.contact AS contact
 				, cp.business_number AS businessNumber
-				, p.order_date AS orderDate
+				, p.scheduled_date AS scheduledDate
 				, p.published AS published
 				, sp.deliverydate AS dueDate
 				, ct.unitprice AS unitPrice
@@ -66,15 +66,18 @@
 				, cp.account AS account
 				, cp.currency AS currency
 				, ct.partsSupply AS leadTime
+				, p.order_date AS orderDate
+				, sysdate AS today
 				, CASE
-					WHEN (SELECT MAX(ir.close) FROM inspection_result ir WHERE ir.order_num = p.order_num)
-						THEN 5
-					WHEN (SELECT MAX(ir.inspection_num) FROM inspection_result ir WHERE ir.order_num = p.order_num)
+					WHEN (SELECT MAX(ir.close) FROM inspection_result ir WHERE ir.order_num = p.order_num) = 1
 						THEN 4
-					WHEN p.published != 0 THEN 1
+				<![CDATA[
+                    WHEN p.published != 0 THEN 1
+					WHEN (SELECT i.inspection_date FROM inspection i WHERE i.order_num = p.order_num) <= sysdate AND sysdate < (SELECT i.inspection_date FROM inspection i WHERE i.order_num = p.order_num)
+                        THEN (SELECT i.inspection_num + 1000 FROM inspection i WHERE i.inspection_date <= sysdate AND sysdate < i.inspection_date)
 					ELSE 0
-				END
-<!-- 			, CASE WHEN wh.return = 'Y' THEN 1 ELSE 0 END AS emergency  -->
+				]]>
+				END AS status
 				, p.emergency AS emergency
 				, ROWNUM AS rn
 			FROM purchase_order p INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
@@ -106,9 +109,13 @@
 	</select>
 	
 	<update id="updatePublished">
-		UPDATE purchase_order SET published = 1
+		UPDATE purchase_order SET published = 1, order_date = sysdate, paper_num = paper_num_seq.NEXTVAL
 		WHERE order_num = #{ orderNum }
 	</update>
+	
+	<select id="getPaperNum" resultType="com.mit.model.OrderDTO">
+		SELECT p.paper_num AS paperNum FROM purchase_order p WHERE order_num = #{ orderNum }
+	</select>
 	
 	<select id="getAllPart" resultType="com.mit.model.OrderDTO">
 		SELECT pt.partname AS partName
@@ -122,6 +129,12 @@
 		FROM tbl_company cp
 	</select>
 	
+	<select id="getOurCompany" resultType="com.mit.model.CompanyDTO">
+		SELECT cp.name AS companyName, cp.contact AS contact, cp.address AS companyAddress
+		FROM tbl_company cp
+		WHERE cp.code = 0
+	</select>
+	
 
 
 	<select id="getCompany" resultType="com.mit.model.CompanyDTO">
@@ -132,14 +145,14 @@
 	
 	<select id="getOrderByMonth" resultType="com.mit.model.OrderDTO">
 		SELECT p.order_num AS orderNum
-			, p.order_date AS orderDate
+			, p.scheduled_date AS scheduledDate
 			, (SELECT pt.partname FROM tbl_part pt WHERE pt.partcode = ct.partcode) AS partName
 			, (SELECT cp.name FROM tbl_company cp WHERE cp.code = ct.code) AS companyName
 			, ct.code AS companyCode
 		FROM purchase_order p INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
 		<![CDATA[
-			WHERE #{ date } <= p.order_date AND p.order_date <= LAST_DAY(#{ date })
-			ORDER BY p.order_date DESC
+			WHERE #{ date } <= p.scheduled_date AND p.scheduled_date <= LAST_DAY(#{ date })
+			ORDER BY p.scheduled_date DESC
 		]]>
 	</select>
 	
@@ -150,18 +163,20 @@
 			, cp.owner AS owner
 			, cp.contact AS contact
 			, cp.business_number AS businessNumber
-			, p.order_date AS orderDate
+			, p.scheduled_date AS scheduledDate
 			, sp.deliverydate AS dueDate
 			, ct.unitprice AS unitPrice
 			, (SELECT pt.partname FROM tbl_part pt WHERE pt.partcode = ct.partcode) AS partName
 			, p.order_quantity AS orderQuantity
 			, cp.account AS account
 			, cp.currency AS currency
+			, cp.comemployee AS comEmployee
+			, cp.comemail AS comEmail
 		FROM purchase_order p INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
 			INNER JOIN tbl_company cp ON ct.code = cp.code
 			INNER JOIN employee e ON e.empl_num = p.empl_num
 			INNER JOIN tbl_support sp ON sp.supportno = p.support_num
-		WHERE cp.code = #{ companyCode } AND p.order_date = #{ orderDate }
+		WHERE cp.code = #{ companyCode } AND p.scheduled_date = #{ scheduledDate }
 	</select>
 	
 	<select id="searchOrderProgress" resultType="com.mit.model.OrderDTO">
@@ -170,11 +185,11 @@
 		    , e.empl_email AS email
 		    , p.order_num AS orderNum
 		    , cp.name AS companyName
-		    , p.order_date AS orderDate
+		    , p.scheduled_date AS scheduledDate
 		    , sp.deliverydate AS dueDate
 		    , p.order_quantity AS orderQuantity
 		    , NVL((SELECT SUM(i.inspection_quantity) AS completeQuantity FROM inspection i 
-                WHERE i.order_num = p.order_num
+                WHERE i.order_num = p.order_num AND i.inspection_num IN (SELECT ir.inspection_num FROM inspection_result ir WHERE i.order_num = ir.order_num)
                 GROUP BY i.order_num), 0) AS completeQuantity
 		FROM purchase_order p INNER JOIN employee e ON p.empl_num = e.empl_num
 		    INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
@@ -201,19 +216,19 @@
 			    			AND cp.name LIKE '%'||#{ companyName }||'%'
 	    				]]>
 		    		</when>
-		    		<when test="initialOrderDate != null and finalOrderDate != null">
+		    		<when test="initialScheduledDate != null and finalScheduledDate != null">
 		    			<![CDATA[
-		    				AND #{ initialOrderDate } < p.order_date AND p.order_date < #{ finalOrderDate }
+		    				AND #{ initialScheduledDate } < p.scheduled_date AND p.scheduled_date < #{ finalScheduledDate }
 		    			]]>
 		    		</when>
-		    		<when test="initialOrderDate == null and finalOrderDate != null">
+		    		<when test="initialScheduledDate == null and finalScheduledDate != null">
 		    			<![CDATA[
-		    				AND sysdate < p.order_date AND p.order_date < #{ finalOrderDate }
+		    				AND sysdate < p.scheduled_date AND p.scheduled_date < #{ finalScheduledDate }
 		    			]]>
 		    		</when>
-		    		<when test="initialOrderDate != null and finalOrderDate == null">
+		    		<when test="initialScheduledDate != null and finalScheduledDate == null">
 		    			<![CDATA[
-		    				AND sysdate < p.order_date AND p.order_date < sysdate
+		    				AND sysdate < p.scheduled_date AND p.scheduled_date < sysdate
 		    			]]>
 		    		</when>
 		    		<when test="initialDueDate != null and finalDueDate != null">

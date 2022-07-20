@@ -122,12 +122,12 @@
 							<div class="row row-searcher">
 								<div class="col-6">
 									<div class="mb-3">
-										<input type="date" id="initialOrderDate" class="form-control" name="initialOrderDate" value="${ param.initialOrderDate }">
+										<input type="date" id="initialScheduledDate" class="form-control" name="initialScheduledDate" value="${ param.initialScheduledDate }">
 									</div>
 								</div>
 								<div class="col-6">
 									<div class="mb-3">
-										<input type="date" id="finalOrderDate" class="form-control" name="finalOrderDate" value="${ param.finalOrderDate }">
+										<input type="date" id="finalScheduledDate" class="form-control" name="finalScheduledDate" value="${ param.finalScheduledDate }">
 									</div>
 								</div>
 							</div>
@@ -174,7 +174,9 @@
 														<th><button class="table-sort"
 																data-sort="sort-orderQuantity">발주수량</button></th>
 														<th><button class="table-sort"
-																data-sort="sort-orderDate">발주일자</button></th>
+																data-sort="sort-orderDate">발주예정일자</button></th>
+														<th><button class="table-sort"
+																data-sort="sort-scheduledDate">발주일자</button></th>
 														<th><button class="table-sort"
 																data-sort="sort-dueDate">조달납기</button></th>
 														<th><button class="table-sort"
@@ -193,6 +195,7 @@
 															<td class="sort-leadTime" id="leadTime">${ order.leadTime }</td>
 															<td class="sort-orderQuantity" id="orderQuantity">${ order.orderQuantity }</td>
 															<td class="sort-orderDate" id="orderDate">${ order.orderDate }</td>
+															<td class="sort-scheduledDate" id="scheduledDate">${ order.scheduledDate }</td>
 															<td class="sort-dueDate" id="dueDate">${ order.dueDate }</td>
 															<td class="sort-status" id="status">
 																<c:choose>
@@ -202,20 +205,26 @@
 																	<c:when test="${ order.status eq 1 }">
 																		<div class="badge bg-primary"></div> 발주 완료
 																	</c:when>
-																	<c:when test="${ order.status eq 2 }">
-																		<div class="badge bg-purple"></div> 1차 검수 중
-																	</c:when>
-																	<c:when test="${ order.status eq 3 }">
-																		<div class="badge bg-cyan"></div> 2차 검수 중
+																	<c:when test="${ order.status ge 1000 }">
+																		<div class="badge bg-purple"></div> ${ order.status - 1000 }차 검수 중
 																	</c:when>
 																	<c:when test="${ order.status eq 4 }">
 																		<div class="badge bg-red"></div> 검수 완료
 																	</c:when>
 																</c:choose>
 															</td>
+															<fmt:setLocale value="en_US" />
+															<fmt:parseNumber value="${ order.dueDate.time / (1000 * 60 * 60 * 24) }" integerOnly="true" var="dueDateNumber" />
+															<fmt:parseNumber value="${ order.today.time / (1000 * 60 * 60 * 24) }" integerOnly="true" var="todayNumber" />
 															<td class="text-end">
 																<c:choose>
 																	<c:when test="${ order.published eq 0 }">
+																		<c:if test="${ order.leadTime gt (dueDateNumber - todayNumber) }">
+																			<button type="submit" class="btn" id="show-order-page" disabled>
+																				<img src="/resources/img/row-insert-top.svg"
+																					class="icon"> 발주 기간 초과
+																			</button>
+																		</c:if>
 																		<c:if test="${ order.emergency eq 1 }">
 																			<button type="submit" class="btn btn-danger" id="show-order-page">
 																			<img src="/resources/img/row-insert-top.svg"
@@ -229,17 +238,18 @@
 																			</button>
 																		</c:if>
 																	</c:when>
-																	<c:otherwise>
+																	<c:when test="${ order.published ne 0 }">
 																		<button type="submit" class="btn" id="show-order-page" disabled>
 																			<img src="/resources/img/row-insert-top.svg"
 																				class="icon"> 발행 완료
 																		</button>
-																	</c:otherwise>
+																	</c:when>
+																	
 																</c:choose>
 															</td>
 														</tr>
 														<input type="hidden" name="companyCode" value="${ order.companyCode }">
-														<input type="hidden" name="orderDate" value="${ order.orderDate }">
+														<input type="hidden" name="scheduledDate" value="${ order.scheduledDate }">
 														<input type="hidden" name="orderNum" value="${ order.orderNum }">
 														</form>
 													</c:forEach>
@@ -413,7 +423,6 @@
 			
 			location.href = url;
 		});
-
 		
 	</script>
 

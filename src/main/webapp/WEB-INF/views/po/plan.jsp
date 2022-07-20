@@ -118,7 +118,7 @@
 														<th><button class="table-sort"
 																data-sort="sort-companyName">조달납기</button></th>
 														<th><button class="table-sort"
-																data-sort="sort-orderDate">소요량</button></th>
+																data-sort="sort-scheduledDate">소요량</button></th>
 														<th></th>
 													</tr>
 												</thead>
@@ -317,7 +317,7 @@
 		        + ' <div class="form-group mb-3 row">' 
 		        + ' <label class="form-label col-3 col-form-label">발주일자</label>' 
 		        + ' <div class="col">' 
-		        + ' <input type="date" id="orderDate" class="form-control" name="orderDate">' 
+		        + ' <input type="date" id="scheduledDate" class="form-control" name="scheduledDate">' 
 		        + ' </div>' 
 		        + ' </div>' 
 		        + ' <div class="form-group mb-3 row">'
@@ -393,7 +393,7 @@
 				} else if ($closeCard.find("select[name=emplNum]").val() == 0) {
 					alert("담당자를 선택해주세요");
 					return;
-				} else if ($closeCard.find("input[name=orderDate]").val() == null || $closeCard.find("input[name=orderDate]").val() == "") {
+				} else if ($closeCard.find("input[name=scheduledDate]").val() == null || $closeCard.find("input[name=scheduledDate]").val() == "") {
 					alert("발주일자를 입력해주세요");
 					return;
 				} else if ($closeCard.find("input[name=orderQuantity]").val() == null || $closeCard.find("input[name=orderQuantity]").val() == "") {
@@ -407,7 +407,7 @@
 					data : {
 						"planNum" : planNum,
 						"contractNum" : $closeCard.find("input[name=contractNum]").val(),
-						"orderDate" : $closeCard.find("input[name=orderDate]").val(),
+						"scheduledDate" : $closeCard.find("input[name=scheduledDate]").val(),
 						"orderQuantity" : $closeCard.find("input[name=orderQuantity]").val(),
 						"emplNum" : $closeCard.find("select[name=emplNum]").val()
 					},
@@ -599,21 +599,21 @@
 											"contractNum" : data[i].contractNum
 										},
 										success : function(data) {
-											var $orderDateTag = $("#" + companyName + " input[name=orderDate]");
+											var $scheduledDateTag = $("#" + companyName + " input[name=scheduledDate]");
 											var $dueDateTag = $("#" + companyName + " input[name=dueDate]");
 											var $emplNumTag = $("#" + companyName + " select[name=emplNum]");
 											var $emailTag = $("#" + companyName + " div#email");
 											var $orderQuantityTag = $("#" + companyName + " input[name=orderQuantity]");
 											var $sumTag = $("#" + companyName + " span#sum");
 
-											$orderDateTag.val(data.orderDate);
+											$scheduledDateTag.val(data.scheduledDate);
 											$dueDateTag.val(data.dueDate);
 											$emplNumTag.val(data.emplNum);
 											$emailTag.text(data.email);
 											$orderQuantityTag.val(data.orderQuantity);
 											$sumTag.text(parseInt(data.orderQuantity) * parseInt(data.unitPrice));
 
-											$orderDateTag.prop("disabled", "true");
+											$scheduledDateTag.prop("disabled", "true");
 											$dueDateTag.prop("disabled", "true");
 											$emplNumTag.prop("disabled", "true");
 											$orderQuantityTag.prop("disabled", "true");
@@ -645,7 +645,7 @@
 									data : {
 										"planNum" : $("select[name=planNum]").val(),
 										"contractNum" : closeCard.find("input[name=contractNum]").val(),
-										"orderDate" : closeCard.find("input[name=orderDate]").val(),
+										"scheduledDate" : closeCard.find("input[name=scheduledDate]").val(),
 										"dueDate" : closeCard.find("input[name=dueDate]").val(),
 										"orderQuantity" : closeCard.find("input[name=orderQuantity]").val(),
 										"emplNum" : closeCard.find("select[name=emplNum]").val()
@@ -657,13 +657,13 @@
 								});
 							});
 
-							$("input[name=orderDate]").on("change", function(event) {
+							$("input[name=scheduledDate]").on("change", function(event) {
 								var closeCard = $(event.target).closest("div.card-plan");
 								$.ajax({
 									url : "/api/empl",
 									type : "POST",
 									data : {
-										"orderDate" : $("input[name=orderDate]").val()
+										"scheduledDate" : $("input[name=scheduledDate]").val()
 									},
 									success : function(data) {
 										closeCard.find("div#email").text("");

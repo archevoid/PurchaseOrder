@@ -99,17 +99,17 @@
 		    		</when>
 		    		<when test="startDate != null and endDate != null">
 		    			<![CDATA[
-		    				AND #{ startDate } < p.order_date AND p.order_date < #{ endDate }
+		    				AND #{ startDate } < p.scheduled_date AND p.scheduled_date < #{ endDate }
 		    			]]>
 		    		</when>
 		    		<when test="startDate == null and endDate != null">
 		    			<![CDATA[
-		    				AND sysdate < p.order_date AND p.order_date < #{ endDate }
+		    				AND sysdate < p.scheduled_date AND p.scheduled_date < #{ endDate }
 		    			]]>
 		    		</when>
 		    		<when test="startDate != null and endDate == null">
 		    			<![CDATA[
-		    				AND sysdate < p.order_date AND p.order_date < sysdate
+		    				AND sysdate < p.scheduled_date AND p.scheduled_date < sysdate
 		    			]]>
 		    		</when>
 		    		<when test="invoiceIssue != null">

@@ -10,6 +10,10 @@ public interface OrderDAO {
 	
 	Integer updatePublished(OrderDTO orderDto);
 	
+	OrderDTO getPaperNum(OrderDTO orderDto);
+	
+	CompanyDTO getOurCompany();
+	
 	List<OrderDTO> getAllPart();
 	
 	List<OrderDTO> getAllCompany();

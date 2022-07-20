@@ -83,6 +83,13 @@ div#company tbody td {
 	width: 6.65cm;
 }
 
+caption#paperNum {
+   	text-align: right;
+    caption-side: top;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
 th, td {
 	border-top: var(--border-style);
 	border-right: var(--border-style);
