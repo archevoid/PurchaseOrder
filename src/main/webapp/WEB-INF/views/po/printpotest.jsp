@@ -26,12 +26,11 @@ String[] aboutUs = new String[]{"Team FoS", "", "010-4242-4242", "031-4242-4242"
     <link href="/resources/dist/css/demo.min.css" rel="stylesheet"/>
     
     <link href="/resources/css/css.css" rel="stylesheet">
-    <link href="/resources/css/printpo.css" rel="stylesheet">
 
 	<meta name="_csrf" content="${ _csrf.token }">
 <%-- header 끝 --%>
 <title>발주서 출력 - TeamFoS</title>
-<link href="/resources/css/printpo.css" rel="stylesheet">
+<!-- <link href="/resources/css/printpo.css" rel="stylesheet"> -->
 <link href="/resources/dist/css/demo.min.css" rel="stylesheet" />
 </head>
 
@@ -192,7 +191,6 @@ String[] aboutUs = new String[]{"Team FoS", "", "010-4242-4242", "031-4242-4242"
 											<div id="companyInfo">
 												<!-- company information -->
 												<table id="companyTable">
-													<caption id="paperNum">&nbsp;</caption>
 													<thead>
 														<tr>
 															<th colspan="2" id="title">수주처</th>
@@ -204,7 +202,7 @@ String[] aboutUs = new String[]{"Team FoS", "", "010-4242-4242", "031-4242-4242"
 															<td>${ orderInfo[0].companyName }</td>
 														</tr>
 														<tr>
-															<th class="longWord">사업자번호</th>
+															<th>사업자번호</th>
 															<td>${ orderInfo[0].businessNumber }</td>
 														</tr>
 														<tr>
@@ -396,20 +394,9 @@ String[] aboutUs = new String[]{"Team FoS", "", "010-4242-4242", "031-4242-4242"
 				}
 			});
 
-			/* $("table#companyTable tbody th").each(function() {
+			$("table#companyTable tbody th").each(function() {
 				if ($(this).text().length > 3) {
 					$(this).addClass("longWord");
-				}
-			}); */
-			
-			$.ajax({
-				url : "/api/sendOrder",
-				type : "post",
-				data : {
-					"html" : $("div.document-order").html()
-				},
-				success : function(data) {
-					console.log("say hi");
 				}
 			});
 		});
@@ -442,6 +429,17 @@ String[] aboutUs = new String[]{"Team FoS", "", "010-4242-4242", "031-4242-4242"
 			document.body.removeChild(fileDownload);
 		}
 		
+		
+		$.ajax({
+			url : "/api/sendOrder",
+			type : "post",
+			data : {
+				"html" : $("div.document-order").html()
+			},
+			success : function(data) {
+				console.log("say hi");
+			}
+		});
 		
 
 	</script>

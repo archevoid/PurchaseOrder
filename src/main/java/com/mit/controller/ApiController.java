@@ -1,5 +1,8 @@
 package com.mit.controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.PageSize;
 import com.mit.model.CompanyDTO;
 import com.mit.model.InspectionDTO;
 import com.mit.model.OrderDTO;
@@ -16,6 +21,7 @@ import com.mit.model.PlanDTO;
 import com.mit.model.UserDTO;
 import com.mit.service.InspectionService;
 import com.mit.service.OrderService;
+import com.mit.service.PdfService;
 import com.mit.service.PlanService;
 
 import lombok.AllArgsConstructor;
@@ -28,6 +34,8 @@ public class ApiController {
 	PlanService ps;
 	OrderService os;
 	InspectionService is;
+	
+	PdfService pdfs;
 	
 	@GetMapping("plan")
 	public PlanDTO getPlan(String planNum) {
@@ -119,9 +127,25 @@ public class ApiController {
 	}
 	
 	@PostMapping("sendOrder")
-	public void sendOrder(String elem, String to) {
+	public void sendOrder(String html) {
+		String orderPath = "/Orders";
+		
 		try {
-			os.sendOrder(elem, to);
+			File dir = new File(orderPath);
+			
+			if (!dir.exists()) {
+				dir.mkdirs();
+			}
+			
+			FileOutputStream fos = new FileOutputStream(orderPath + "/" + "발주서.pdf");
+			
+			Document document = new Document(PageSize.A4);
+			
+			pdfs.makePdf(document, fos, html);
+			
+			fos.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

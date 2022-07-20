@@ -79,6 +79,7 @@ public class OrderService extends NEmailService {
 		
 		elem = "<html><body style='font-family: MALGUNGothic;'>" + elem + "</body></html>";
 		
+		
 		MimeMessage message = makeMessage("jicmu@jicmu.org", "발주서입니다.");
 		
 		message.setHeader("Content-Type", "text/html;charset=utf-8");
