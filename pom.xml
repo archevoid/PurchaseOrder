@@ -199,23 +199,12 @@
 	      <artifactId>xmlworker</artifactId>
 	      <version>5.5.13</version>
 	  </dependency>
-	  
-	  <!--  hwp 라이브러리 -->
-	  <!-- https://mvnrepository.com/artifact/kr.dogfoot/hwplib -->
-		<dependency>
-		    <groupId>kr.dogfoot</groupId>
-		    <artifactId>hwplib</artifactId>
-		    <version>1.1.1</version>
-		</dependency>
-		
-		
-		<!-- security Tag -->
-		<dependency>
-		    <groupId>org.springframework.security</groupId>
-		    <artifactId>spring-security-taglibs</artifactId>
-		    <version>4.0.2.RELEASE</version>
-		</dependency>
-		
+	  <!-- https://mvnrepository.com/artifact/com.itextpdf/html2pdf -->
+	<dependency>
+	    <groupId>com.itextpdf</groupId>
+	    <artifactId>html2pdf</artifactId>
+	    <version>4.0.1</version>
+	</dependency>
 	  
 		
 		<!-- /추가한 라이브러리 -->
