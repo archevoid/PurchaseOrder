@@ -50,6 +50,7 @@
 	<select id="getOrder" resultType="com.mit.model.OrderDTO">
 		SELECT *
 		FROM (SELECT p.order_num AS orderNum
+				, e.empl_num AS emplNum
 				, e.empl_name AS emplName
 				, e.empl_email AS email
 				, cp.name AS companyName
@@ -135,6 +136,18 @@
 		WHERE cp.code = 0
 	</select>
 	
+	<select id="getResetOrderData" resultType="com.mit.model.OrderDTO">
+		SELECT p.empl_num AS emplNum
+			, p.scheduled_date AS scheduledDate
+		FROM purchase_order p
+		WHERE p.order_num = #{ orderNum }
+	</select>
+	
+	<update id="updateOrder">
+		UPDATE purchase_order SET empl_num = #{ emplNum }, scheduled_data = #{ scheduledDate }
+		WHERE order_num = #{ orderNum }
+	</update>
+	
 
 
 	<select id="getCompany" resultType="com.mit.model.CompanyDTO">
@@ -201,6 +214,7 @@
 		    
 	    <where>
 	    	<trim prefixOverrides="AND">
+	    		AND p.paper_num IS NOT NULL
 		    	<choose>
 		    		<when test="partName != null">
 			    		<![CDATA[

@@ -18,6 +18,10 @@ public interface OrderDAO {
 	
 	List<OrderDTO> getAllCompany();
 	
+	OrderDTO getResetOrderData(OrderDTO orderDto);
+	
+	Integer updateOrder(OrderDTO orderDto);
+	
 	
 	List<CompanyDTO> getCompany();
 	
