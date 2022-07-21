@@ -129,7 +129,7 @@ public class ApiController {
 	}
 	
 	@PostMapping("sendOrder")
-	public void sendOrder(String html, OrderDTO orderDto, String[] addressList) {
+	public void sendOrder(String html, String emailContent, OrderDTO orderDto, String[] addressList) {
 		try {
 			File dir = new File(orderPath);
 			
@@ -152,7 +152,7 @@ public class ApiController {
 			
 			FileDataSource fds = new FileDataSource(file);
 			
-			os.sendOrder(addressList, fds);
+			os.sendOrder(emailContent, addressList, fds);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
