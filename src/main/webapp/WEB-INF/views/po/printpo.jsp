@@ -338,7 +338,8 @@ String[] aboutUs = new String[]{"Team FoS", "", "010-4242-4242", "031-4242-4242"
 				          </div>
 				          <div class="modal-body">
 				            <div class="row mb-3 align-items-end" id="email-content">
-				            	<textarea rows="4" style="text-align: left;" id="email-content">발주서입니다.</textarea>
+<textarea rows="4" style="text-align: left;" id="email-content">안녕하세요 ${ ourCompany.companyName }의 ${ orderInfo[0].emplName }입니다.
+${ orderInfo[0].companyName }에 아래 발주서와 같이 발주합니다.</textarea>
 				            </div>
 				          </div>
 				          <div class="modal-footer">
