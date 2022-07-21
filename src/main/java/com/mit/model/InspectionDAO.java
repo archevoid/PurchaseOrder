@@ -11,6 +11,8 @@ public interface InspectionDAO {
 	
 	public List<InspectionDTO> getInspectionByOrderNum(InspectionDTO inspectionDto);
 	
+	public List<InspectionDTO> getInspectionForDownloadSchedule(List<InspectionDTO> checkedNum);
+	
 	public List<InspectionDTO> getOrderNum();
 	
 	public InspectionDTO getInspectionResult(InspectionDTO inspectionDto);

@@ -530,24 +530,64 @@
 			}
 		});
 		
-		$("button#downloadSchedule").on("click", function() {
+		$("button#downloadSchedule").on("click", function(event) {
 			if ($("input[name=selectedInspection]:checked").length == 0) {
 				alert("검수를 선택해주세요");
 				return;
 			}
 			
 			var checkedNum = [];
-			$("input[name=selectedInspection]:checked").each(function(index) {
-				checkedNum.push(parseInt($(this).val()));
+			$("input[name=selectedInspection]:checked").each(function(index, value) {
+				var tmp = new Object();
+				
+				tmp.orderNum = $(value).closest("tr#inspectionInfo").find("td#orderNum").text();
+				tmp.inspectionNum = $(value).closest("tr#inspectionInfo").find("span#inspectionNum").text();
+				
+				checkedNum.push(tmp);
 			});
 			
-			var url = "/file/inspectionSchedule?orderNum=" + $("select[name=orderNum]").val();
 			
-			for (var i = 0; i < checkedNum.length; i++) {
-				url += "&inspectionNumList=" + checkedNum[i]
-			}
+			var excelUrl = "/file/inspectionSchedule";
 			
-			location.href = url;
+			var request = new XMLHttpRequest();
+			request.open('POST', excelUrl, true);
+			request.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+			request.responseType = 'blob';
+			
+			request.onload = function(e) {
+				var filename = "";
+				var disposition = request.getResponseHeader('Content-Disposition');
+				if (disposition && disposition.indexOf('attachment') !== -1) {
+					var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+					var matches = filenameRegex.exec(disposition);
+					if (matches != null && matches[1]) {
+						filename = decodeURI( matches[1].replace(/['"]/g, '') );
+					}
+				}
+				console.log("FILENAME: " + filename);
+			
+				if (this.status === 200) {
+					var blob = this.response;
+					if(window.navigator.msSaveOrOpenBlob) {
+						window.navigator.msSaveBlob(blob, filename);
+					} else{
+						var downloadLink = window.document.createElement('a');
+						
+						var contentTypeHeader = request.getResponseHeader("Content-Type");
+						
+						downloadLink.href = window.URL.createObjectURL(new Blob([blob], { type: contentTypeHeader }));
+						downloadLink.download = filename;
+						document.body.appendChild(downloadLink);
+						downloadLink.click();
+						document.body.removeChild(downloadLink);
+					}
+				}
+			};
+			         
+			request.send(JSON.stringify(checkedNum));
+			
+			
+			
 		});
 		
 		$("input#self-insert-progress").on("change", function(event) {
