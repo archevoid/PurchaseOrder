@@ -80,10 +80,10 @@ public class OrderService extends NEmailService {
 		return orderDao.getOurCompany();
 	}
 	
-	public void sendOrder(String to, FileDataSource fds) throws Exception {
+	public void sendOrder(String[] addressList, FileDataSource fds) throws Exception {
 		superMaker();
 		
-		MimeMessage message = makeMessage("jicmu@jicmu.org", "발주서입니다.");
+		MimeMessage message = makeMessage(addressList, "발주서입니다.");
 		
 		Multipart mp = new MimeMultipart();
 		

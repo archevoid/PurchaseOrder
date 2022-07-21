@@ -182,6 +182,9 @@ String[] aboutUs = new String[]{"Team FoS", "", "010-4242-4242", "031-4242-4242"
 											onclick="window.print();">
 											<img src="/resources/img/upload.svg" class="icon"> 출력
 										</button>
+										<button class="btn" data-bs-toggle="modal" data-bs-target="#modal-email" id="email-modal">
+					                    		이메일 발송
+					                  </button>
 									</div>
 								</div>
 
@@ -309,6 +312,38 @@ String[] aboutUs = new String[]{"Team FoS", "", "010-4242-4242", "031-4242-4242"
 							</div>
 						</div>
 					</div>
+					
+					<!-- Modal -->
+					<div class="modal modal-blur fade" id="modal-email" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">발주서 이메일 발송</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row mb-3 align-items-end" id="email-list">
+            	<div class="row col-12" id="unit-email-form">
+					<label class="form-label col-3 col-form-label mb-2">발송 이메일</label>
+					<div class="col-9 mb-2">
+						<input type="email" class="form-control email-address" name="email-address" id="company-email-address" placeholder="이메일을 입력하세요" value="${ orderInfo[0].comEmployee }"/>
+					</div>
+				</div>
+				<div class="col-12" id="input-form-email">
+            	<button class="btn btn-outline-secondary w-100" id="add-email">
+            		<img alt="열 추가" src="/resources/img/plus.svg">
+            	</button>
+            </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="send-mail">Send Mail</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end of Modal -->
 
 				</div>
 			</div>
@@ -388,20 +423,51 @@ String[] aboutUs = new String[]{"Team FoS", "", "010-4242-4242", "031-4242-4242"
 				}
 			}); */
 			
+			
+			
 			const orderNum = ${ orderInfo[0].orderNum };
 			
-			$.ajax({
-				url : "/api/sendOrder",
-				type : "post",
-				async : false,
-				data : {
-					"html" : $("div.document-order").html(),
-					"orderNum" : orderNum
-				},
-				success : function(data) {
-					
+			$("#send-mail").on("click", function(event) {
+				var addressList = new Array();
+				
+				var $address = $("input.email-address");
+				
+				for (var i = 0; i < $address.length; i++) {
+					addressList.push($($address[i]).val());
 				}
+				
+				$.ajax({
+					url : "/api/sendOrder",
+					type : "post",
+					async : false,
+					traditional : true,
+					data : {
+						"html" : $("div.document-order").html(),
+						"orderNum" : orderNum,
+						"addressList" : addressList
+					},
+					success : function(data) {
+						
+					}
+				});
 			});
+			
+			$("button#add-email").on("click", function(event) {
+				var emailElement = '<div class="row col-12" id="unit-email-form">'
+								+ '<button class="col-3 mb-2 btn btn-danger" id="erase-unit-email-form">제거</button>'
+								+ '<div class="col-9 mb-2">'
+								+ '<input type="email" class="form-control email-address" name="email-address" id="company-email-address" placeholder="이메일을 입력하세요"/>'
+								+ '</div>'
+								+ '</div>';
+								
+				$("div#input-form-email").before(emailElement);
+				
+				$("button#erase-unit-email-form").on("click", function(event) {
+					$(event.target).closest("div#unit-email-form").remove();
+				});
+				
+			});
+			
 		});
 		
 		
@@ -431,6 +497,8 @@ String[] aboutUs = new String[]{"Team FoS", "", "010-4242-4242", "031-4242-4242"
 			fileDownload.click();
 			document.body.removeChild(fileDownload);
 		}
+		
+		
 		
 		
 
