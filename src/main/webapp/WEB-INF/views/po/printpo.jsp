@@ -434,9 +434,28 @@ ${ orderInfo[0].companyName }에 아래 발주서와 같이 발주합니다.</te
 			const orderNum = ${ orderInfo[0].orderNum };
 			
 			$("#send-mail").on("click", function(event) {
-				var addressList = new Array();
-				
 				var $address = $("input.email-address");
+				
+				var finished = false;
+				
+				$address.each(function(index, value) {
+					
+					if ($(value).val() == "" || $(value).val() == null) {
+						alert("모든 이메일을 입력해주세요");
+						finished = true;
+					}
+				});
+				
+				if (finished) {
+					return;
+				}
+				
+				if ($("textarea#email-content").val() == "" || $("textarea#email-content").val() == null) {
+					alert("이메일 내용을 입력해주세요");
+					return;
+				}
+				
+				var addressList = new Array();
 				
 				for (var i = 0; i < $address.length; i++) {
 					addressList.push($($address[i]).val());
@@ -445,7 +464,6 @@ ${ orderInfo[0].companyName }에 아래 발주서와 같이 발주합니다.</te
 				$.ajax({
 					url : "/api/sendOrder",
 					type : "post",
-					async : false,
 					traditional : true,
 					data : {
 						"html" : $("div.document-order").html(),
