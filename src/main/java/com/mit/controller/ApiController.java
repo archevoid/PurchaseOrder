@@ -53,8 +53,6 @@ public class ApiController {
 	
 	@PostMapping("inputOrder")
 	public int insertOrder(OrderDTO orderDto) {
-		System.out.println(orderDto);
-		
 		PlanDTO planDto = new PlanDTO();
 		
 		planDto.setPlanNum(orderDto.getPlanNum());
@@ -132,10 +130,6 @@ public class ApiController {
 	
 	@PostMapping("sendOrder")
 	public void sendOrder(String html, OrderDTO orderDto, String[] addressList) {
-		for (String t : addressList) {
-			System.out.println(t);
-		}
-		
 		try {
 			File dir = new File(orderPath);
 			

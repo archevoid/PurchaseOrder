@@ -182,8 +182,8 @@ String[] aboutUs = new String[]{"Team FoS", "", "010-4242-4242", "031-4242-4242"
 											onclick="window.print();">
 											<img src="/resources/img/upload.svg" class="icon"> 출력
 										</button>
-										<button class="btn" data-bs-toggle="modal" data-bs-target="#modal-email" id="email-modal">
-					                    		이메일 발송
+										<button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal-email" id="email-modal">
+					                    		<img src="/resources/img/send.svg" class="icon">이메일 발송
 					                  </button>
 									</div>
 								</div>

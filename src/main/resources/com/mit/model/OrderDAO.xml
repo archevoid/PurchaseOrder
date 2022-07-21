@@ -110,7 +110,7 @@
 	
 	<update id="updatePublished">
 		UPDATE purchase_order SET published = 1, order_date = sysdate, paper_num = paper_num_seq.NEXTVAL
-		WHERE order_num = #{ orderNum }
+		WHERE order_num = #{ orderNum } AND paper_num = null
 	</update>
 	
 	<select id="getPaperNum" resultType="com.mit.model.OrderDTO">
