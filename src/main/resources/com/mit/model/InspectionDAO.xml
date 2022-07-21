@@ -66,15 +66,55 @@
 		    INNER JOIN tbl_part pt ON ct.partcode = pt.partcode
 		    INNER JOIN tbl_support sp ON sp.supportno = p.support_num
 		
-		<if test="inspectionNumList != null">
-			<trim prefix="AND (" suffix=")">
-				<trim prefixOverrides="OR">
-					<foreach collection="inspectionNumList" item="unitNum">
-						OR i.inspection_num = #{ unitNum }
-					</foreach>
+		<where>
+			1 = 1
+			<if test="inspectionNumList != null">
+				<trim prefix="AND (" suffix=")">
+					<trim prefixOverrides="OR">
+						<foreach collection="inspectionNumList" item="unitNum">
+							OR i.inspection_num = #{ unitNum }
+						</foreach>
+					</trim>
 				</trim>
+			</if>
+		</where>
+		ORDER BY i.inspection_num ASC
+	</select>
+	
+	<select id="getInspectionForDownloadSchedule" resultType="com.mit.model.InspectionDTO">
+		SELECT p.order_num AS orderNum
+		    , e.empl_name AS emplName
+		    , e.empl_email AS email
+		    , pt.partName AS partName
+		    , p.order_quantity AS orderQuantity
+		    , i.inspection_num AS inspectionNum
+		    , i.inspection_date AS inspectionDate
+		    , i.inspection_quantity AS inspectionQuantity
+		    , i.sample_quantity AS sampleQuantity
+		    , NVL((SELECT SUM(ip.inspection_quantity) FROM inspection ip WHERE ip.order_num = p.order_num) / sp.requirement * 100, 0) AS progress
+	    	, CASE WHEN (SELECT 1 FROM inspection ip 
+				WHERE ip.order_num = i.order_num 
+					AND ip.inspection_num = i.inspection_num 
+					AND ip.inspection_num IN (SELECT ipr.inspection_num FROM inspection_result ipr WHERE ipr.order_num = ip.order_num))
+				= 1 THEN '종료'
+		<![CDATA[
+    		WHEN sysdate < i.inspection_date THEN '시작 전'
+    		WHEN sysdate > sp.deliverydate THEN '종료 후'
+		]]>
+    		ELSE '진행 중' END AS status
+		FROM inspection i RIGHT JOIN purchase_order p ON p.order_num = i.order_num 
+		    INNER JOIN employee e ON p.empl_num = e.empl_num
+		    INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
+		    INNER JOIN tbl_part pt ON ct.partcode = pt.partcode
+		    INNER JOIN tbl_support sp ON sp.supportno = p.support_num
+		
+		<where>
+			<trim prefixOverrides="OR">
+				<foreach collection="list" item="unitNum">
+					OR (i.order_num = #{ unitNum.orderNum } AND i.inspection_num = #{ unitNum.inspectionNum })
+				</foreach>
 			</trim>
-		</if>
+		</where>
 		ORDER BY i.inspection_num ASC
 	</select>
 	
