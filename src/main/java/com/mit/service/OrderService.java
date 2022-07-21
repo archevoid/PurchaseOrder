@@ -52,6 +52,14 @@ public class OrderService extends NEmailService {
 		return orderDao.getAllCompany();
 	}
 	
+	public OrderDTO getResetOrderData(OrderDTO orderDto) {
+		return orderDao.getResetOrderData(orderDto);
+	}
+	
+	public Integer updateOrder(OrderDTO orderDto) {
+		return orderDao.updateOrder(orderDto);
+	}
+	
 	public List<CompanyDTO> getCompany() {
 		return orderDao.getCompany();
 	}

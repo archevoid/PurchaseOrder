@@ -160,6 +160,16 @@ public class ApiController {
 		}
 	}
 	
+	@PostMapping("resetOrder")
+	public OrderDTO getResetOrderData(OrderDTO orderDto) {
+		return os.getResetOrderData(orderDto);
+	}
+	
+	@PostMapping("updateOrder")
+	public Integer updateOrder(OrderDTO orderDto) {
+		return os.updateOrder(orderDto);
+	}
+	
 	@PostMapping("totalInspectionQuantity")
 	public InspectionDTO getTotalInspectionQuantity(OrderDTO orderDto) {
 		return is.getTotalInspectionQuantity(orderDto);

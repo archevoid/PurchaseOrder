@@ -110,7 +110,7 @@
 		<trim prefix="WHERE">
 			<include refid="searchInspection" />
 		</trim>
-		ORDER BY i.inspection_num ASC
+		ORDER BY i.order_num DESC, i.inspection_num ASC
 	</select>
 	
 	<select id="countInspection" resultType="long">

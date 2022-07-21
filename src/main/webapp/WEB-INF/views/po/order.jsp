@@ -162,7 +162,7 @@
 												<thead>
 													<tr>
 														<th><button class="table-sort"
-																data-sort="sort-orderNum">발주번호</button></th>
+																data-sort="sort-orderNum">임시번호</button></th>
 														<th><button class="table-sort"
 																data-sort="sort-emplName">발주담당자</button></th>
 														<th><button class="table-sort"
@@ -188,15 +188,41 @@
 													<c:forEach items="${ orderList }" var="order">
 														<form action="printpo" method="post">
 														<tr class="plan-data">
-															<td class="sort-orderNum" id="orderNum">${ order.orderNum }</td>
-															<td class="sort-emplName" id="emplName">${ order.emplName }</td>
-															<td class="sort-partName" id="partName">${ order.partName }</td>
-															<td class="sort-companyName" id="companyName">${ order.companyName }</td>
-															<td class="sort-leadTime" id="leadTime">${ order.leadTime }</td>
-															<td class="sort-orderQuantity" id="orderQuantity">${ order.orderQuantity }</td>
-															<td class="sort-orderDate" id="orderDate">${ order.orderDate }</td>
-															<td class="sort-scheduledDate" id="scheduledDate">${ order.scheduledDate }</td>
-															<td class="sort-dueDate" id="dueDate">${ order.dueDate }</td>
+															<c:choose>
+																<c:when test="${ order.status ne 0 }">
+																	<td class="sort-orderNum" id="orderNum">${ order.orderNum }</td>
+																	<td class="sort-emplName" id="emplName">${ order.emplName }</td>
+																	<td class="sort-partName" id="partName">${ order.partName }</td>
+																	<td class="sort-companyName" id="companyName">${ order.companyName }</td>
+																	<td class="sort-leadTime" id="leadTime">${ order.leadTime }</td>
+																	<td class="sort-orderQuantity" id="orderQuantity">${ order.orderQuantity }</td>
+																	<td class="sort-orderDate" id="orderDate">${ order.orderDate }</td>
+																	<td class="sort-scheduledDate" id="scheduledDate">${ order.scheduledDate }</td>
+																	<td class="sort-dueDate" id="dueDate">${ order.dueDate }</td>
+																</c:when>
+																<c:otherwise>
+																	<td class="sort-orderNum" id="orderNum">${ order.orderNum }</td>
+																	<td class="sort-emplName" id="emplName">
+																		<select id="employee" class="form-select updatable" name="emplNum">
+																			<option value="0">선택</option>
+																			<c:forEach items="${ emplList }" var="empl">
+																				<option value="${ empl.emplNum }" <c:if test="${ order.emplNum eq empl.emplNum }">selected</c:if>>
+																					${ empl.emplName }
+																				</option>
+																			</c:forEach>
+																		</select>
+																	</td>
+																	<td class="sort-partName" id="partName">${ order.partName }</td>
+																	<td class="sort-companyName" id="companyName">${ order.companyName }</td>
+																	<td class="sort-leadTime" id="leadTime">${ order.leadTime }</td>
+																	<td class="sort-orderQuantity" id="orderQuantity">${ order.orderQuantity }</td>
+																	<td class="sort-orderDate" id="orderDate">${ order.orderDate }</td>
+																	<td class="sort-scheduledDate" id="scheduledDate">
+																		<input type="date" class="form-control updatable" id="scheduledDate" name="scheduledDate" value="${ order.scheduledDate }">
+																	</td>
+																	<td class="sort-dueDate" id="dueDate">${ order.dueDate }</td>
+																</c:otherwise>
+															</c:choose>
 															<td class="sort-status" id="status">
 																<c:choose>
 																	<c:when test="${ order.status eq 0 }">
@@ -216,7 +242,7 @@
 															<fmt:setLocale value="en_US" />
 															<fmt:parseNumber value="${ order.dueDate.time / (1000 * 60 * 60 * 24) }" integerOnly="true" var="dueDateNumber" />
 															<fmt:parseNumber value="${ order.today.time / (1000 * 60 * 60 * 24) }" integerOnly="true" var="todayNumber" />
-															<td class="text-end">
+															<td class="text-end order-btn-area">
 																<c:choose>
 																	<c:when test="${ order.published eq 0 }">
 																		<c:if test="${ order.leadTime gt (dueDateNumber - todayNumber) }">
@@ -422,6 +448,54 @@
 			}
 			
 			location.href = url;
+		});
+		
+		$(".updatable").on("change", function(event) {
+			var $selectePlanData = $(event.target).closest("tr.plan-data");
+			
+			var updateButton = "<div class='d-print-none btn-list'>"
+							+ "<span class='d-none d-sm-inline'>"
+							+ "<button type='button' class='btn btn-white cancel-update' id='cancel-update'>취소</button>"
+							+ "</span>"
+							+ "<button type='button' class='btn btn-primary d-none d-sm-inline-block premature-order-update' id='premature-order-update'>수정</button>"
+							+ "</div>";
+							
+			$selectePlanData.find("td.order-btn-area").append(updateButton);
+			
+			$selectePlanData.find("button[type=submit]").addClass("hidden");
+			
+			$("button.cancel-update").on("click", function(eventBtn) {
+				var $choicedPlanData = $(eventBtn.target).closest("tr.plan-data");
+				
+				$.ajax({
+					url : "/api/resetOrder",
+					type : "post",
+					data : {
+						"orderNum" : $choicedPlanData.find("#orderNum")
+					},
+					success : function(data) {
+						$($choicedPlanData).find("select.updatable[name=emplNum]").find("option[value=" + data.emplNum + "]").prop("selected", true);
+						$($choicedPlanData).find("input.updatable#scheduledDate").val(data.scheduleData);
+					}
+				})
+			});
+			
+			$("button.premature-order-update").on("click", function(eventBtn) {
+				var $choicedPlanData = $(eventBtn.target).closest("tr.plan-data");
+				
+				$.ajax({
+					url : "/api/updateOrder",
+					type : "post",
+					data : {
+						"orderNum" : $choicedPlanData.find("#orderNum"),
+						"emplNum" : $($choicedPlanData).find("select.updatable[name=emplNum]").val(),
+						"scheduledDate" : $($choicedPlanData).find("input.updatable#scheduledDate").val()
+					},
+					success : function(data) {
+						
+					}
+				});
+			});
 		});
 		
 	</script>
