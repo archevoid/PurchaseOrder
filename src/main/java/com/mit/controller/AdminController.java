@@ -52,8 +52,6 @@ public class AdminController {
 	
 	@PostMapping("addpart")
 	public String addPart(CommonDTO commonDto, MultipartFile drawFile) {
-		System.out.println(drawFile);
-		
 		if (commonDto != null) {
 			File file = new File(this.pathOfInspectionFile, drawFile.getOriginalFilename());
 			
