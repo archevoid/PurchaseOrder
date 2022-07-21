@@ -88,7 +88,7 @@ public class OrderService extends NEmailService {
 		return orderDao.getOurCompany();
 	}
 	
-	public void sendOrder(String[] addressList, FileDataSource fds) throws Exception {
+	public void sendOrder(String emailContent, String[] addressList, FileDataSource fds) throws Exception {
 		superMaker();
 		
 		MimeMessage message = makeMessage(addressList, "발주서입니다.");
@@ -96,7 +96,7 @@ public class OrderService extends NEmailService {
 		Multipart mp = new MimeMultipart();
 		
 		MimeBodyPart mbp0 = new MimeBodyPart();
-		mbp0.setContent(fds.getName() + "입니다.", "text/html;charset=utf-8");
+		mbp0.setContent(emailContent, "text/html;charset=utf-8");
 		
 		mp.addBodyPart(mbp0);
 		
