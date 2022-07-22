@@ -61,9 +61,14 @@
 							<%-- Temp --%>
 							<div class="card" id="data-plan">
 								<div class="card-header">
-									<h3 class="card-title">검수</h3>
+									<h3 class="card-title">Inspection</h3>
+									<div class="ms-auto d-print-none btn-list float-end">
+										<button class="btn btn-primary" id="hide-searcher">
+											검색창 숨기기
+										</button>
+									</div>
 								</div>
-								<div class="card-body">
+								<div class="card-body" id="searcher-body">
 									<div class="row row-searcher">
 										<div class="col-6">
 											<div class="mb-3">
