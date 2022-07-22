@@ -129,7 +129,7 @@ public class PoController {
 		
 		os.updatePublished(orderDto);
 		
-		m.addAttribute("paperNum", os.getPaperNum(orderDto));
+		m.addAttribute("orderNum", os.getOrderNum(orderDto));
 		
 		m.addAttribute("ourCompany", os.getOurCompany());
 		

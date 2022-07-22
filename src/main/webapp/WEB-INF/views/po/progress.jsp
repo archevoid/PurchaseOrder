@@ -97,7 +97,7 @@
 											<thead>
 												<tr>
 													<th><button class="table-sort"
-															data-sort="sort-partCode">발주번호</button></th>
+															data-sort="sort-orderNum">발주번호</button></th>
 													<th><button class="table-sort"
 															data-sort="sort-partCode">품목명</button></th>
 													<th><button class="table-sort"

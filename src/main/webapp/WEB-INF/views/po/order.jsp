@@ -162,7 +162,9 @@
 												<thead>
 													<tr>
 														<th><button class="table-sort"
-																data-sort="sort-orderNum">임시번호</button></th>
+																data-sort="sort-scheduledNum">구분</button></th>
+														<th><button class="table-sort"
+																data-sort="sort-orderNum">발주번호</button></th>
 														<th><button class="table-sort"
 																data-sort="sort-emplName">발주담당자</button></th>
 														<th><button class="table-sort"
@@ -190,6 +192,7 @@
 														<tr class="plan-data">
 															<c:choose>
 																<c:when test="${ order.status ne 0 }">
+																	<td class="sort-scheduledNum" id="scheduledNum">${ order.scheduledNum }</td>
 																	<td class="sort-orderNum" id="orderNum">${ order.orderNum }</td>
 																	<td class="sort-emplName" id="emplName">${ order.emplName }</td>
 																	<td class="sort-partName" id="partName">${ order.partName }</td>

@@ -80,8 +80,8 @@ public class OrderService extends NEmailService {
 		return orderDao.updatePublished(orderDto);
 	}
 	
-	public String getPaperNum(OrderDTO orderDto) {
-		return orderDao.getPaperNum(orderDto).getPaperNum();
+	public String getOrderNum(OrderDTO orderDto) {
+		return orderDao.getOrderNum(orderDto).getOrderNum();
 	}
 	
 	public CompanyDTO getOurCompany() {

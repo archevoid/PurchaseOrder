@@ -10,7 +10,7 @@ public interface OrderDAO {
 	
 	Integer updatePublished(OrderDTO orderDto);
 	
-	OrderDTO getPaperNum(OrderDTO orderDto);
+	OrderDTO getOrderNum(OrderDTO orderDto);
 	
 	CompanyDTO getOurCompany();
 	
