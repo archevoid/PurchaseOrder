@@ -373,6 +373,12 @@
 			// var url = window.location.href;
 			var url = window.location.protocol + "//" + window.location.host + window.location.pathname;
 			
+			var regex = /(?:[?&])(amount[=][^&])/g;
+			
+			if (window.location.href.search(regex) != -1) {
+				url += "?" + regex.exec(window.location.href)[1];
+			}
+			
 			$("div.row-searcher select").each(function(index, value) {
 				if ($(value).val() != 0 && $(value).val() != null) {
 					var inputName = $(value).attr("name");
@@ -380,9 +386,10 @@
 					if (url.indexOf(inputName) != -1) {
 						var regex = new RegExp(inputName + "=[^&]+", "g");
 						url = url.replace(regex, inputName + "=" + $(value).val());
-					} else if (url.match(/[?].+[=].+/)) {
+					} else if (url.match(/[?].+[=].+/g)) {
 						url = url + "&" + inputName + "=" + $(value).val();
 					} else {
+						url = url.replace(/[?]\s*$/g, "");
 						url = url + "?" + inputName + "=" + $(value).val();
 					}
 				}
@@ -396,9 +403,10 @@
 					if (url.indexOf(inputName) != -1) {
 						var regex = new RegExp(inputName + "=[^&]+", "g");
 						url = url.replace(regex, inputName + "=" + $(value).val());
-					} else if (url.match(/[?].+[=].+/)) {
+					} else if (url.match(/[?].+[=].+/g)) {
 						url = url + "&" + inputName + "=" + $(value).val();
 					} else {
+						url = url.replace(/[?]\s*$/g, "");
 						url = url + "?" + inputName + "=" + $(value).val();
 					}
 				}
@@ -411,10 +419,11 @@
 			
 			if (url.indexOf("pageNum=") != -1) {
 				url = url.replace(/pageNum=\d+/, "pageNum=" + $(event.target).text());
-			} else if (url.match("/[?].+[=].+")) {
-				url = url + "?pageNum=" + $(event.target).text();
-			} else {
+			} else if (url.match(/[?].+[=].+/g)) {
 				url = url + "&pageNum=" + $(event.target).text();
+			} else {
+				url = url.replace(/[?]\s*$/g, "");
+				url = url + "?pageNum=" + $(event.target).text();
 			}
 			
 			location.href = url;
@@ -426,9 +435,10 @@
 
 			if (url.indexOf("pageNum=") != -1) {
 				url = url.replace(/pageNum=\d+/, "pageNum=" + "${ pageInfo.curFirstPage - 1 }");
-			} else if (url.match("/[?].+[=].+")) {
+			} else if (url.match(/[?].+[=].+/g)) {
 				url = url + "&pageNum=" + "${ pageInfo.curFirstPage - 1 }";
 			} else {
+				url = url.replace(/[?]\s*$/g, "");
 				url = url + "?pageNum=" + "${ pageInfo.curFirstPage - 1 }";
 			}
 			
@@ -441,9 +451,10 @@
 
 			if (url.indexOf("pageNum=") != -1) {
 				url = url.replace(/pageNum=\d+/, "pageNum=" + "${ pageInfo.curLastPage + 1 }");
-			} else if (url.match("/[?].+[=].+")) {
+			} else if (url.match(/[?].+[=].+/g)) {
 				url = url + "&pageNum=" + "${ pageInfo.curLastPage + 1 }";
 			} else {
+				url = url.replace(/[?]\s*$/g, "");
 				url = url + "?pageNum=" + "${ pageInfo.curLastPage + 1 }";
 			}
 			
