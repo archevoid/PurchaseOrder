@@ -140,39 +140,44 @@
 	</select>
 	
 	<select id="getInspection" resultType="com.mit.model.InspectionDTO">
-		SELECT p.order_num AS orderNum
-			, p.order_num AS orderNum
-		    , e.empl_name AS emplName
-		    , e.empl_email AS email
-		    , cp.comemployee AS comEmployee
-		    , cp.comemail AS comEmail
-		    , pt.partName AS partName
-		    , p.order_quantity AS orderQuantity
-		    , i.inspection_num AS inspectionNum
-		    , i.inspection_date AS inspectionDate
-		    , i.inspection_quantity AS inspectionQuantity
-		    , i.sample_quantity AS sampleQuantity
-		    , NVL((SELECT SUM(ip.inspection_quantity) FROM inspection ip WHERE ip.order_num = p.order_num) / sp.requirement * 100, 0) AS progress
-	    	, CASE WHEN (SELECT 1 FROM inspection ip 
-				WHERE ip.order_num = i.order_num
-					AND ip.inspection_num = i.inspection_num 
-					AND ip.inspection_num IN (SELECT ipr.inspection_num FROM inspection_result ipr WHERE ipr.order_num = ip.order_num))
-				= 1 THEN '종료'
+		SELECT *
+		FROM (SELECT p.scheduled_num AS scheduledNum
+				, p.order_num AS orderNum
+			    , e.empl_name AS emplName
+			    , e.empl_email AS email
+			    , cp.comemployee AS comEmployee
+			    , cp.comemail AS comEmail
+			    , pt.partName AS partName
+			    , p.order_quantity AS orderQuantity
+			    , i.inspection_num AS inspectionNum
+			    , i.inspection_date AS inspectionDate
+			    , i.inspection_quantity AS inspectionQuantity
+			    , i.sample_quantity AS sampleQuantity
+			    , NVL((SELECT SUM(ip.inspection_quantity) FROM inspection ip WHERE ip.order_num = p.order_num) / sp.requirement * 100, 0) AS progress
+		    	, CASE WHEN (SELECT 1 FROM inspection ip 
+					WHERE ip.order_num = i.order_num
+						AND ip.inspection_num = i.inspection_num 
+						AND ip.inspection_num IN (SELECT ipr.inspection_num FROM inspection_result ipr WHERE ipr.order_num = ip.order_num))
+					= 1 THEN '종료'
+			<![CDATA[
+	    		WHEN sysdate < i.inspection_date THEN '시작 전'
+	    		WHEN sysdate > sp.deliverydate THEN '종료 후'
+			]]>
+	    		ELSE '진행 중' END AS status
+				, ROWNUM AS rn
+			FROM purchase_order p INNER JOIN inspection i ON p.order_num = i.order_num 
+			    INNER JOIN employee e ON p.empl_num = e.empl_num
+			    INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
+			    INNER JOIN tbl_company cp ON cp.code = ct.code
+			    INNER JOIN tbl_part pt ON ct.partcode = pt.partcode
+			    INNER JOIN tbl_support sp ON sp.supportno = p.support_num
+			<trim prefix="WHERE">
+				<include refid="searchInspection" />
+			</trim>
+			ORDER BY i.order_num DESC, i.inspection_num ASC) tbl
 		<![CDATA[
-    		WHEN sysdate < i.inspection_date THEN '시작 전'
-    		WHEN sysdate > sp.deliverydate THEN '종료 후'
+		WHERE (#{ curPageDto.pageNum } - 1) * #{ curPageDto.amount } < tbl.rn AND tbl.rn <= (#{ curPageDto.pageNum }) * #{ curPageDto.amount }
 		]]>
-    		ELSE '진행 중' END AS status
-		FROM purchase_order p INNER JOIN inspection i ON p.order_num = i.order_num 
-		    INNER JOIN employee e ON p.empl_num = e.empl_num
-		    INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
-		    INNER JOIN tbl_company cp ON cp.code = ct.code
-		    INNER JOIN tbl_part pt ON ct.partcode = pt.partcode
-		    INNER JOIN tbl_support sp ON sp.supportno = p.support_num
-		<trim prefix="WHERE">
-			<include refid="searchInspection" />
-		</trim>
-		ORDER BY i.order_num DESC, i.inspection_num ASC
 	</select>
 	
 	<select id="countInspection" resultType="long">
