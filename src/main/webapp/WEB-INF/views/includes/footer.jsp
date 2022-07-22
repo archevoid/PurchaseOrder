@@ -42,8 +42,12 @@
 	</div>
 </footer>
 
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<!-- <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
-<script src="https://unpkg.com/@tabler/core@latest/dist/js/tabler.min.js"></script>
+<script src="https://unpkg.com/@tabler/core@latest/dist/js/tabler.min.js"></script> -->
+
+<script src="/resources/dist/js/jquery-3.6.0.min.js"></script>
+<script src="/resources/dist/js/jquery-ui.js"></script>
+<script src="/resources/dist/js/tabler.min.js"></script>
 <script src="/resources/js/script.js"></script>
 <script src="/resources/dist/js/demo.min.js"></script>

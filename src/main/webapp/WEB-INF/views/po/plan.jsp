@@ -39,8 +39,6 @@
 						<div class="col">
 							<div class="page-pretitle">Purchase Order</div>
 							<h2 class="page-title">발주 입력</h2>
-							<%-- <div class="text-muted mt-1">About 2,410 result (0.19
-								seconds)</div>--%>
 						</div>
 						<div class="col-12 col-md-auto ms-auto d-print-none">
 							<div class="d-flex">
@@ -58,151 +56,166 @@
 			<div class="page-body">
 				<div class="container-xl">
 					<div class="row g-4">
-						<div class="col-3 searcher" id="plan-searcher">
-							<div class="subheader mb-2">품목</div>
-							<div class="row row-searcher">
-								<div class="col-6">
-									<div class="mb-3">
-										<select id="product-narrowest" class="form-select" name="partCode">
-											<option value="0">선택</option>
-											<c:forEach items="${ partList }" var="part">
-												<option value="${ part.partCode }" <c:if test="${ param.partCode eq part.partCode }">selected</c:if>>
-													${ part.partName }
-												</option>
-											</c:forEach>
-											
-										</select>
-									</div>
+						<div class="col-12 searcher" id="plan-searcher">
+							<%-- Temp --%>
+							<div class="card" id="data-plan">
+								<div class="card-header">
+									<h3 class="card-title">조달계획</h3>
 								</div>
-								<div class="col-6">
-									<div class="mb-3">
-										<input type="text" id="product-selector-narrowest" class="form-control select-searcher" name="partName" value="${ param.partName }" placeholder="선택 목록 검색">
-									</div>
-								</div>
-							</div>
-							<div class="subheader mb-2">조달납기</div>
-							<div class="row row-searcher">
-								<div class="col-6">
-									<div class="mb-3">
-										<input type="date" id="initialDueDate" class="form-control" name="initialDueDate" value="${ param.initialDueDate }">
-									</div>
-								</div>
-								<div class="col-6">
-									<div class="mb-3">
-										<input type="date" id="finalDueDate" class="form-control" name="finalDueDate" value="${ param.finalDueDate }">
-									</div>
-								</div>
-							</div>
-
-							<div class="mt-5">
-								<button type="button" class="btn btn-primary w-100"
-									id="search-button">조회하기</button>
-								<a href="plan" class="btn btn-link w-100"> 초기화 </a>
-							</div>
-						</div>
-						<div class="col-9 row row-cards" id="data-area">
-							<div class="col-12">
-								<div class="card" id="data-plan">
-									<div class="card-header">
-										<h3 class="card-title">조달계획</h3>
-									</div>
-									<div class="card-body">
-										<div id="table-default">
-											<table class="table">
-												<thead>
-													<tr>
-														<th><button class="table-sort"
-																data-sort="sort-partCode">계획번호</button></th>
-														<th><button class="table-sort"
-																data-sort="sort-emplName">품목명</button></th>
-														<th><button class="table-sort"
-																data-sort="sort-companyName">조달납기</button></th>
-														<th><button class="table-sort"
-																data-sort="sort-scheduledDate">소요량</button></th>
-														<th></th>
-													</tr>
-												</thead>
-												<tbody class="table-tbody">
-													<c:forEach items="${ planList }" var="plan">
-														<tr class="plan-data">
-															<td class="sort-planNum" id="planNum">${ plan.planNum }</td>
-															<td class="sort-partName" id="partName">${ plan.partName }</td>
-															<td class="sort-dueDate" id="dueDate">${ plan.dueDate }</td>
-															<td class="sort-requirement" id="requirement">${ plan.requirement }</td>
-															<td class="text-end">
-																<c:if test="${ plan.inputQuantity eq plan.requirement }">
-																	<button type="button" class="btn" id="show-input" disabled>
-																		<img src="/resources/img/row-insert-top.svg"
-																			class="icon"> 입력 완료
-																	</button>
-																</c:if>
-																<c:if test="${ plan.inputQuantity ne plan.requirement }">
-																	<button type="button" class="btn" id="show-input">
-																			<img src="/resources/img/row-insert-top.svg"
-																				class="icon"> 발주 입력
-																	</button>
-																</c:if>
-															</td>
-														</tr>
-													</c:forEach>
-												</tbody>
-											</table>
+								<div class="card-body">
+									<div class="row row-searcher">
+										<div class="col-6">
+											<div class="mb-3">
+												<label class="form-label">품목</label>
+												<div class="form-group">
+													<div class="row row-searcher">
+														<div class="col-6">
+															<select id="product-narrowest" class="form-select" name="partCode">
+																<option value="0">선택</option>
+																<c:forEach items="${ partList }" var="part">
+																	<option value="${ part.partCode }" <c:if test="${ param.partCode eq part.partCode }">selected</c:if>>
+																		${ part.partName }
+																	</option>
+																</c:forEach>
+															</select>
+														</div>
+														<div class="col-6">
+															<input type="text" id="product-selector-narrowest" class="form-control select-searcher" name="partName" value="${ param.partName }" placeholder="선택 목록 검색">
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="mb-3">
+												<label class="form-label">조달납기</label>
+												<div class="form-group row row-searcher">
+													<div class="col-6">
+														<input type="date" id="initialDueDate" class="form-control" name="initialDueDate" value="${ param.initialDueDate }">
+													</div>
+													<div class="col-6">
+														<input type="date" id="finalDueDate" class="form-control" name="finalDueDate" value="${ param.finalDueDate }">
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-12 text-end mt-4">
+											<button type="button" class="btn btn-primary me-3"
+												id="search-button">조회하기</button>
+											<button class="btn btn-ghost-primary" onclick="location.href=window.location.protocol + '//' + window.location.host + window.location.pathname"> 초기화 </button>
 										</div>
 									</div>
-									<div class="card-footer d-flex align-items-center">
-										<p class="m-0 text-muted">
-											Showing <span>
-												<c:choose>
-													<c:when test="${ (pageNum - 1) * amount + planList.size() eq 0}">
-														0
-													</c:when>
-													<c:otherwise>
-														${ (pageNum - 1) * amount + 1  }
-													</c:otherwise>
-												</c:choose>
-											</span> to <span>${ (pageNum - 1) * amount + planList.size() }</span>
-											of <span>${ numberOfPlan }</span> entries
-										</p>
-										<ul class="pagination m-0 ms-auto">
-											<li
-												class="page-item <c:if test="${ pageInfo.curFirstPage le 1 }"> disabled </c:if>"><button
-													class="page-link page-prev" tabindex="-1"
-													aria-disabled="true">
-													<img src="/resources/img/chevron-left.svg"> prev
-												</button></li>
-											<c:forEach begin="${ pageInfo.curFirstPage }"
-												end="${ pageInfo.curLastPage }" var="num">
-												<c:if test="${ num eq pageInfo.curPageDto.pageNum }">
-
-												</c:if>
-												<c:choose>
-													<c:when test="${ num eq pageInfo.curPageDto.pageNum }">
-														<li class="page-item active"><button
-																class="page-link page-number">${ num }</button></li>
-													</c:when>
-													<c:otherwise>
-														<c:choose>
-															<c:when
-																test="${ num le pageInfo.lastPage }">
-																<li class="page-item"><button
-																		class="page-link page-number">${ num }</button></li>
-															</c:when>
-															<c:otherwise>
-																<li class="page-item disabled"><button
-																		class="page-link page-number">${ num }</button></li>
-															</c:otherwise>
-														</c:choose>
-													</c:otherwise>
-												</c:choose>
-											</c:forEach>
-
-											<li
-												class="page-item <c:if test="${ pageInfo.curLastPage ge pageInfo.lastPage }"> disabled </c:if>"><button
-													class="page-link page-next">
-													next <img src="/resources/img/chevron-right.svg">
-												</button></li>
-										</ul>
+								</div>
+							</div>
+						</div>
+						<%-- /temp --%>
+						<div class="col-12 mt-2" id="data-area">
+							<div class="card" id="data-plan">
+								<div class="card-body border-bottom py-3">
+									<div class="d-flex">
+										<div class="text-muted">
+											Show
+											<div class="mx-2 d-inline-block">
+												<input type="text" class="form-control form-control-sm" value="${ pageInfo.curPageDto.amount }" size="3" aria-label="Invoices count" name="amount" id="amount">
+				                        	</div>
+				                        	entries
+										</div>
 									</div>
+								</div>
+								<div id="table-default">
+									<table class="table card-table table-vcenter text-nowrap datatable">
+										<thead>
+											<tr>
+												<th><button class="table-sort"
+														data-sort="sort-partCode">계획번호</button></th>
+												<th><button class="table-sort"
+														data-sort="sort-emplName">품목명</button></th>
+												<th><button class="table-sort"
+														data-sort="sort-companyName">조달납기</button></th>
+												<th><button class="table-sort"
+														data-sort="sort-scheduledDate">소요량</button></th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody class="table-tbody">
+											<c:forEach items="${ planList }" var="plan">
+												<tr class="plan-data">
+													<td class="sort-planNum" id="planNum">${ plan.planNum }</td>
+													<td class="sort-partName" id="partName">${ plan.partName }</td>
+													<td class="sort-dueDate" id="dueDate">${ plan.dueDate }</td>
+													<td class="sort-requirement" id="requirement">${ plan.requirement }</td>
+													<td class="text-end">
+														<c:if test="${ plan.inputQuantity eq plan.requirement }">
+															<button type="button" class="btn" id="show-input" disabled>
+																<img src="/resources/img/row-insert-top.svg"
+																	class="icon"> 입력 완료
+															</button>
+														</c:if>
+														<c:if test="${ plan.inputQuantity ne plan.requirement }">
+															<button type="button" class="btn" id="show-input">
+																	<img src="/resources/img/row-insert-top.svg"
+																		class="icon"> 발주 입력
+															</button>
+														</c:if>
+													</td>
+												</tr>
+											</c:forEach>
+										</tbody>
+									</table>
+								</div>
+								<div class="card-footer d-flex align-items-center">
+									<p class="m-0 text-muted">
+										Showing <span>
+											<c:choose>
+												<c:when test="${ (pageNum - 1) * amount + planList.size() eq 0}">
+													0
+												</c:when>
+												<c:otherwise>
+													${ (pageNum - 1) * amount + 1  }
+												</c:otherwise>
+											</c:choose>
+										</span> to <span>${ (pageNum - 1) * amount + planList.size() }</span>
+										of <span>${ numberOfPlan }</span> entries
+									</p>
+									<ul class="pagination m-0 ms-auto">
+										<li
+											class="page-item <c:if test="${ pageInfo.curFirstPage le 1 }"> disabled </c:if>"><button
+												class="page-link page-prev" tabindex="-1"
+												aria-disabled="true">
+												<img src="/resources/img/chevron-left.svg"> prev
+											</button></li>
+										<c:forEach begin="${ pageInfo.curFirstPage }"
+											end="${ pageInfo.curLastPage }" var="num">
+											<c:if test="${ num eq pageInfo.curPageDto.pageNum }">
+
+											</c:if>
+											<c:choose>
+												<c:when test="${ num eq pageInfo.curPageDto.pageNum }">
+													<li class="page-item active"><button
+															class="page-link page-number">${ num }</button></li>
+												</c:when>
+												<c:otherwise>
+													<c:choose>
+														<c:when
+															test="${ num le pageInfo.lastPage }">
+															<li class="page-item"><button
+																	class="page-link page-number">${ num }</button></li>
+														</c:when>
+														<c:otherwise>
+															<li class="page-item disabled"><button
+																	class="page-link page-number">${ num }</button></li>
+														</c:otherwise>
+													</c:choose>
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>
+
+										<li
+											class="page-item <c:if test="${ pageInfo.curLastPage ge pageInfo.lastPage }"> disabled </c:if>"><button
+												class="page-link page-next">
+												next <img src="/resources/img/chevron-right.svg">
+											</button></li>
+									</ul>
 								</div>
 							</div>
 						</div>
@@ -721,6 +734,7 @@
 				}
 			}
 		});
+		
 	</script>
 
 
