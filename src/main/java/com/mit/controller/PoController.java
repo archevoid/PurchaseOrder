@@ -157,8 +157,17 @@ public class PoController {
 	
 	
 	@GetMapping("progress")
-	public void progress(OrderDTO orderDto, Model m) {
-		m.addAttribute("orders", os.searchOrderProgress(orderDto));
+	public void progress(CurPageDTO curPageDto, OrderDTO orderDto, Model m) {
+		orderDto.setCurPageDto(curPageDto);
+		
+		m.addAttribute("orderList", os.searchOrderProgress(orderDto));
+		
+		
+		Long numberOfProgress = os.countProgress(orderDto);
+		
+		m.addAttribute("numberOfProgress", numberOfProgress);
+		
+		m.addAttribute("pageInfo", new PageDTO(curPageDto, numberOfProgress));
 	}
 	
 	@PostMapping("inputpo")

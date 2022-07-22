@@ -22,6 +22,8 @@ public interface OrderDAO {
 	
 	Integer updateOrder(OrderDTO orderDto);
 	
+	Long countProgress(OrderDTO orderDto);
+	
 	
 	List<CompanyDTO> getCompany();
 	

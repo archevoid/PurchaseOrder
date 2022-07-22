@@ -195,10 +195,11 @@
 	</select>
 	
 	<select id="searchOrderProgress" resultType="com.mit.model.OrderDTO">
-		SELECT pt.partname AS partName
+		SELECT *
+		FROM (SELECT pt.partname AS partName
 		    , e.empl_name AS emplName
 		    , e.empl_email AS email
-		    , p.order_num AS orderNum
+		    , p.scheduled_num AS scheduledNum
 		    , p.order_num AS orderNum
 		    , cp.name AS companyName
 		    , p.scheduled_date AS scheduledDate
@@ -207,6 +208,7 @@
 		    , NVL((SELECT SUM(i.inspection_quantity) AS completeQuantity FROM inspection i 
                 WHERE i.order_num = p.order_num AND i.inspection_num IN (SELECT ir.inspection_num FROM inspection_result ir WHERE i.order_num = ir.order_num)
                 GROUP BY i.order_num), 0) AS completeQuantity
+            , ROWNUM AS rn
 		FROM purchase_order p INNER JOIN employee e ON p.empl_num = e.empl_num
 		    INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
 		    INNER JOIN tbl_part pt ON ct.partcode = pt.partcode
@@ -215,56 +217,61 @@
 
 		    
 	    <where>
-	    	<trim prefixOverrides="AND">
-	    		AND p.order_num IS NOT NULL
-		    	<choose>
-		    		<when test="partName != null">
-			    		<![CDATA[
-			    			AND pt.partname LIKE '%'||#{ partName }||'%'
-		    			]]>
-		    		</when>
-		    		<when test="emplName != null">
-			    		<![CDATA[
-			    			AND e.empl_name LIKE '%'||#{ emplName }||'%'
-		    			]]>
-		    		</when>
-		    		<when test="companyName != null">
-			    		<![CDATA[
-			    			AND cp.name LIKE '%'||#{ companyName }||'%'
-	    				]]>
-		    		</when>
-		    		<when test="initialScheduledDate != null and finalScheduledDate != null">
-		    			<![CDATA[
-		    				AND #{ initialScheduledDate } < p.scheduled_date AND p.scheduled_date < #{ finalScheduledDate }
-		    			]]>
-		    		</when>
-		    		<when test="initialScheduledDate == null and finalScheduledDate != null">
-		    			<![CDATA[
-		    				AND sysdate < p.scheduled_date AND p.scheduled_date < #{ finalScheduledDate }
-		    			]]>
-		    		</when>
-		    		<when test="initialScheduledDate != null and finalScheduledDate == null">
-		    			<![CDATA[
-		    				AND sysdate < p.scheduled_date AND p.scheduled_date < sysdate
-		    			]]>
-		    		</when>
-		    		<when test="initialDueDate != null and finalDueDate != null">
-		    			<![CDATA[
-		    				AND #{ initialDueDate } < sp.deliverydate AND sp.deliverydate < #{ finalDueDate }
-		    			]]>
-		    		</when>
-		    		<when test="initialDueDate == null and finalDueDate != null">
-		    			<![CDATA[
-		    				AND sysdate < sp.deliverydate AND sp.deliverydate < #{ finalDueDate }
-		    			]]>
-		    		</when>
-		    		<when test="initialDueDate != null and finalDueDate == null">
-		    			<![CDATA[
-		    				AND #{ initialDueDate } < sp.deliverydate AND sp.deliverydate < sysdate
-		    			]]>
-		    		</when>
-		    	</choose>
-	    	</trim>
+	    	<include refid="searchProgress" />
+	    </where>
+	    ) tbl
+	    <![CDATA[
+		WHERE (#{ curPageDto.pageNum } - 1) * #{ curPageDto.amount } < tbl.rn AND tbl.rn <= (#{ curPageDto.pageNum }) * #{ curPageDto.amount }
+		]]>
+	</select>
+	
+	<select id="countProgress">
+		SELECT COUNT(*)
+		FROM purchase_order p INNER JOIN employee e ON p.empl_num = e.empl_num
+		    INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
+		    INNER JOIN tbl_part pt ON ct.partcode = pt.partcode
+		    INNER JOIN tbl_company cp ON ct.code = cp.code
+			INNER JOIN tbl_support sp ON p.support_num = sp.supportno
+		<where>
+	    	<include refid="searchProgress" />
 	    </where>
 	</select>
+	
+	<sql id="searchProgress">
+		<trim prefixOverrides="AND">
+			<if test="partName != null">
+				AND pt.partname LIKE '%'||#{ partName }||'%'
+			</if>
+			<if test="emplName != null">
+				AND e.empl_name LIKE '%'||#{ emplName }||'%'
+			</if>
+			<if test="companyName != null">
+    			AND cp.name LIKE '%'||#{ companyName }||'%'
+    		</if>
+			<if test="orderNum != null">
+				AND i.order_num = #{ orderNum }
+			</if>
+			<if test="initialDueDate != null">
+			<![CDATA[
+				AND #{ initialDueDate } < sp.deliverydate
+			]]>
+			</if>
+			<if test="finalDueDate != null">
+			<![CDATA[
+				AND sp.deliverydate < #{ finalDueDate }
+			]]>
+			</if>
+			<if test="initialScheduledDate != null">
+			<![CDATA[
+				AND #{ initialScheduledDate } < p.scheduled_date
+			]]>
+			</if>
+			<if test="finalScheduledDate != null">
+			<![CDATA[
+				AND p.scheduled_date < #{ finalScheduledDate }
+			]]>
+			</if>
+		</trim>
+	</sql>
+	
 </mapper>

@@ -60,6 +60,10 @@ public class OrderService extends NEmailService {
 		return orderDao.updateOrder(orderDto);
 	}
 	
+	public Long countProgress(OrderDTO orderDto) {
+		return orderDao.countOrder(orderDto);
+	}
+	
 	public List<CompanyDTO> getCompany() {
 		return orderDao.getCompany();
 	}
