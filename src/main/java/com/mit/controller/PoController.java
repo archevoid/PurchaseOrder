@@ -149,6 +149,8 @@ public class PoController {
 		
 		m.addAttribute("inspectionList", is.getInspection(inspectionDto));
 		
+		m.addAttribute("numberOfInspection", is.countInspection(inspectionDto));
+		
 		m.addAttribute("orderNumList", is.getOrderNum());
 		
 	}

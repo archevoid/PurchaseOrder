@@ -8,6 +8,23 @@
 <head>
 <%@ include file="../includes/header.jsp"%>
 <title>계획 검수 - TeamFoS</title>
+
+<c:choose>
+	<c:when test="${ param.pageNum ne null }">
+		<c:set value="${ param.pageNum }" var="pageNum" />
+	</c:when>
+	<c:otherwise>
+		<c:set value="1" var="pageNum" />
+	</c:otherwise>
+</c:choose>
+<c:choose>
+	<c:when test="${ param.amount ne null }">
+		<c:set value="${ param.amount }" var="amount" />
+	</c:when>
+	<c:otherwise>
+		<c:set value="10" var="amount" />
+	</c:otherwise>
+</c:choose>
 </head>
 
 <body>
@@ -222,9 +239,6 @@
 												</button></li>
 											<c:forEach begin="${ pageInfo.curFirstPage }"
 												end="${ pageInfo.curLastPage }" var="num">
-												<c:if test="${ num eq pageInfo.curPageDto.pageNum }">
-
-												</c:if>
 												<c:choose>
 													<c:when test="${ num eq pageInfo.curPageDto.pageNum }">
 														<li class="page-item active"><button
@@ -233,7 +247,7 @@
 													<c:otherwise>
 														<c:choose>
 															<c:when
-																test="${ pageInfo.curLastPage le pageInfo.lastPage }">
+																test="${ num le pageInfo.lastPage }">
 																<li class="page-item"><button
 																		class="page-link page-number">${ num }</button></li>
 															</c:when>
@@ -713,6 +727,50 @@
 					}
 				}
 			});
+			location.href = url;
+		});
+		
+		$("button.page-number").on("click", function(event) {
+			var url = window.location.href;
+			
+			if (url.indexOf("pageNum=") != -1) {
+				url = url.replace(/pageNum=\d+/, "pageNum=" + $(event.target).text());
+			} else if (url.match("/[?].+[=].+")) {
+				url = url + "?pageNum=" + $(event.target).text();
+			} else {
+				url = url + "&pageNum=" + $(event.target).text();
+			}
+			
+			location.href = url;
+		});
+		
+		$("button.page-prev").on("click", function(event) {
+			var url = window.location.href;
+			
+
+			if (url.indexOf("pageNum=") != -1) {
+				url = url.replace(/pageNum=\d+/, "pageNum=" + "${ pageInfo.curFirstPage - 1 }");
+			} else if (url.match("/[?].+[=].+")) {
+				url = url + "&pageNum=" + "${ pageInfo.curFirstPage - 1 }";
+			} else {
+				url = url + "?pageNum=" + "${ pageInfo.curFirstPage - 1 }";
+			}
+			
+			location.href = url;
+		});
+		
+		$("button.page-next").on("click", function(event) {
+			var url = window.location.href;
+			
+
+			if (url.indexOf("pageNum=") != -1) {
+				url = url.replace(/pageNum=\d+/, "pageNum=" + "${ pageInfo.curLastPage + 1 }");
+			} else if (url.match("/[?].+[=].+")) {
+				url = url + "&pageNum=" + "${ pageInfo.curLastPage + 1 }";
+			} else {
+				url = url + "?pageNum=" + "${ pageInfo.curLastPage + 1 }";
+			}
+			
 			location.href = url;
 		});
 	</script>
