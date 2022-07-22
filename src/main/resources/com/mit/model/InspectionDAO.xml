@@ -174,7 +174,7 @@
 			<trim prefix="WHERE">
 				<include refid="searchInspection" />
 			</trim>
-			ORDER BY i.order_num DESC, i.inspection_num ASC) tbl
+			ORDER BY i.order_num DESC, i.inspection_num DESC) tbl
 		<![CDATA[
 		WHERE (#{ curPageDto.pageNum } - 1) * #{ curPageDto.amount } < tbl.rn AND tbl.rn <= (#{ curPageDto.pageNum }) * #{ curPageDto.amount }
 		]]>
