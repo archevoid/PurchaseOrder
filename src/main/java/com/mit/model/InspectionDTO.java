@@ -12,7 +12,7 @@ import lombok.Data;
 public class InspectionDTO {
 	private CurPageDTO curPageDto;
 	
-	private String orderNum;
+	private String scheduledNum;
 	private String inspectionNum;
 	
 	
@@ -68,7 +68,7 @@ public class InspectionDTO {
 	/* 다운로드용 */
 	private List<String> inspectionNumList;
 	
-	private String paperNum;
+	private String orderNum;
 	
 	private Long totalInspectionQuantity;
 }

@@ -277,7 +277,7 @@
 										<div class="mb-3">
 											<label class="form-label">발주번호</label>
 											<select id="selectedOrderNum" class="form-select" name="selectedOrderNum">
-											<option value="0">발주계획번호</option>
+											<option value="0">발주번호</option>
 											<c:forEach items="${ orderNumList }" var="orderNum">
 												<c:if test="${ orderNum.close ne 1 }">
 													<option value="${ orderNum.orderNum }">${ orderNum.orderNum }</option>

@@ -24,7 +24,7 @@ public class OrderDTO {
 	private String partCode;
 	
 	/* insertOrder() */
-	private Long orderNum;
+	private Long scheduledNum;
 	
 	/* getOrderByMonth() */
 	private String companyName;
@@ -86,7 +86,7 @@ public class OrderDTO {
 	
 	private Boolean isActive;
 	
-	private String paperNum;
+	private String orderNum;
 	
 	private String comEmployee;
 	private String comEmail;

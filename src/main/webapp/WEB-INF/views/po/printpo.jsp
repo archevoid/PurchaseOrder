@@ -194,7 +194,7 @@ String[] aboutUs = new String[]{"Team FoS", "", "010-4242-4242", "031-4242-4242"
 										<div id="company">
 											<div id="companyInfo">
 												<table id="companyTable">
-													<caption id="paperNum">발주번호: ${ paperNum }</caption>
+													<caption id="orderNum">발주번호: ${ orderNum }</caption>
 													<thead>
 														<tr>
 															<th colspan="2" id="title">수주처</th>

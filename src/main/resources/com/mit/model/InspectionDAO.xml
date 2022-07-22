@@ -23,6 +23,26 @@
 			<if test="inspectionNum != null">
 				AND i.inspection_num = #{ inspectionNum }
 			</if>
+			<if test="initialDueDate != null">
+			<![CDATA[
+				AND #{ initialDueDate } < sp.deliverydate
+			]]>
+			</if>
+			<if test="finalDueDate != null">
+			<![CDATA[
+				AND sp.deliverydate < #{ finalDueDate }
+			]]>
+			</if>
+			<if test="initialScheduledDate != null">
+			<![CDATA[
+				AND #{ initialScheduledDate } < p.scheduled_date
+			]]>
+			</if>
+			<if test="finalScheduledDate != null">
+			<![CDATA[
+				AND p.scheduled_date < #{ finalScheduledDate }
+			]]>
+			</if>
 		</trim>
 	</sql>
 
@@ -37,6 +57,7 @@
 	<select id="getOrderAllNum" resultType="com.mit.model.OrderDTO">
 		SELECT DISTINCT p.order_num AS orderNum
 		FROM purchase_order p
+		WHERE p.orer_num IS NOT NULL
 	</select>
 	
 	<select id="getInspectionByOrderNum" resultType="com.mit.model.InspectionDTO">
@@ -120,6 +141,7 @@
 	
 	<select id="getInspection" resultType="com.mit.model.InspectionDTO">
 		SELECT p.order_num AS orderNum
+			, p.order_num AS orderNum
 		    , e.empl_name AS emplName
 		    , e.empl_email AS email
 		    , cp.comemployee AS comEmployee
@@ -167,6 +189,7 @@
 	
 	<select id="getOrderNum" resultType="com.mit.model.InspectionDTO">
 		SELECT DISTINCT p.order_num AS orderNum
+			, p.order_num AS orderNum
 			, NVL((SELECT MAX(ir.close) FROM inspection_result ir WHERE ir.order_num = p.order_num), 0) AS close 
 			, CASE WHEN (SELECT 1 FROM inspection ip 
 				WHERE ip.order_num = i.order_num
