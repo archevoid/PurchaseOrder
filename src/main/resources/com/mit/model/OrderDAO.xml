@@ -91,7 +91,7 @@
 				<trim prefix="WHERE">
 					<include refid="searchOrder" />
 				</trim>
-				ORDER BY emergency DESC, sp.deliverydate DESC, p.order_num
+				ORDER BY emergency DESC, sp.deliverydate DESC, p.scheduled_num
 				) tbl
 		<![CDATA[
 		WHERE (#{ curPageDto.pageNum } - 1) * #{ curPageDto.amount } < tbl.rn AND tbl.rn <= (#{ curPageDto.pageNum }) * #{ curPageDto.amount }
