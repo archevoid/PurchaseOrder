@@ -332,3 +332,7 @@ $("input[name=amount]").on("keyup", function(event) {
 		location.href = url;
 	}
 });
+
+$("button#hide-searcher").on("click", function(event) {
+	$(event.target).closest("div#data-plan").find("div#searcher-body").toggleClass("hidden");
+});
