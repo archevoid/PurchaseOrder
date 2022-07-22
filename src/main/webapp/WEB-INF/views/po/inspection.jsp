@@ -37,7 +37,7 @@
 					<div class="row g-2 align-items-center">
 						<div class="col">
 							<div class="page-pretitle">Purchase Order</div>
-							<h2 class="page-title">Inspection</h2>
+							<h2 class="page-title">발주 검수</h2>
 						</div>
 						<div class="col-12 col-md-auto ms-auto d-print-none">
 							<div class="d-flex">
@@ -57,76 +57,86 @@
 			<div class="page-body">
 				<div class="container-xl">
 					<div class="row g-4">
-						<div class="col-3 searcher" id="inspection-searcher">
-							<div class="subheader mb-2">발주번호</div>
-							<div class="row row-searcher">
-								<div class="col-12">
-									<div class="mb-3">
-										<select id="orderNum" class="form-select" name="orderNum">
-											<option value="0">발주계획번호</option>
-											<c:forEach items="${ orderNumList }" var="orderNum">
-												<option value="${ orderNum.orderNum }" <c:if test="${ param.orderNum eq orderNum.orderNum }">selected</c:if>>
-													${ orderNum.orderNum }
-												</option>
-											</c:forEach>
-										</select>
+						<div class="col-12 searcher" id="inspection-searcher">
+							<%-- Temp --%>
+							<div class="card" id="data-plan">
+								<div class="card-header">
+									<h3 class="card-title">검수</h3>
+								</div>
+								<div class="card-body">
+									<div class="row row-searcher">
+										<div class="col-6">
+											<div class="mb-3">
+												<label class="form-label">발주번호</label>
+												<div class="form-group">
+													<div class="row row-searcher">
+														<div class="col-12">
+															<select id="orderNum" class="form-select" name="orderNum">
+																<option value="0">발주번호</option>
+																<c:forEach items="${ orderNumList }" var="orderNum">
+																	<option value="${ orderNum.orderNum }" <c:if test="${ param.orderNum eq orderNum.orderNum }">selected</c:if>>
+																		${ orderNum.orderNum }
+																	</option>
+																</c:forEach>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="mb-3">
+												<label class="form-label">발주일자</label>
+												<div class="form-group row row-searcher">
+													<div class="col-6">
+														<input type="date" id="initialScheduledDate" class="form-control" name="initialScheduledDate" value="${ param.initialScheduledDate }">
+													</div>
+													<div class="col-6">
+														<input type="date" id="finalScheduledDate" class="form-control" name="finalScheduledDate" value="${ param.finalScheduledDate }">
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="mb-3">
+												<label class="form-label">조달납기</label>
+												<div class="form-group row row-searcher">
+													<div class="col-6">
+														<input type="date" id="initialDueDate" class="form-control" name="initialDueDate" value="${ param.initialDueDate }">
+													</div>
+													<div class="col-6">
+														<input type="date" id="finalDueDate" class="form-control" name="finalDueDate" value="${ param.finalDueDate }">
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="mb-3">
+												<label class="form-label">검수일자</label>
+												<div class="form-group row row-searcher">
+													<div class="col-6">
+														<input type="date" id="initialInspectionDate" class="form-control" name="initialInspectionDate" value="${ param.initialInspectionDate }">
+													</div>
+													<div class="col-6">
+														<input type="date" id="finalInspectionDate" class="form-control" name="finalInspectionDate" value="${ param.finalInspectionDate }">
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-12 text-end mt-4">
+											<button type="button" class="btn btn-primary me-3"
+												id="search-button">조회하기</button>
+											<button class="btn btn-ghost-primary" onclick="location.href=window.location.protocol + '//' + window.location.host + window.location.pathname;"> 초기화 </button>
+										</div>
 									</div>
 								</div>
-							</div>
-							<div class="subheader mb-2">발주일자</div>
-							<div class="row row-searcher">
-								<div class="col-6">
-									<div class="mb-3">
-										<input type="date" id="initialScheduledDate" class="form-control" name="initialScheduledDate" value="${ param.initialScheduledDate }">
-									</div>
-								</div>
-								<div class="col-6">
-									<div class="mb-3">
-										<input type="date" id="finalScheduledDate" class="form-control" name="finalScheduledDate" value="${ param.finalScheduledDate }">
-									</div>
-								</div>
-							</div>
-							<div class="subheader mb-2">조달납기</div>
-							<div class="row row-searcher">
-								<div class="col-6">
-									<div class="mb-3">
-										<input type="date" id="initialDueDate" class="form-control" name="initialDueDate" value="${ param.initialDueDate }">
-									</div>
-								</div>
-								<div class="col-6">
-									<div class="mb-3">
-										<input type="date" id="finalDueDate" class="form-control" name="finalDueDate" value="${ param.finalDueDate }">
-									</div>
-								</div>
-							</div>
-							<div class="subheader mb-2">검수일자</div>
-							<div class="row row-searcher">
-								<div class="col-6">
-									<div class="mb-3">
-										<input type="date" id="initialInspectionDate" class="form-control" name="initialInspectionDate" value="${ param.initialInspectionDate }">
-									</div>
-								</div>
-								<div class="col-6">
-									<div class="mb-3">
-										<input type="date" id="finalInspectionDate" class="form-control" name="finalInspectionDate" value="${ param.finalInspectionDate }">
-									</div>
-								</div>
-							</div>
-							<div class="mt-5">
-								<button type="button" class="btn btn-primary w-100"
-									id="search-button">Confirm changes</button>
-								<a href="inspection" class="btn btn-link w-100"> Reset to
-									defaults </a>
 							</div>
 						</div>
-						<div class="col-9 row row-cards" id="data-area">
-					
-							<div class="col-12">
-								<div class="card">
-									<div class="card-header">
-										<h3 class="card-title">검수 일정</h3>
-									</div>
-									<div class="card-body py-3 ms-auto d-print-none btn-list">
+						<%-- /temp --%>
+						<div class="col-12 mt-2" id="data-area">
+							<div class="card">
+								<div class="card-body border-bottom py-3">
+									<div class="ms-auto d-print-none btn-list float-end">
 										<span class="d-none d-sm-inline">
 											<button type="button" class="btn btn-white" id="downloadSchedule">
 												<img src="/resources/img/download.svg" class="icon"> 선택
@@ -140,133 +150,138 @@
 											<img src="/resources/img/upload.svg" class="icon"> 계획입력
 										</button>
 									</div>
-									<div>
-										<table
-											class="table card-table table-vcenter text-nowrap datatable"
-											id="inspectionSchedule">
-											<thead>
-												<tr>
-													<th class="w-1"><input
-														class="form-check-input m-0 align-middle" type="checkbox"
-														aria-label="Select all invoices" name="selectedOrder" id="select-all-checkbox"></th>
-														
-													<th>발주번호</th>
+									<div class="d-flex">
+										<div class="text-muted pt-2">
+											Show
+											<div class="mx-2 d-inline-block">
+												<input type="text" class="form-control form-control-sm" value="${ pageInfo.curPageDto.amount }" size="3" aria-label="Invoices count" name="amount" id="amount">
+				                        	</div>
+				                        	entries
+										</div>
+									</div>
+								</div>
+								<div class="table-default">
+									<table
+										class="table card-table table-vcenter text-nowrap datatable"
+										id="inspectionSchedule">
+										<thead>
+											<tr>
+												<th class="w-1"><input
+													class="form-check-input m-0 align-middle" type="checkbox"
+													aria-label="Select all invoices" name="selectedOrder" id="select-all-checkbox"></th>
 													
-													<th class="w-1">차수 <!-- Download SVG icon from http://tabler-icons.io/i/chevron-up -->
-														<svg xmlns="http://www.w3.org/2000/svg"
-															class="icon icon-sm text-dark icon-thick" width="24"
-															height="24" viewBox="0 0 24 24" stroke-width="2"
-															stroke="currentColor" fill="none" stroke-linecap="round"
-															stroke-linejoin="round">
-																				<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-																				<polyline points="6 15 12 9 18 15">
-																				</polyline>
-																			</svg>
-													</th>
-													<th>검수일자</th>
-													<th>품목</th>
-													<th>발주 수량</th>
-													<th>검수 수량</th>
-													<th>샘플 수량</th>
-													<th>협력회사 담당자</th>
-													<th>이메일</th>
-													<th>상태</th>
-													<th></th>
+												<th>발주번호</th>
+												
+												<th class="w-1">차수 <!-- Download SVG icon from http://tabler-icons.io/i/chevron-up -->
+													<svg xmlns="http://www.w3.org/2000/svg"
+														class="icon icon-sm text-dark icon-thick" width="24"
+														height="24" viewBox="0 0 24 24" stroke-width="2"
+														stroke="currentColor" fill="none" stroke-linecap="round"
+														stroke-linejoin="round">
+																			<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+																			<polyline points="6 15 12 9 18 15">
+																			</polyline>
+																		</svg>
+												</th>
+												<th>검수일자</th>
+												<th>품목</th>
+												<th>발주 수량</th>
+												<th>협력회사 담당자</th>
+												<th>이메일</th>
+												<th>상태</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<c:forEach items="${ inspectionList }" var="inspection">
+												<tr id="inspectionInfo">
+												    <td>
+												        <input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select invoice" name="selectedInspection" value="${ inspection.inspectionNum }">
+												    </td>
+												    <td id="orderNum">${ inspection.orderNum }</td>
+												    <td id="inspectionNum">
+												        <span class="text-muted" id="inspectionNum">${ inspection.inspectionNum }</span>
+												    </td>
+												    <td id="inspectionDate">${ inspection.inspectionDate }</td>
+												    <td id="partName">${ inspection.partName }</td>
+												    <td id="orderQuantity">${ inspection.orderQuantity }</td>
+												    <td id="comEmployee">${ inspection.comEmployee }</td>
+												    <td id="comEmail">${ inspection.comEmail }</td>
+												    <td id="status">${ inspection.status }</td>
+												    <td class="text-end">
+												        <span class="dropdown">
+												            <button class="btn dropdown-toggle align-text-top" data-bs-boundary="viewport" data-bs-toggle="dropdown">
+												                Actions
+												            </button>
+												            <div class="dropdown-menu dropdown-menu-end">
+												                <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-report" id="showResultModal"
+												                <c:if test="${ inspection.status eq '종료' }">disabled</c:if>
+												                >
+												                    결과입력
+												                </button>
+												                <button type="button" class="dropdown-item" id="downloadResult"
+												                <c:if test="${ inspection.status ne '종료' }">disabled</c:if>>
+												                    결과 다운로드
+												                </button>
+												            </div>
+												        </span>
+												    </td>
+												    <input type="hidden" id="progress" name="progress" value="${ inspection.progress }">
 												</tr>
-											</thead>
-											<tbody>
-												<c:forEach items="${ inspectionList }" var="inspection">
-													<tr id="inspectionInfo">
-													    <td>
-													        <input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select invoice" name="selectedInspection" value="${ inspection.inspectionNum }">
-													    </td>
-													    <td id="orderNum">${ inspection.orderNum }</td>
-													    <td id="inspectionNum">
-													        <span class="text-muted" id="inspectionNum">${ inspection.inspectionNum }</span>
-													    </td>
-													    <td id="inspectionDate">${ inspection.inspectionDate }</td>
-													    <td id="partName">${ inspection.partName }</td>
-													    <td id="orderQuantity">${ inspection.orderQuantity }</td>
-													    <td id="inspectionQuantity">${ inspection.inspectionQuantity }</td>
-													    <td id="sampleQuantity">${ inspection.sampleQuantity }</td>
-													    <td id="comEmployee">${ inspection.comEmployee }</td>
-													    <td id="comEmail">${ inspection.comEmail }</td>
-													    <td id="status">${ inspection.status }</td>
-													    <td class="text-end">
-													        <span class="dropdown">
-													            <button class="btn dropdown-toggle align-text-top" data-bs-boundary="viewport" data-bs-toggle="dropdown">
-													                Actions
-													            </button>
-													            <div class="dropdown-menu dropdown-menu-end">
-													                <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-report" id="showResultModal"
-													                <c:if test="${ inspection.status eq '종료' }">disabled</c:if>
-													                >
-													                    결과입력
-													                </button>
-													                <button type="button" class="dropdown-item" id="downloadResult"
-													                <c:if test="${ inspection.status ne '종료' }">disabled</c:if>>
-													                    결과 다운로드
-													                </button>
-													            </div>
-													        </span>
-													    </td>
-													    <input type="hidden" id="progress" name="progress" value="${ inspection.progress }">
-													</tr>
-												</c:forEach>
-											</tbody>
-										</table>
-									</div>
-									<div class="card-footer d-flex align-items-center">
-										<p class="m-0 text-muted">
-											Showing <span>
-												<c:choose>
-													<c:when test="${ (pageNum - 1) * amount + inspectionList.size() eq 0}">
-														0
-													</c:when>
-													<c:otherwise>
-														${ (pageNum - 1) * amount + 1  }
-													</c:otherwise>
-												</c:choose>
-											</span> to <span>${ (pageNum - 1) * amount + inspectionList.size() }</span>
-											of <span>${ numberOfInspection }</span> entries
-										</p>
-										<ul class="pagination m-0 ms-auto">
-											<li
-												class="page-item <c:if test="${ pageInfo.curFirstPage le 1 }"> disabled </c:if>"><button
-													class="page-link page-prev" tabindex="-1"
-													aria-disabled="true">
-													<img src="/resources/img/chevron-left.svg"> prev
-												</button></li>
-											<c:forEach begin="${ pageInfo.curFirstPage }"
-												end="${ pageInfo.curLastPage }" var="num">
-												<c:choose>
-													<c:when test="${ num eq pageInfo.curPageDto.pageNum }">
-														<li class="page-item active"><button
-																class="page-link page-number">${ num }</button></li>
-													</c:when>
-													<c:otherwise>
-														<c:choose>
-															<c:when
-																test="${ num le pageInfo.lastPage }">
-																<li class="page-item"><button
-																		class="page-link page-number">${ num }</button></li>
-															</c:when>
-															<c:otherwise>
-																<li class="page-item disabled"><button
-																		class="page-link page-number">${ num }</button></li>
-															</c:otherwise>
-														</c:choose>
-													</c:otherwise>
-												</c:choose>
 											</c:forEach>
+										</tbody>
+									</table>
+								</div>
+								<div class="card-footer d-flex align-items-center">
+									<p class="m-0 text-muted">
+										Showing <span>
+											<c:choose>
+												<c:when test="${ (pageNum - 1) * amount + inspectionList.size() eq 0}">
+													0
+												</c:when>
+												<c:otherwise>
+													${ (pageNum - 1) * amount + 1  }
+												</c:otherwise>
+											</c:choose>
+										</span> to <span>${ (pageNum - 1) * amount + inspectionList.size() }</span>
+										of <span>${ numberOfInspection }</span> entries
+									</p>
+									<ul class="pagination m-0 ms-auto">
+										<li
+											class="page-item <c:if test="${ pageInfo.curFirstPage le 1 }"> disabled </c:if>"><button
+												class="page-link page-prev" tabindex="-1"
+												aria-disabled="true">
+												<img src="/resources/img/chevron-left.svg"> prev
+											</button></li>
+										<c:forEach begin="${ pageInfo.curFirstPage }"
+											end="${ pageInfo.curLastPage }" var="num">
+											<c:choose>
+												<c:when test="${ num eq pageInfo.curPageDto.pageNum }">
+													<li class="page-item active"><button
+															class="page-link page-number">${ num }</button></li>
+												</c:when>
+												<c:otherwise>
+													<c:choose>
+														<c:when
+															test="${ num le pageInfo.lastPage }">
+															<li class="page-item"><button
+																	class="page-link page-number">${ num }</button></li>
+														</c:when>
+														<c:otherwise>
+															<li class="page-item disabled"><button
+																	class="page-link page-number">${ num }</button></li>
+														</c:otherwise>
+													</c:choose>
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>
 
-											<li
-												class="page-item <c:if test="${ pageInfo.curLastPage ge pageInfo.lastPage }"> disabled </c:if>"><button
-													class="page-link page-next">
-													next <img src="/resources/img/chevron-right.svg">
-												</button></li>
-										</ul>
-									</div>
+										<li
+											class="page-item <c:if test="${ pageInfo.curLastPage ge pageInfo.lastPage }"> disabled </c:if>"><button
+												class="page-link page-next">
+												next <img src="/resources/img/chevron-right.svg">
+											</button></li>
+									</ul>
 								</div>
 							</div>
 						</div>
@@ -786,6 +801,7 @@
 			
 			location.href = url;
 		});
+		
 	</script>
 </body>
 </html>

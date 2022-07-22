@@ -57,234 +57,252 @@
 			<div class="page-body">
 				<div class="container-xl">
 					<div class="row g-4">
-						<div class="col-3 searcher" id="order-searcher">
-							<div class="subheader mb-2">발주품목</div>
-							<div class="row row-searcher">
-								<div class="col-6">
-									<div class="mb-3">
-										<select id="part" class="form-select" name="partCode">
-											<option value="0">선택</option>
-											<c:forEach items="${ partList }" var="part">
-												<option value="${ part.partCode }" <c:if test="${ param.partCode eq part.partCode }">selected</c:if>>
-													${ part.partName }
-												</option>
-											</c:forEach>
-										</select>
+						<div class="col-12 searcher" id="order-searcher">
+							<%-- Temp --%>
+							<div class="card" id="data-plan">
+								<div class="card-header">
+									<h3 class="card-title">발주 확인</h3>
+								</div>
+								<div class="card-body">
+									<div class="row row-searcher">
+										<div class="col-6">
+											<div class="mb-3">
+												<label class="form-label">발주품목</label>
+												<div class="form-group">
+													<div class="row row-searcher">
+														<div class="col-6">
+															<select id="part" class="form-select" name="partCode">
+																<option value="0">선택</option>
+																<c:forEach items="${ partList }" var="part">
+																	<option value="${ part.partCode }" <c:if test="${ param.partCode eq part.partCode }">selected</c:if>>
+																		${ part.partName }
+																	</option>
+																</c:forEach>
+															</select>
+														</div>
+														<div class="col-6">
+															<input type="text" id="part-selector" class="form-control select-searcher" name="partName" value="${ param.partName }"  placeholder="선택 목록 검색">
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="mb-3">
+												<label class="form-label">회사</label>
+												<div class="form-group row row-searcher">
+													<div class="col-6">
+														<select id="company" class="form-select" name="companyCode">
+															<option value="0">선택</option>
+															<c:forEach items="${ companyList }" var="company">
+																<option value="${ company.companyCode }" <c:if test="${ param.companyCode eq company.companyCode }">selected</c:if>>
+																	${ company.companyName }
+																</option>
+															</c:forEach>
+														</select>
+													</div>
+													<div class="col-6">
+														<input type="text" id="company-selector" class="form-control select-searcher" name="companyName" value="${ param.companyName }"  placeholder="선택 목록 검색">
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="mb-3">
+												<label class="form-label">담당자</label>
+												<div class="form-group row row-searcher">
+													<div class="col-6">
+														<select id="employee" class="form-select" name="emplNum">
+															<option value="0">선택</option>
+															<c:forEach items="${ emplList }" var="empl">
+																<option value="${ empl.emplNum }" <c:if test="${ param.emplNum eq empl.emplNum }">selected</c:if>>
+																	${ empl.emplName }
+																</option>
+															</c:forEach>
+														</select>
+													</div>
+													<div class="col-6">
+														<input type="text" id="employee-selecotr" class="form-control select-searcher" name="emplName" value="${ param.emplName }" placeholder="선택 목록 검색">
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="mb-3">
+												<label class="form-label">발주일자</label>
+												<div class="form-group row row-searcher">
+													<div class="col-6">
+														<input type="date" id="initialScheduledDate" class="form-control" name="initialScheduledDate" value="${ param.initialScheduledDate }">
+													</div>
+													<div class="col-6">
+														<input type="date" id="finalScheduledDate" class="form-control" name="finalScheduledDate" value="${ param.finalScheduledDate }">
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="mb-3">
+												<label class="form-label">조달납기</label>
+												<div class="form-group row row-searcher">
+													<div class="col-6">
+														<input type="date" id="initialDueDate" class="form-control" name="initialDueDate" value="${ param.initialDueDate }">
+													</div>
+													<div class="col-6">
+														<input type="date" id="finalDueDate" class="form-control" name="finalDueDate" value="${ param.finalDueDate }">
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-12 text-end mt-4">
+											<button type="button" class="btn btn-primary me-3"
+												id="search-button">조회하기</button>
+											<button class="btn btn-ghost-primary" onclick="location.href=window.location.protocol + '//' + window.location.host + window.location.pathname"> 초기화 </button>
+										</div>
 									</div>
 								</div>
-								<div class="col-6">
-									<div class="mb-3">
-										<input type="text" id="part-selector" class="form-control select-searcher" name="partName" value="${ param.partName }"  placeholder="선택 목록 검색">
-									</div>
-								</div>
-							</div>
-							<div class="subheader mb-2">회사</div>
-							<div class="row row-searcher">
-								<div class="col-6">
-									<div class="mb-3">
-										<select id="company" class="form-select" name="companyCode">
-											<option value="0">선택</option>
-											<c:forEach items="${ companyList }" var="company">
-												<option value="${ company.companyCode }" <c:if test="${ param.companyCode eq company.companyCode }">selected</c:if>>
-													${ company.companyName }
-												</option>
-											</c:forEach>
-										</select>
-									</div>
-								</div>
-								<div class="col-6">
-									<div class="mb-3">
-										<input type="text" id="company-selector" class="form-control select-searcher" name="companyName" value="${ param.companyName }"  placeholder="선택 목록 검색">
-									</div>
-								</div>
-							</div>
-							<div class="subheader mb-2">담당자</div>
-							<div class="row row-searcher">
-								<div class="col-6">
-									<div class="mb-3">
-										<select id="employee" class="form-select" name="emplNum">
-											<option value="0">선택</option>
-											<c:forEach items="${ emplList }" var="empl">
-												<option value="${ empl.emplNum }" <c:if test="${ param.emplNum eq empl.emplNum }">selected</c:if>>
-													${ empl.emplName }
-												</option>
-											</c:forEach>
-										</select>
-									</div>
-								</div>
-								<div class="col-6">
-									<div class="mb-3">
-										<input type="text" id="employee-selecotr" class="form-control select-searcher" name="emplName" value="${ param.emplName }" placeholder="선택 목록 검색">
-									</div>
-								</div>
-							</div>
-							<div class="subheader mb-2">발주일자</div>
-							<div class="row row-searcher">
-								<div class="col-6">
-									<div class="mb-3">
-										<input type="date" id="initialScheduledDate" class="form-control" name="initialScheduledDate" value="${ param.initialScheduledDate }">
-									</div>
-								</div>
-								<div class="col-6">
-									<div class="mb-3">
-										<input type="date" id="finalScheduledDate" class="form-control" name="finalScheduledDate" value="${ param.finalScheduledDate }">
-									</div>
-								</div>
-							</div>
-							<div class="subheader mb-2">조달납기</div>
-							<div class="row row-searcher">
-								<div class="col-6">
-									<div class="mb-3">
-										<input type="date" id="initialDueDate" class="form-control" name="initialDueDate" value="${ param.initialDueDate }">
-									</div>
-								</div>
-								<div class="col-6">
-									<div class="mb-3">
-										<input type="date" id="finalDueDate" class="form-control" name="finalDueDate" value="${ param.finalDueDate }">
-									</div>
-								</div>
-							</div>
-							<div class="mt-5">
-								<button type="button" class="btn btn-primary w-100"
-									id="search-button">조회하기</button>
-								<a href="order" class="btn btn-link w-100"> 초기화 </a>
 							</div>
 						</div>
-						<div class="col-9 row row-cards" id="data-area">
-							<div class="col-12">
+						<%-- /temp --%>
+							<div class="col-12 mt-2" id="data-area">
 								<div class="card" id="data-order">
-									<div class="card-header">
-										<h3 class="card-title">발주 확인</h3>
+									<div class="card-body border-bottom py-3">
+										<div class="d-flex">
+											<div class="text-muted">
+												Show
+												<div class="mx-2 d-inline-block">
+													<input type="text" class="form-control form-control-sm" value="${ pageInfo.curPageDto.amount }" size="3" aria-label="Invoices count" name="amount" id="amount">
+					                        	</div>
+					                        	entries
+											</div>
+										</div>
 									</div>
-									<div class="card-body">
-										<div id="table-default">
-											<table class="table">
-												<thead>
-													<tr>
-														<th><button class="table-sort"
-																data-sort="sort-scheduledNum">구분</button></th>
-														<th><button class="table-sort"
-																data-sort="sort-orderNum">발주번호</button></th>
-														<th><button class="table-sort"
-																data-sort="sort-emplName">발주담당자</button></th>
-														<th><button class="table-sort"
-																data-sort="sort-partName">품목명</button></th>
-														<th><button class="table-sort"
-																data-sort="sort-companyName">회사명</button></th>
-														<th><button class="table-sort"
-																data-sort="sort-leadTime">Lead Time</button></th>
-														<th><button class="table-sort"
-																data-sort="sort-orderQuantity">발주수량</button></th>
-														<th><button class="table-sort"
-																data-sort="sort-orderDate">발주예정일자</button></th>
-														<th><button class="table-sort"
-																data-sort="sort-scheduledDate">발주일자</button></th>
-														<th><button class="table-sort"
-																data-sort="sort-dueDate">조달납기</button></th>
-														<th><button class="table-sort"
-																data-sort="sort-status">상태</button></th>
-														<th></th>
-													</tr>
-												</thead>
-												<tbody class="table-tbody">
-													<c:forEach items="${ orderList }" var="order">
-														<form action="printpo" method="post">
-														<tr class="plan-data">
+									<div id="table-default">
+										<table class="table card-table table-vcenter text-nowrap datatable">
+											<thead>
+												<tr>
+													<th><button class="table-sort"
+															data-sort="sort-scheduledNum">구분</button></th>
+													<th><button class="table-sort"
+															data-sort="sort-orderNum">발주번호</button></th>
+													<th><button class="table-sort"
+															data-sort="sort-emplName">발주담당자</button></th>
+													<th><button class="table-sort"
+															data-sort="sort-partName">품목명</button></th>
+													<th><button class="table-sort"
+															data-sort="sort-companyName">회사명</button></th>
+													<th><button class="table-sort"
+															data-sort="sort-leadTime">Lead Time</button></th>
+													<th><button class="table-sort"
+															data-sort="sort-orderQuantity">발주수량</button></th>
+													<th><button class="table-sort"
+															data-sort="sort-orderDate">발주예정일자</button></th>
+													<th><button class="table-sort"
+															data-sort="sort-scheduledDate">발주일자</button></th>
+													<th><button class="table-sort"
+															data-sort="sort-dueDate">조달납기</button></th>
+													<th><button class="table-sort"
+															data-sort="sort-status">상태</button></th>
+													<th></th>
+												</tr>
+											</thead>
+											<tbody class="table-tbody">
+												<c:forEach items="${ orderList }" var="order">
+													<form action="printpo" method="post">
+													<tr class="plan-data">
+														<c:choose>
+															<c:when test="${ order.status ne 0 }">
+																<td class="sort-scheduledNum" id="scheduledNum">${ order.scheduledNum }</td>
+																<td class="sort-orderNum" id="orderNum">${ order.orderNum }</td>
+																<td class="sort-emplName" id="emplName">${ order.emplName }</td>
+																<td class="sort-partName" id="partName">${ order.partName }</td>
+																<td class="sort-companyName" id="companyName">${ order.companyName }</td>
+																<td class="sort-leadTime" id="leadTime">${ order.leadTime }</td>
+																<td class="sort-orderQuantity" id="orderQuantity">${ order.orderQuantity }</td>
+																<td class="sort-orderDate" id="orderDate">${ order.orderDate }</td>
+																<td class="sort-scheduledDate" id="scheduledDate">${ order.scheduledDate }</td>
+																<td class="sort-dueDate" id="dueDate">${ order.dueDate }</td>
+															</c:when>
+															<c:otherwise>
+																<td class="sort-orderNum" id="orderNum">${ order.orderNum }</td>
+																<td class="sort-emplName" id="emplName">
+																	<select id="employee" class="form-select updatable" name="emplNum">
+																		<option value="0">선택</option>
+																		<c:forEach items="${ emplList }" var="empl">
+																			<option value="${ empl.emplNum }" <c:if test="${ order.emplNum eq empl.emplNum }">selected</c:if>>
+																				${ empl.emplName }
+																			</option>
+																		</c:forEach>
+																	</select>
+																</td>
+																<td class="sort-partName" id="partName">${ order.partName }</td>
+																<td class="sort-companyName" id="companyName">${ order.companyName }</td>
+																<td class="sort-leadTime" id="leadTime">${ order.leadTime }</td>
+																<td class="sort-orderQuantity" id="orderQuantity">${ order.orderQuantity }</td>
+																<td class="sort-orderDate" id="orderDate">${ order.orderDate }</td>
+																<td class="sort-scheduledDate" id="scheduledDate">
+																	<input type="date" class="form-control updatable" id="scheduledDate" name="scheduledDate" value="${ order.scheduledDate }">
+																</td>
+																<td class="sort-dueDate" id="dueDate">${ order.dueDate }</td>
+															</c:otherwise>
+														</c:choose>
+														<td class="sort-status" id="status">
 															<c:choose>
-																<c:when test="${ order.status ne 0 }">
-																	<td class="sort-scheduledNum" id="scheduledNum">${ order.scheduledNum }</td>
-																	<td class="sort-orderNum" id="orderNum">${ order.orderNum }</td>
-																	<td class="sort-emplName" id="emplName">${ order.emplName }</td>
-																	<td class="sort-partName" id="partName">${ order.partName }</td>
-																	<td class="sort-companyName" id="companyName">${ order.companyName }</td>
-																	<td class="sort-leadTime" id="leadTime">${ order.leadTime }</td>
-																	<td class="sort-orderQuantity" id="orderQuantity">${ order.orderQuantity }</td>
-																	<td class="sort-orderDate" id="orderDate">${ order.orderDate }</td>
-																	<td class="sort-scheduledDate" id="scheduledDate">${ order.scheduledDate }</td>
-																	<td class="sort-dueDate" id="dueDate">${ order.dueDate }</td>
+																<c:when test="${ order.status eq 0 }">
+																	<div class="badge bg-yellow"></div> 발주 예정
 																</c:when>
-																<c:otherwise>
-																	<td class="sort-orderNum" id="orderNum">${ order.orderNum }</td>
-																	<td class="sort-emplName" id="emplName">
-																		<select id="employee" class="form-select updatable" name="emplNum">
-																			<option value="0">선택</option>
-																			<c:forEach items="${ emplList }" var="empl">
-																				<option value="${ empl.emplNum }" <c:if test="${ order.emplNum eq empl.emplNum }">selected</c:if>>
-																					${ empl.emplName }
-																				</option>
-																			</c:forEach>
-																		</select>
-																	</td>
-																	<td class="sort-partName" id="partName">${ order.partName }</td>
-																	<td class="sort-companyName" id="companyName">${ order.companyName }</td>
-																	<td class="sort-leadTime" id="leadTime">${ order.leadTime }</td>
-																	<td class="sort-orderQuantity" id="orderQuantity">${ order.orderQuantity }</td>
-																	<td class="sort-orderDate" id="orderDate">${ order.orderDate }</td>
-																	<td class="sort-scheduledDate" id="scheduledDate">
-																		<input type="date" class="form-control updatable" id="scheduledDate" name="scheduledDate" value="${ order.scheduledDate }">
-																	</td>
-																	<td class="sort-dueDate" id="dueDate">${ order.dueDate }</td>
-																</c:otherwise>
+																<c:when test="${ order.status eq 1 }">
+																	<div class="badge bg-primary"></div> 발주 완료
+																</c:when>
+																<c:when test="${ order.status ge 1000 }">
+																	<div class="badge bg-purple"></div> ${ order.status - 1000 }차 검수 중
+																</c:when>
+																<c:when test="${ order.status eq 4 }">
+																	<div class="badge bg-red"></div> 검수 완료
+																</c:when>
 															</c:choose>
-															<td class="sort-status" id="status">
-																<c:choose>
-																	<c:when test="${ order.status eq 0 }">
-																		<div class="badge bg-yellow"></div> 발주 예정
-																	</c:when>
-																	<c:when test="${ order.status eq 1 }">
-																		<div class="badge bg-primary"></div> 발주 완료
-																	</c:when>
-																	<c:when test="${ order.status ge 1000 }">
-																		<div class="badge bg-purple"></div> ${ order.status - 1000 }차 검수 중
-																	</c:when>
-																	<c:when test="${ order.status eq 4 }">
-																		<div class="badge bg-red"></div> 검수 완료
-																	</c:when>
-																</c:choose>
-															</td>
-															<fmt:setLocale value="en_US" />
-															<fmt:parseNumber value="${ order.dueDate.time / (1000 * 60 * 60 * 24) }" integerOnly="true" var="dueDateNumber" />
-															<fmt:parseNumber value="${ order.today.time / (1000 * 60 * 60 * 24) }" integerOnly="true" var="todayNumber" />
-															<td class="text-end order-btn-area">
-																<c:choose>
-																	<c:when test="${ order.published eq 0 }">
-																		<c:if test="${ order.leadTime gt (dueDateNumber - todayNumber) }">
-																			<button type="submit" class="btn" id="show-order-page" disabled>
-																				<img src="/resources/img/row-insert-top.svg"
-																					class="icon"> 발주 기간 초과
-																			</button>
-																		</c:if>
-																		<c:if test="${ order.emergency eq 1 }">
-																			<button type="submit" class="btn btn-danger" id="show-order-page">
-																			<img src="/resources/img/row-insert-top.svg"
-																				class="icon"> 긴급 발주서 발행
-																			</button>
-																		</c:if>
-																		<c:if test="${ order.emergency ne 1 }">
-																			<button type="submit" class="btn" id="show-order-page">
-																				<img src="/resources/img/row-insert-top.svg"
-																					class="icon"> 발주서 발행
-																			</button>
-																		</c:if>
-																	</c:when>
-																	<c:when test="${ order.published ne 0 }">
+														</td>
+														<fmt:setLocale value="en_US" />
+														<fmt:parseNumber value="${ order.dueDate.time / (1000 * 60 * 60 * 24) }" integerOnly="true" var="dueDateNumber" />
+														<fmt:parseNumber value="${ order.today.time / (1000 * 60 * 60 * 24) }" integerOnly="true" var="todayNumber" />
+														<td class="text-end order-btn-area">
+															<c:choose>
+																<c:when test="${ order.published eq 0 }">
+																	<c:if test="${ order.leadTime gt (dueDateNumber - todayNumber) }">
 																		<button type="submit" class="btn" id="show-order-page" disabled>
 																			<img src="/resources/img/row-insert-top.svg"
-																				class="icon"> 발행 완료
+																				class="icon"> 발주 기간 초과
 																		</button>
-																	</c:when>
-																	
-																</c:choose>
-															</td>
-														</tr>
-														<input type="hidden" name="companyCode" value="${ order.companyCode }">
-														<input type="hidden" name="scheduledDate" value="${ order.scheduledDate }">
-														<input type="hidden" name="orderNum" value="${ order.orderNum }">
-														</form>
-													</c:forEach>
-												</tbody>
-											</table>
-										</div>
+																	</c:if>
+																	<c:if test="${ order.emergency eq 1 }">
+																		<button type="submit" class="btn btn-danger" id="show-order-page">
+																		<img src="/resources/img/row-insert-top.svg"
+																			class="icon"> 긴급 발주서 발행
+																		</button>
+																	</c:if>
+																	<c:if test="${ order.emergency ne 1 }">
+																		<button type="submit" class="btn" id="show-order-page">
+																			<img src="/resources/img/row-insert-top.svg"
+																				class="icon"> 발주서 발행
+																		</button>
+																	</c:if>
+																</c:when>
+																<c:when test="${ order.published ne 0 }">
+																	<button type="submit" class="btn" id="show-order-page" disabled>
+																		<img src="/resources/img/row-insert-top.svg"
+																			class="icon"> 발행 완료
+																	</button>
+																</c:when>
+																
+															</c:choose>
+														</td>
+													</tr>
+													<input type="hidden" name="companyCode" value="${ order.companyCode }">
+													<input type="hidden" name="scheduledDate" value="${ order.scheduledDate }">
+													<input type="hidden" name="orderNum" value="${ order.orderNum }">
+													</form>
+												</c:forEach>
+											</tbody>
+										</table>
 									</div>
 									<div class="card-footer d-flex align-items-center">
 										<p class="m-0 text-muted">
@@ -339,7 +357,6 @@
 									</div>
 								</div>
 							</div>
-						</div>
 					</div>
 				</div>
 			</div>

@@ -307,3 +307,28 @@ function getComplexPrice(currencyList, priceList) {
 	
 	return result;
 }
+
+$("input[name=amount]").on("keyup", function(event) {
+	const amount = $(event.target).val();
+	
+	if (amount <= 0 || amount == null) {
+		alert("값을 입력해주세요.")
+		return;
+	}
+	
+	if (event.keyCode == 13) {
+		var url = window.location.href;
+		
+
+		if (url.indexOf("amount=") != -1) {
+			url = url.replace(/amount=\d+/, "amount=" + $(event.target).val());
+		} else if (url.match(/[?].+[=].+/g)) {
+			url = url + "&amount=" + $(event.target).val();
+		} else {
+			url = url.replace(/[?]\s*$/g, "");
+			url = url + "?amount=" + $(event.target).val();
+		}
+		
+		location.href = url;
+	}
+});

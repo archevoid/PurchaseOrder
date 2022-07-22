@@ -114,15 +114,6 @@
 		    , e.empl_email AS email
 		    , (SELECT COUNT(DISTINCT p.order_date) FROM purchase_order o WHERE o.empl_num = e.empl_num) AS sameDay
 		    , (SELECT COUNT(*) FROM tbl_company c WHERE c.code IN (SELECT ct.code FROM tbl_contract ct WHERE ct.contractno IN (SELECT po.contract_num FROM purchase_order po WHERE po.empl_num = p.empl_num))) AS sameCompany
-		    
-	    <if test="orderDate != null">
-		    , (SELECT COUNT(*) 
-		        FROM tbl_company c 
-		        WHERE c.code IN 
-		            (SELECT ct.code FROM tbl_contract ct WHERE ct.contractno IN 
-		                (SELECT po.contract_num FROM purchase_order po WHERE po.empl_num = p.empl_num AND po.order_date = #{ orderDate }
-		                ))) AS sameCompanyAtSameDay
-		</if>
 		FROM employee e LEFT JOIN purchase_order p ON e.empl_num = p.empl_num
 		ORDER BY e.empl_num ASC
 	</select>
