@@ -56,9 +56,18 @@ public class ApiController {
 		PlanDTO planDto = new PlanDTO();
 		
 		planDto.setPlanNum(orderDto.getPlanNum());
+		planDto.setContractNum(Long.parseLong(orderDto.getContractNum()));
 		
-		if(orderDto.getOrderQuantity() > ps.getRemainQuantity(planDto)) {
+		PlanDTO remains = ps.getRemainInfo(planDto);
+		
+		Date scheduledDate = orderDto.getScheduledDate();
+		
+		if(orderDto.getOrderQuantity() > remains.getRemainQuantity()) {
 			return -1;
+		} else if (scheduledDate.after(remains.getDueDate())) {
+			return -2;
+		} else if (!ps.getOrderable(planDto)) {
+			return -3;
 		} else {
 			return ps.insertOrder(orderDto);
 		}
@@ -89,8 +98,8 @@ public class ApiController {
 	}
 	
 	@PostMapping("remainQuantity")
-	public String getRemainQuantity(PlanDTO planDto) {
-		return ps.getRemainQuantity(planDto) + "";
+	public String getRemainInfo(PlanDTO planDto) {
+		return ps.getRemainInfo(planDto).getRemainQuantity() + "";
 	}
 	
 	@PostMapping("orderList")

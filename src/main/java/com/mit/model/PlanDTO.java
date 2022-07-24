@@ -20,7 +20,7 @@ public class PlanDTO {
 	
 	private Long contractNum;
 	
-	
+	private Long scheduledNum;
 	/**/
 	private CurPageDTO curPageDto;
 	
@@ -37,10 +37,15 @@ public class PlanDTO {
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date finalDueDate;
 	
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
+	private Date today;
+	
 	private Long sum;
 	
 	private Long inputQuantity;
 	
+	private Long remainQuantity;
 	
-	/* 대분류 중분류 추가 */
+	private Boolean orderable;
+	
 }
