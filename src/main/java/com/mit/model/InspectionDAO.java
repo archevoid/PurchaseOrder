@@ -28,4 +28,6 @@ public interface InspectionDAO {
 	public Integer getNextInspectionResultNum(InspectionDTO inspectionDto);
 	
 	public InspectionDTO getTotalInspectionQuantity(OrderDTO orderDto);
+	
+	public InspectionDTO getDate(InspectionDTO inspectionDto);
 }

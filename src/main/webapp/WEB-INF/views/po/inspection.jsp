@@ -518,6 +518,23 @@
 		});
 
 		$("button#inspectionInputBtn").on("click", function() {
+			var orderDate;
+			var dueDate;
+			
+			$.ajax({
+				url : "/api/dateInfo",
+				type : "post",
+				async : false,
+				data : {
+					"orderNum" : $("select[name=selectedOrderNum]").val()
+				},
+				success : function(data) {
+					orderDate = data.orderDate;
+					dueDate = data.dueDate;
+				}
+			});
+			
+			
 			if ($("select[name=selectedOrderNum]").val() == 0) {
 				alert("발주번호를 선택해주세요");
 				return;

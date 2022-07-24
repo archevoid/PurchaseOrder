@@ -347,7 +347,6 @@
 		        + ' <label class="form-label col-3 col-form-label">업체</label>' 
 		        + ' <div class="col" id="company-container">' 
 		        + ' <button type="button" id="company-selector" class="btn w-100">업체 확인</button>' 
-		        + ' <!-- ' + '                업체 선택시 업체 이름으로 바뀜' + '                <input type="text" id="companyName" class="form-control" value="" readonly>' + '                <input type="hidden" id="companyCode" value="">' + '            -->'
 		        + ' <small class="form-hint">클릭시 업체 선택으로 이동합니다.</small>' 
 		        + ' </div>' 
 		        + ' </div>' 
@@ -482,6 +481,8 @@
 			});
 
 			$("button#company-selector").on("click", function(event) {
+				const $companySelectorBtn = $(event.target);
+				
 				if ($("div.col-company-card").length != 0) {
 					$("div.col-company-card").remove();
 					$(event.target).text("업체 확인");
@@ -516,14 +517,21 @@
 									var contractNum = $selectedCompany.find("input[name=contractNum]").val();
 									var unitPrice = $selectedCompany.find("span#unitPrice").text();
 									
-									var companyNameTag = '<input type="text" id="companyName" class="form-control" value="' + companyName + '" name="companyName" readonly>'
-									var contractNumTag = '<input type="hidden" id="contractNum" value="' + contractNum + '" name="contractNum">';
+									var companyNameTag = '<div class="input-group selected-company"><input type="text" id="companyName" class="form-control" value="' + companyName + '" name="companyName" readonly><button type="button" class="btn" id="cancel-selected-company">취소</button></div>'
+									
+									var contractNumTag = '<input type="hidden" id="contractNum" value="' + contractNum + '" name="contractNum" class="selected-company">';
 									var unitPriceTag = '<input type="hidden" name="unitPrice" value="' + unitPrice + '">';
 									
-									$("div#company-container").children().remove();
+									$("div#company-container").children().addClass("hidden");
 									$("div#company-container").append(companyNameTag + contractNumTag);
 									
 									$("div.col-company-card").remove();
+									
+									$("button#cancel-selected-company").on("click", function() {
+										$(".selected-company").remove();
+										$("div#company-container").children().removeClass("hidden");
+										$companySelectorBtn.text("업체 확인");
+									});
 								});
 							}
 						}

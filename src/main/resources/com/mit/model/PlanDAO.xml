@@ -38,8 +38,8 @@
 			, sp.requirement AS requirement
 			, sp.deliverydate AS dueDate
 			, pt.partname AS partName
-			, tbl.sum AS sum
-			, tb.inputQuantity AS inputQuantity
+			, NVL(tbl.sum, 0) AS sum
+			, NVL(tb.inputQuantity, 0) AS inputQuantity
 			, sysdate AS today
 			, ROWNUM as rn
 		FROM tbl_support sp INNER JOIN tbl_part pt ON sp.partcode = pt.partcode

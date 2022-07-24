@@ -220,6 +220,13 @@
 		WHERE ir.order_num = #{ orderNum } AND ir.inspection_num = #{ inspectionNum }
 	</select>
 	
+	<select id="getDate" resultType="com.mit.model.InspectionDTO">
+		SELECT p.order_date AS orderDate
+			, sp.deliverydate AS dueDate
+		FROM purchase_order p INNER JOIN tbl_support sp ON p.support_num = sp.supportno
+		WHERE p.order_num = #{ orderNum }
+	</select>
+	
 	<insert id="insertInspectionSchedule">
 		INSERT INTO inspection (order_num, inspection_num, inspection_date)
 		VALUES (#{ orderNum }, (SELECT NVL((MAX(i.inspection_num) + 1), 1) AS nextNum FROM inspection i WHERE i.order_num = #{ orderNum }), #{ inspectionDate })

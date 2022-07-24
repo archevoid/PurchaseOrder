@@ -49,7 +49,7 @@
 
 	<select id="getOrder" resultType="com.mit.model.OrderDTO">
 		SELECT *
-		FROM (SELECT p.scheduled_num AS scheduledNum
+		FROM (SELECT p.scheduled_num AS  
 				, e.empl_num AS emplNum
 				, e.empl_name AS emplName
 				, e.empl_email AS email
@@ -112,11 +112,11 @@
 	
 	<update id="updatePublished">
 		UPDATE purchase_order SET published = 1, order_date = sysdate, order_num = order_num_seq.NEXTVAL
-		WHERE order_num = #{ orderNum } AND order_num IS NULL
+		WHERE scheduled_num = #{ scheduledNum } AND order_num IS NULL
 	</update>
 	
 	<select id="getOrderNum" resultType="com.mit.model.OrderDTO">
-		SELECT p.order_num AS orderNum FROM purchase_order p WHERE order_num = #{ orderNum }
+		SELECT p.order_num AS orderNum FROM purchase_order p WHERE p.scheduled_num = #{ scheduledNum }
 	</select>
 	
 	<select id="getAllPart" resultType="com.mit.model.OrderDTO">

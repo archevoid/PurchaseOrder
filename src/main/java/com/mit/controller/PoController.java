@@ -104,6 +104,7 @@ public class PoController {
 	
 	@PostMapping("printpo")
 	public String printpo(OrderDTO orderDto, HttpServletRequest request, HttpServletResponse response, Model m) {
+		
 		String referer = (String)request.getHeader("REFERER");
 		
 		String url = request.getRequestURL().toString().replace(request.getRequestURI(), "");
@@ -112,6 +113,8 @@ public class PoController {
 		if(!referer.equals(url + prevUri)) {
 			return "/po/dashboard";
 		}
+		
+		os.updatePublished(orderDto);
 		
 		HashMap<String, Character> currency = new HashMap<String, Character>();
 		
@@ -126,8 +129,6 @@ public class PoController {
 		m.addAttribute("orderInfo", os.getOrderInfo(orderDto));
 		
 		m.addAttribute("currency", currency);
-		
-		os.updatePublished(orderDto);
 		
 		m.addAttribute("orderNum", os.getOrderNum(orderDto));
 		
