@@ -68,4 +68,8 @@ public class InspectionService extends com.mit.service.Service {
 	public InspectionDTO getTotalInspectionQuantity(OrderDTO orderDto) {
 		return inspectionDao.getTotalInspectionQuantity(orderDto);
 	}
+	
+	public InspectionDTO getDate(InspectionDTO inspectionDto) {
+		return inspectionDao.getDate(inspectionDto);
+	}
 }

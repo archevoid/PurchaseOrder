@@ -59,7 +59,7 @@
 					<div class="row g-4">
 						<div class="col-12 searcher" id="order-searcher">
 							<%-- Temp --%>
-							<div class="card" id="data-plan">
+							<div class="card" id="data-order">
 								<div class="card-header">
 									<h3 class="card-title">Order</h3>
 									<div class="ms-auto d-print-none btn-list float-end">
@@ -200,9 +200,9 @@
 													<th><button class="table-sort"
 															data-sort="sort-orderQuantity">발주수량</button></th>
 													<th><button class="table-sort"
-															data-sort="sort-orderDate">발주예정일자</button></th>
+															data-sort="sort-scheduledDate">발주예정일자</button></th>
 													<th><button class="table-sort"
-															data-sort="sort-scheduledDate">발주일자</button></th>
+															data-sort="sort-orderDate">발주일자</button></th>
 													<th><button class="table-sort"
 															data-sort="sort-dueDate">조달납기</button></th>
 													<th><button class="table-sort"
@@ -214,42 +214,16 @@
 												<c:forEach items="${ orderList }" var="order">
 													<form action="printpo" method="post">
 													<tr class="plan-data">
-														<c:choose>
-															<c:when test="${ order.status ne 0 }">
-																<td class="sort-scheduledNum" id="scheduledNum">${ order.scheduledNum }</td>
-																<td class="sort-orderNum" id="orderNum">${ order.orderNum }</td>
-																<td class="sort-emplName" id="emplName">${ order.emplName }</td>
-																<td class="sort-partName" id="partName">${ order.partName }</td>
-																<td class="sort-companyName" id="companyName">${ order.companyName }</td>
-																<td class="sort-leadTime" id="leadTime">${ order.leadTime }</td>
-																<td class="sort-orderQuantity" id="orderQuantity">${ order.orderQuantity }</td>
-																<td class="sort-orderDate" id="orderDate">${ order.orderDate }</td>
-																<td class="sort-scheduledDate" id="scheduledDate">${ order.scheduledDate }</td>
-																<td class="sort-dueDate" id="dueDate">${ order.dueDate }</td>
-															</c:when>
-															<c:otherwise>
-																<td class="sort-orderNum" id="orderNum">${ order.orderNum }</td>
-																<td class="sort-emplName" id="emplName">
-																	<select id="employee" class="form-select updatable" name="emplNum">
-																		<option value="0">선택</option>
-																		<c:forEach items="${ emplList }" var="empl">
-																			<option value="${ empl.emplNum }" <c:if test="${ order.emplNum eq empl.emplNum }">selected</c:if>>
-																				${ empl.emplName }
-																			</option>
-																		</c:forEach>
-																	</select>
-																</td>
-																<td class="sort-partName" id="partName">${ order.partName }</td>
-																<td class="sort-companyName" id="companyName">${ order.companyName }</td>
-																<td class="sort-leadTime" id="leadTime">${ order.leadTime }</td>
-																<td class="sort-orderQuantity" id="orderQuantity">${ order.orderQuantity }</td>
-																<td class="sort-orderDate" id="orderDate">${ order.orderDate }</td>
-																<td class="sort-scheduledDate" id="scheduledDate">
-																	<input type="date" class="form-control updatable" id="scheduledDate" name="scheduledDate" value="${ order.scheduledDate }">
-																</td>
-																<td class="sort-dueDate" id="dueDate">${ order.dueDate }</td>
-															</c:otherwise>
-														</c:choose>
+														<td class="sort-scheduledNum" id="scheduledNum">${ order.scheduledNum }</td>
+														<td class="sort-orderNum" id="orderNum">${ order.orderNum }</td>
+														<td class="sort-emplName" id="emplName">${ order.emplName }</td>
+														<td class="sort-partName" id="partName">${ order.partName }</td>
+														<td class="sort-companyName" id="companyName">${ order.companyName }</td>
+														<td class="sort-leadTime" id="leadTime">${ order.leadTime }</td>
+														<td class="sort-orderQuantity" id="orderQuantity">${ order.orderQuantity }</td>
+														<td class="sort-scheduledDate" id="scheduledDate">${ order.scheduledDate }</td>
+														<td class="sort-orderDate" id="orderDate">${ order.orderDate }</td>
+														<td class="sort-dueDate" id="dueDate">${ order.dueDate }</td>
 														<td class="sort-status" id="status">
 															<c:choose>
 																<c:when test="${ order.status eq 0 }">
@@ -272,24 +246,27 @@
 														<td class="text-end order-btn-area">
 															<c:choose>
 																<c:when test="${ order.published eq 0 }">
-																	<c:if test="${ order.leadTime gt (dueDateNumber - todayNumber) }">
-																		<button type="submit" class="btn" id="show-order-page" disabled>
+																	<c:choose>
+																		<c:when test="${ order.leadTime gt (dueDateNumber - todayNumber) }">
+																			<button type="submit" class="btn" id="show-order-page" disabled>
+																				<img src="/resources/img/row-insert-top.svg"
+																					class="icon"> 발주 기간 초과
+																			</button>
+																		</c:when>
+																		<c:when test="${ order.emergency eq 1 }">
+																			<button type="submit" class="btn btn-danger" id="show-order-page">
 																			<img src="/resources/img/row-insert-top.svg"
-																				class="icon"> 발주 기간 초과
-																		</button>
-																	</c:if>
-																	<c:if test="${ order.emergency eq 1 }">
-																		<button type="submit" class="btn btn-danger" id="show-order-page">
-																		<img src="/resources/img/row-insert-top.svg"
-																			class="icon"> 긴급 발주서 발행
-																		</button>
-																	</c:if>
-																	<c:if test="${ order.emergency ne 1 }">
-																		<button type="submit" class="btn" id="show-order-page">
-																			<img src="/resources/img/row-insert-top.svg"
-																				class="icon"> 발주서 발행
-																		</button>
-																	</c:if>
+																				class="icon"> 긴급 발주서 발행
+																			</button>
+																		</c:when>
+																		<c:when test="${ order.emergency ne 1 }">
+																			<button type='button' class='btn btn-primary d-none d-sm-inline-block premature-order-update' id='premature-order-update'>수정</button>
+																			<button type="submit" class="btn" id="show-order-page">
+																				<img src="/resources/img/row-insert-top.svg"
+																					class="icon"> 발주서 발행
+																			</button>
+																		</c:when>
+																	</c:choose>
 																</c:when>
 																<c:when test="${ order.published ne 0 }">
 																	<button type="submit" class="btn" id="show-order-page" disabled>
@@ -297,13 +274,12 @@
 																			class="icon"> 발행 완료
 																	</button>
 																</c:when>
-																
 															</c:choose>
 														</td>
 													</tr>
 													<input type="hidden" name="companyCode" value="${ order.companyCode }">
 													<input type="hidden" name="scheduledDate" value="${ order.scheduledDate }">
-													<input type="hidden" name="orderNum" value="${ order.orderNum }">
+													<input type="hidden" name="scheduledNum" value="${ order.scheduledNum }">
 													</form>
 												</c:forEach>
 											</tbody>
@@ -483,7 +459,7 @@
 			location.href = url;
 		});
 		
-		$(".updatable").on("change", function(event) {
+	/* 	$(".updatable").on("change", function(event) {
 			var $selectePlanData = $(event.target).closest("tr.plan-data");
 			
 			var updateButton = "<div class='d-print-none btn-list'>"
@@ -496,22 +472,6 @@
 			$selectePlanData.find("td.order-btn-area").append(updateButton);
 			
 			$selectePlanData.find("button[type=submit]").addClass("hidden");
-			
-			$("button.cancel-update").on("click", function(eventBtn) {
-				var $choicedPlanData = $(eventBtn.target).closest("tr.plan-data");
-				
-				$.ajax({
-					url : "/api/resetOrder",
-					type : "post",
-					data : {
-						"orderNum" : $choicedPlanData.find("#orderNum")
-					},
-					success : function(data) {
-						$($choicedPlanData).find("select.updatable[name=emplNum]").find("option[value=" + data.emplNum + "]").prop("selected", true);
-						$($choicedPlanData).find("input.updatable#scheduledDate").val(data.scheduleData);
-					}
-				})
-			});
 			
 			$("button.premature-order-update").on("click", function(eventBtn) {
 				var $choicedPlanData = $(eventBtn.target).closest("tr.plan-data");
@@ -528,6 +488,224 @@
 						
 					}
 				});
+			});
+		}); */
+		
+		
+		
+		$("button#premature-order-update").on("click", function(event) {
+			$("div#data-order").addClass("hidden");
+			
+			var elem = '<div class="col-12">'
+		        + '<div class="card" id="order-input">' 
+		        + ' <div class="card-header">' 
+		        + ' <h3 class="card-title"><span id="input-form-planNum"></span>번 계획 발주 수정</h3>' 
+		        + ' </div>' 
+		        + ' <div class="card-body">' 
+		        + ' <div class="form-group mb-4 row border-bottom p-3">' 
+		        + ' <div class="col-lg-3">' 
+		        + ' <label class="form-label col-3 col-form-label">품목</label>' 
+		        + ' <input type="text" id="partName" class="form-control" value="" readonly>' 
+		        + ' </div>' 
+		        + ' <div class="col-lg-3">' 
+		        + ' <label class="form-label col-3 col-form-label">납기</label>' 
+		        + ' <input type="date" id="dueDate" class="form-control" value="" name="dueDate" readonly>' 
+		        + ' </div>' 
+		        + ' <div class="col-lg-3">' 
+		        + ' <label class="form-label col-3 col-form-label">잔여량</label>' 
+		        + ' <input type="number" id="remainQuantity" class="form-control" value="" name="remainQuantity" readonly>' 
+		        + ' </div>' 
+		        + ' <div class="col-lg-3">' 
+		        + ' <label class="form-label col-3 col-form-label">요구량</label>' 
+		        + ' <input type="number" id="requirement" class="form-control" value="" readonly>' 
+		        + ' </div>'
+		        + ' </div>' 
+		        + ' <div class="form-group mb-3 row">' 
+		        + ' <label class="form-label col-3 col-form-label">업체</label>' 
+		        + ' <div class="col" id="company-container">'
+		        + ' <button type="button" id="company-selector" class="btn w-100">업체 확인</button>' 
+		        + ' <!-- ' + '                업체 선택시 업체 이름으로 바뀜' + '                <input type="text" id="companyName" class="form-control" value="" readonly>' + '                <input type="hidden" id="companyCode" value="">' + '            -->'
+		        + ' <small class="form-hint">클릭시 업체 선택으로 이동합니다.</small>' 
+		        + ' </div>' 
+		        + ' </div>' 
+		        + ' <div class="form-group mb-3 row">' 
+		        + ' <label class="form-label col-3 col-form-label">담당자</label>' 
+		        + ' <div class="col">' 
+		        + ' <select id="emplNum" class="form-select" name="emplNum">' 
+		        + ' <option value="0">선택</option>' 
+		        + ' </select>' 
+		        + ' </div>' 
+		        + ' </div>'
+		        + ' <div class="form-group mb-3 row">' 
+		        + ' <label class="form-label col-3 col-form-label">발주일자</label>' 
+		        + ' <div class="col">' 
+		        + ' <input type="date" id="scheduledDate" class="form-control" name="scheduledDate">' 
+		        + ' </div>' 
+		        + ' </div>' 
+		        + ' <div class="form-group mb-3 row">'
+		        + ' <label class="form-label col-3 col-form-label">발주수량</label>' 
+		        + ' <div class="col">' 
+		        + ' <input type="number" id="orderQuantity" class="form-control" name="orderQuantity">' 
+		        + ' </div>' 
+		        + ' </div>' 
+		        + ' <div class="form-footer">' 
+		        + ' <div class="card-body py-3 ms-auto d-print-none btn-list float-end px-0">' 
+		        + ' <span class="d-none d-sm-inline">' 
+		        + ' <button type="button" class="btn btn-white" id="order-cancel">' 
+		        + ' <img src="/resources/img/x.svg" class="icon"> 입력 취소' 
+		        + ' </button>'
+		        + ' </span>' 
+		        + ' <button type="button" class="btn btn-primary d-none d-sm-inline-block" id="order-insert">' 
+		        + ' <img src="/resources/img/row-insert-top.svg" class="icon"> 입력' 
+		        + ' </button>' 
+		        + ' </div>' 
+		        + ' </div>' 
+		        + ' </div>' 
+		        + '</div>' 
+		        + '</div>';
+
+
+			$("div#data-area").append(elem);
+			$("div#plan-input").focus();
+			
+			var emplNumArray = [];
+			
+			$.ajax({
+				url : "/api/empl",
+				type : "POST",
+				async : false,
+				success : function(data) {
+					for (var i = 0; i < Object.keys(data).length; i++) {
+						var id = "white";
+		
+						emplNumArray[i] = "<option " + "id=" + id + " value='" + data[i].emplNum + "'>" + data[i].emplName + " (" + data[i].emplNum + ") " + data[i].email + "</option>";
+						
+						$("select#emplNum").append(emplNumArray[i]);
+					}
+				}
+			});
+			
+			$curPlan = $(event.target).closest("tr.plan-data");
+			
+			const planNum = $curPlan.find("td#planNum").text();
+			const partName = $curPlan.find("td#partName").text();
+			const dueDate = $curPlan.find("td#dueDate").text();
+			const requirement = $curPlan.find("td#requirement").text();
+			
+			$("span#input-form-planNum").text(planNum);
+			$("input#partName").val(partName);
+			$("input#dueDate").val(dueDate);
+			$("input#requirement").val(requirement);
+
+			$("button#order-cancel").on("click", function() {
+				$("div#order-input").remove();
+				$("div.col-company-card").remove();
+				$("div#data-plan").removeClass("hidden");
+
+			});
+			
+			remainQuantity();
+			
+			$("button#order-insert").on("click", function(event) {
+				var $closeCard = $(event.target).closest("div#order-input");
+				
+				if ($("input#companyName").length == 0) {
+					alert("협력회사를 선택해주세요");
+					return;
+				} else if ($closeCard.find("select[name=emplNum]").val() == 0) {
+					alert("담당자를 선택해주세요");
+					return;
+				} else if ($closeCard.find("input[name=scheduledDate]").val() == null || $closeCard.find("input[name=scheduledDate]").val() == "") {
+					alert("발주일자를 입력해주세요");
+					return;
+				} else if ($closeCard.find("input[name=orderQuantity]").val() == null || $closeCard.find("input[name=orderQuantity]").val() == "") {
+					alert("발주수량을 입력해주세요");
+					return;
+				} 
+				
+				$.ajax({
+					url : "/api/inputOrder",
+					type : "POST",
+					data : {
+						"planNum" : planNum,
+						"contractNum" : $closeCard.find("input[name=contractNum]").val(),
+						"scheduledDate" : $closeCard.find("input[name=scheduledDate]").val(),
+						"orderQuantity" : $closeCard.find("input[name=orderQuantity]").val(),
+						"emplNum" : $closeCard.find("select[name=emplNum]").val()
+					},
+					success : function(data) {
+						if (data == -1) {
+							alert("입력 수량이 계획 수량보다 큽니다.");
+							return;
+						} else if (data == -2) {
+							alert("조달납기 이후의 값만 입력할 수 있습니다.");
+							return;
+						} else if (data == -3) {
+							alert("Lead Time으로 계산한 발주 완료일이 조달납기 이후입니다.")
+							return;
+						}
+						
+						$closeCard.addClass("bg-primary-lt");
+						
+						// setTimeout(function() { $closeCard.removeClass("bg-primary-lt") }, 1000);
+						
+						// remainQuantity();
+						
+						$("div#order-input").remove();
+						$("div.col-company-card").remove();
+						$("div#data-plan").removeClass("hidden");
+					}
+				});
+			});
+
+			$("button#company-selector").on("click", function(event) {
+				if ($("div.col-company-card").length != 0) {
+					$("div.col-company-card").remove();
+					$(event.target).text("업체 확인");
+				} else {
+					$(event.target).text("접기");
+					$.ajax({
+						url : "/api/companyInfo",
+						type : "get",
+						data : {
+							"planNum" : $("span#input-form-planNum").text()
+						},
+						success : function(data) {
+							if (Object.keys(data).length == 0) {
+								alert("해당물품을 계약한 회사가 없습니다.");
+							}
+							
+							
+							for (var i = 0; i < Object.keys(data).length; i++) {
+	
+								var elem = makeCompanyCard(data[i]);
+	
+								$("div#data-area").append(elem);
+								
+								var offset = $("div.col-company-card").offset();
+								
+								$("html").animate({scrollTop : offset.top}, 100);
+								
+								$("button#inputOrder").on("click", function(event) {
+									$selectedCompany = $(event.target).closest("div.card-plan");
+									
+									var companyName = $selectedCompany.find("h3.card-title").text();
+									var contractNum = $selectedCompany.find("input[name=contractNum]").val();
+									var unitPrice = $selectedCompany.find("span#unitPrice").text();
+									
+									var companyNameTag = '<input type="text" id="companyName" class="form-control" value="' + companyName + '" name="companyName" readonly>'
+									var contractNumTag = '<input type="hidden" id="contractNum" value="' + contractNum + '" name="contractNum">';
+									var unitPriceTag = '<input type="hidden" name="unitPrice" value="' + unitPrice + '">';
+									
+									$("div#company-container").children().remove();
+									$("div#company-container").append(companyNameTag + contractNumTag);
+									
+									$("div.col-company-card").remove();
+								});
+							}
+						}
+					});
+				}
 			});
 		});
 		

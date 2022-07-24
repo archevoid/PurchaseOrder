@@ -102,6 +102,11 @@ public class ApiController {
 		return ps.getRemainInfo(planDto).getRemainQuantity() + "";
 	}
 	
+	@PostMapping("dateInfo")
+	public InspectionDTO getDate(InspectionDTO inspectionDto) {
+		return is.getDate(inspectionDto);
+	}
+	
 	@PostMapping("orderList")
 	public List<OrderDTO> getOrderList(Date date) {
 		return os.getOrderByMonth(date);
