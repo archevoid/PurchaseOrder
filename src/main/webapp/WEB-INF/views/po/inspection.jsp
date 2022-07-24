@@ -664,7 +664,20 @@
 
 			$("input#orderNumModal").val($thisInspection.find("td#orderNum").text());
 			$("input#inspectionNumModal").val($thisInspection.find("span#inspectionNum").text());
-			$("input#progressModal").val(parseInt($thisInspection.find("input#progress").val()));
+			$("input#orderQuantityModal").val($thisInspection.find("td#orderQuantity").text());
+			
+			$.ajax({
+				url : "/api/maxProgress",
+				type : "post",
+				data : {
+					"orderNum" : $thisInspection.find("td#orderNum").text()
+				},
+				success : function(data) {
+					$("input#progressModal").val(parseInt(data));
+				}
+			});
+			
+			
 			$("input#orderDateModal").val($thisInspection.find("td#orderDate").text());
 			$("input#inspectionDateModal").val($thisInspection.find("td#inspectionDate").text());
 			
@@ -686,6 +699,18 @@
 			
 			
 			$("input#inspectionQuantityModal").on("change keyup focus", function(inputModal) {
+				$.ajax({
+					url : "/api/maxProgress",
+					type : "post",
+					async : false,
+					data : {
+						"orderNum" : $thisInspection.find("td#orderNum").text()
+					},
+					success : function(data) {
+						$("input#progressModal").val(parseInt(data) + parseInt($(inputModal).val()));
+					}
+				});
+				
 				if (totalInspectionQuantity + parseInt($(inputModal).val()) == orderQuantity) {
 					$("input#finalInspection").prop("checked", true);
 				} else {
