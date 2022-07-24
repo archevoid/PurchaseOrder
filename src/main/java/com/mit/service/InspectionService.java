@@ -72,4 +72,8 @@ public class InspectionService extends com.mit.service.Service {
 	public InspectionDTO getDate(InspectionDTO inspectionDto) {
 		return inspectionDao.getDate(inspectionDto);
 	}
+	
+	public Double getMaxProgress(InspectionDTO inspectionDto) {
+		return inspectionDao.getMaxProgress(inspectionDto);
+	}
 }

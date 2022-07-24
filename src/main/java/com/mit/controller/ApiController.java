@@ -188,4 +188,11 @@ public class ApiController {
 	public InspectionDTO getTotalInspectionQuantity(OrderDTO orderDto) {
 		return is.getTotalInspectionQuantity(orderDto);
 	}
+	
+	@PostMapping("maxProgress")
+	public Double getMaxProgress(InspectionDTO inspectionDto) {
+		System.out.println(inspectionDto);
+		System.out.println(is.getMaxProgress(inspectionDto));
+		return is.getMaxProgress(inspectionDto);
+	}
 }

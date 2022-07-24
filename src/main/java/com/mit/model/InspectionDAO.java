@@ -30,4 +30,6 @@ public interface InspectionDAO {
 	public InspectionDTO getTotalInspectionQuantity(OrderDTO orderDto);
 	
 	public InspectionDTO getDate(InspectionDTO inspectionDto);
+	
+	public Double getMaxProgress(InspectionDTO inspectionDto);
 }
