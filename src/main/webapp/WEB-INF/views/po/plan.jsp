@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -150,18 +151,35 @@
 													<td class="sort-dueDate" id="dueDate">${ plan.dueDate }</td>
 													<td class="sort-requirement" id="requirement">${ plan.requirement }</td>
 													<td class="text-end">
-														<c:if test="${ plan.inputQuantity eq plan.requirement }">
-															<button type="button" class="btn" id="show-input" disabled>
-																<img src="/resources/img/row-insert-top.svg"
-																	class="icon"> 입력 완료
-															</button>
-														</c:if>
-														<c:if test="${ plan.inputQuantity ne plan.requirement }">
-															<button type="button" class="btn" id="show-input">
+														<fmt:setLocale value="en_US" />
+														<fmt:parseNumber value="${ plan.dueDate.time / (1000 * 60 * 60 * 24) }" integerOnly="true" var="dueDateNumber" />
+														<fmt:parseNumber value="${ plan.today.time / (1000 * 60 * 60 * 24) }" integerOnly="true" var="todayNumber" />
+														<c:choose>
+															<c:when test="${ plan.inputQuantity eq plan.requirement }">
+																<button type="button" class="btn" id="show-input" disabled>
 																	<img src="/resources/img/row-insert-top.svg"
-																		class="icon"> 발주 입력
-															</button>
-														</c:if>
+																		class="icon"> 입력 완료
+																</button>
+															</c:when>
+															<c:when test="${ dueDateNumber lt todayNumber }">
+																<button type="button" class="btn btn-danger" id="show-input" disabled>
+																	<img src="/resources/img/row-insert-top.svg"
+																		class="icon"> 기간 만료
+																</button>
+															</c:when>
+															<c:when test="${ plan.inputQuantity eq 0 }">
+																<button type="button" class="btn btn-primary" id="show-input">
+																		<img src="/resources/img/row-insert-top.svg"
+																			class="icon"> 발주 입력
+																</button>
+															</c:when>
+															<c:when test="${ plan.inputQuantity ne plan.requirement }">
+																<button type="button" class="btn btn-info" id="show-input">
+																		<img src="/resources/img/row-insert-top.svg"
+																			class="icon"> 추가 입력
+																</button>
+															</c:when>
+														</c:choose>
 													</td>
 												</tr>
 											</c:forEach>
@@ -439,11 +457,26 @@
 						"emplNum" : $closeCard.find("select[name=emplNum]").val()
 					},
 					success : function(data) {
+						if (data == -1) {
+							alert("입력 수량이 계획 수량보다 큽니다.");
+							return;
+						} else if (data == -2) {
+							alert("조달납기 이후의 값만 입력할 수 있습니다.");
+							return;
+						} else if (data == -3) {
+							alert("Lead Time으로 계산한 발주 완료일이 조달납기 이후입니다.")
+							return;
+						}
+						
 						$closeCard.addClass("bg-primary-lt");
 						
-						setTimeout(function() { $closeCard.removeClass("bg-primary-lt") }, 1000);
+						// setTimeout(function() { $closeCard.removeClass("bg-primary-lt") }, 1000);
 						
-						remainQuantity();
+						// remainQuantity();
+						
+						$("div#order-input").remove();
+						$("div.col-company-card").remove();
+						$("div#data-plan").removeClass("hidden");
 					}
 				});
 			});

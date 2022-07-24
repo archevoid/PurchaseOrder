@@ -1,5 +1,6 @@
 package com.mit.service;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -62,8 +63,12 @@ public class PlanService extends com.mit.service.Service {
 		return planDao.getTotalPrice(planDto);
 	}
 	
-	public long getRemainQuantity(PlanDTO planDto) {
-		return planDao.getRemainQuantity(planDto);
+	public PlanDTO getRemainInfo(PlanDTO planDto) {
+		return planDao.getRemainInfo(planDto);
+	}
+	
+	public Boolean getOrderable(PlanDTO planDto) {
+		return planDao.getOrderable(planDto);
 	}
 	
 	public OrderDTO getCurrentOrder(PlanDTO planDto) {

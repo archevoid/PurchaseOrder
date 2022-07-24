@@ -33,12 +33,14 @@
 			, tbl.partname AS partName
 			, tbl.sum AS sum
 			, tbl.inputQuantity AS inputQuantity
+			, tbl.today AS today
 		FROM (SELECT sp.supportno AS planNum
 			, sp.requirement AS requirement
 			, sp.deliverydate AS dueDate
 			, pt.partname AS partName
 			, tbl.sum AS sum
 			, tb.inputQuantity AS inputQuantity
+			, sysdate AS today
 			, ROWNUM as rn
 		FROM tbl_support sp INNER JOIN tbl_part pt ON sp.partcode = pt.partcode
 			LEFT JOIN (SELECT p.support_num AS planNum,  ct.unitprice * p.order_quantity AS sum FROM purchase_order p INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno) tbl
@@ -101,11 +103,11 @@
 	</select>
 	
 	<insert id="insertOrder">
-		<selectKey keyProperty="orderNum" order="BEFORE" resultType="long">
+		<selectKey keyProperty="scheduledNum" order="BEFORE" resultType="long">
 			SELECT scheduled_num_seq.NEXTVAL FROM dual
 		</selectKey>
-		INSERT INTO purchase_order(scheduled_num, order_date, order_quantity, empl_num, support_num, contract_num)
-		VALUES (#{ scheduledNum }, #{ orderDate }, #{ orderQuantity }, #{ emplNum }, #{ planNum }, #{ contractNum })
+		INSERT INTO purchase_order(scheduled_num, scheduled_date, order_quantity, empl_num, support_num, contract_num)
+		VALUES (#{ scheduledNum }, #{ scheduledDate }, #{ orderQuantity }, #{ emplNum }, #{ planNum }, #{ contractNum })
 	</insert>
 	
 	<select id="getEmpl" resultType="com.mit.model.UserDTO">
@@ -136,10 +138,19 @@
 		SELECT 'other' AS contractCurrency, 0 AS totalPrice FROM DUAL WHERE NOT EXISTS (SELECT * FROM purchase_order p WHERE p.support_num = #{ planNum } GROUP BY p.support_num)
 	</select>
 	
-	<select id="getRemainQuantity" resultType="long">
-		SELECT NVL(sp.requirement - (SELECT SUM(p.order_quantity) FROM purchase_order p WHERE p.support_num = sp.supportno GROUP BY p.support_num), sp.requirement)
+	<select id="getRemainInfo" resultType="com.mit.model.PlanDTO">
+		SELECT NVL(sp.requirement - (SELECT SUM(p.order_quantity) FROM purchase_order p WHERE p.support_num = sp.supportno GROUP BY p.support_num), sp.requirement) AS remainQuantity
+			, sp.deliveryDate AS dueDate
 		FROM tbl_support sp
 		WHERE supportno = #{ planNum }
+	</select>
+	
+	<select id="getOrderable" resultType="boolean">
+	<![CDATA[
+		SELECT CASE WHEN (sysdate + ct.partssupply) > (SELECT sp.deliverydate FROM tbl_support sp WHERE sp.supportno = #{ planNum }) THEN 0 ELSE 1 END AS orderable
+	]]>
+		FROM tbl_contract ct
+		WHERE ct.contractno = #{ contractNum }
 	</select>
 	
 	<select id="getCurrentOrder" resultType="com.mit.model.OrderDTO">

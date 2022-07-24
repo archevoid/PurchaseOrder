@@ -1,5 +1,6 @@
 package com.mit.model;
 
+import java.sql.Date;
 import java.util.List;
 
 public interface PlanDAO {
@@ -24,7 +25,9 @@ public interface PlanDAO {
 	
 	OrderDTO getTotalPrice(PlanDTO planDto);
 	
-	long getRemainQuantity(PlanDTO planDto);
+	PlanDTO getRemainInfo(PlanDTO planDto);
+	
+	Boolean getOrderable(PlanDTO planDto);
 	
 	OrderDTO getCurrentOrder(PlanDTO planDto);
 }
