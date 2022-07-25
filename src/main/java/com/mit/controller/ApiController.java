@@ -57,6 +57,8 @@ public class ApiController {
 		
 		planDto.setPlanNum(orderDto.getPlanNum());
 		planDto.setContractNum(Long.parseLong(orderDto.getContractNum()));
+		planDto.setScheduledNum(orderDto.getScheduledNum());
+		planDto.setScheduledDate(orderDto.getScheduledDate());
 		
 		PlanDTO remains = ps.getRemainInfo(planDto);
 		
