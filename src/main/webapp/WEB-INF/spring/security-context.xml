@@ -20,7 +20,9 @@
 		<security:csrf disabled="true"/>
 		
 		
-		<security:intercept-url pattern="/po/*" access="permitAll()" />
+		<security:intercept-url pattern="/po/bashboard" access="hasAnyRole('ROLE_PTN', 'ROLE_PD')"  />
+		<security:intercept-url pattern="/po/partner" access="hasRole('ROLE_PTN')" />
+		<security:intercept-url pattern="/po/*" access="hasRole('ROLE_PD')" />
 		
 		<security:intercept-url pattern="/register" access="permitAll()" method="POST" />
 			
