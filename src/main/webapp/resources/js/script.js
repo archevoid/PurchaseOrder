@@ -228,6 +228,7 @@ function remainQuantity() {
 }
 
 function orderList() {
+	$("div#orderInfo").remove();
 	$.ajax({
 		url: "/api/orderList",
 		type: "POST",
