@@ -28,9 +28,10 @@
 		</foreach>
 	</insert>
 	<update id="updatePasswordByEmail">
-		UPDATE employee m SET empl_password = #{ password }
+		UPDATE employee SET empl_password = #{ password }
 		WHERE empl_num = 
-			(SELECT empl_num FROM employee AS e
+			(SELECT empl_num 
+				FROM employee e
 				WHERE e.empl_email = #{ email })
 	</update>
 	
