@@ -144,8 +144,7 @@
 	<select id="getMaxProgress" resultType="double">
 		SELECT NVL(ir.progress, 0) AS progress
 		FROM inspection i LEFT JOIN inspection_result ir ON i.order_num = ir.order_num AND i.inspection_num = ir.inspection_num
-        WHERE i.order_num = #{ orderNum } AND (i.inspection_num = (SELECT MAX(ispr.inspection_num) FROM inspection_result ispr WHERE ispr.order_num = i.order_num) 
-            OR i.inspection_num NOT IN (SELECT ispr.inspection_num FROM inspection_result ispr WHERE ispr.order_num = i.order_num))
+        WHERE i.order_num = #{ orderNum } AND (i.inspection_num = (SELECT MAX(ispr.inspection_num) FROM inspection_result ispr WHERE ispr.order_num = i.order_num))
 	</select>
 	
 	<select id="getInspection" resultType="com.mit.model.InspectionDTO">

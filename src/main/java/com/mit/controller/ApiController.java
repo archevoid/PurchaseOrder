@@ -181,7 +181,26 @@ public class ApiController {
 	
 	@PostMapping("updateOrder")
 	public Integer updateOrder(OrderDTO orderDto) {
-		return os.updateOrder(orderDto);
+		PlanDTO planDto = new PlanDTO();
+		
+		planDto.setPlanNum(orderDto.getPlanNum());
+		planDto.setContractNum(Long.parseLong(orderDto.getContractNum()));
+		planDto.setScheduledNum(orderDto.getScheduledNum());
+		planDto.setScheduledDate(orderDto.getScheduledDate());
+		
+		PlanDTO remains = ps.getRemainExcept(planDto);
+		
+		Date scheduledDate = orderDto.getScheduledDate();
+		
+		if(orderDto.getOrderQuantity() > remains.getRemainQuantity()) {
+			return -1;
+		} else if (scheduledDate.after(remains.getDueDate())) {
+			return -2;
+		} else if (!ps.getUpdatable(planDto)) {
+			return -3;
+		} else {
+			return os.updateOrder(orderDto);
+		}
 	}
 	
 	@PostMapping("totalInspectionQuantity")
@@ -191,8 +210,16 @@ public class ApiController {
 	
 	@PostMapping("maxProgress")
 	public Double getMaxProgress(InspectionDTO inspectionDto) {
-		System.out.println(inspectionDto);
-		System.out.println(is.getMaxProgress(inspectionDto));
 		return is.getMaxProgress(inspectionDto);
+	}
+	
+	@PostMapping("expectedDate")
+	public PlanDTO getExpectedDate(PlanDTO planDto) {
+		return ps.getExpectedDate(planDto);
+	}
+	
+	@PostMapping("scheduleInfo")
+	public OrderDTO scheduleInfo(OrderDTO orderDto) {
+		return os.getScheduleInfo(orderDto);
 	}
 }

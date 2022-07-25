@@ -499,7 +499,7 @@
 			var elem = '<div class="col-12">'
 		        + '<div class="card" id="order-input">' 
 		        + ' <div class="card-header">' 
-		        + ' <h3 class="card-title"><span id="input-form-planNum"></span>번 계획 발주 수정</h3>' 
+		        + ' <h3 class="card-title">임시번호 <span id="input-form-scheduledNum"></span>번 계획 발주</h3>' 
 		        + ' </div>' 
 		        + ' <div class="card-body">' 
 		        + ' <div class="form-group mb-4 row border-bottom p-3">' 
@@ -522,9 +522,8 @@
 		        + ' </div>' 
 		        + ' <div class="form-group mb-3 row">' 
 		        + ' <label class="form-label col-3 col-form-label">업체</label>' 
-		        + ' <div class="col" id="company-container">'
+		        + ' <div class="col" id="company-container">' 
 		        + ' <button type="button" id="company-selector" class="btn w-100">업체 확인</button>' 
-		        + ' <!-- ' + '                업체 선택시 업체 이름으로 바뀜' + '                <input type="text" id="companyName" class="form-control" value="" readonly>' + '                <input type="hidden" id="companyCode" value="">' + '            -->'
 		        + ' <small class="form-hint">클릭시 업체 선택으로 이동합니다.</small>' 
 		        + ' </div>' 
 		        + ' </div>' 
@@ -555,7 +554,7 @@
 		        + ' <img src="/resources/img/x.svg" class="icon"> 입력 취소' 
 		        + ' </button>'
 		        + ' </span>' 
-		        + ' <button type="button" class="btn btn-primary d-none d-sm-inline-block" id="order-insert">' 
+		        + ' <button type="button" class="btn btn-primary d-none d-sm-inline-block" id="order-update">' 
 		        + ' <img src="/resources/img/row-insert-top.svg" class="icon"> 입력' 
 		        + ' </button>' 
 		        + ' </div>' 
@@ -587,26 +586,45 @@
 			
 			$curPlan = $(event.target).closest("tr.plan-data");
 			
-			const planNum = $curPlan.find("td#planNum").text();
-			const partName = $curPlan.find("td#partName").text();
-			const dueDate = $curPlan.find("td#dueDate").text();
-			const requirement = $curPlan.find("td#requirement").text();
+			const scheduledNum = $curPlan.find("td#scheduledNum").text();
 			
-			$("span#input-form-planNum").text(planNum);
-			$("input#partName").val(partName);
-			$("input#dueDate").val(dueDate);
-			$("input#requirement").val(requirement);
+			$.ajax({
+				url : "/api/scheduleInfo",
+				type : "post",
+				data : {
+					"scheduledNum" : scheduledNum
+				},
+				async : false,
+				success : function(data) {
+					$("span#input-form-scheduledNum").text(scheduledNum);
+					$("input#partName").val(data.partName);
+					$("input#dueDate").val(data.dueDate);
+					$("input#requirement").val(data.requirement);
+					$("input#remainQuantity").val(data.remainQuantity);
+					
+					var companyNameTag = '<div class="input-group selected-company"><input type="text" id="companyName" class="form-control" value="' + data.companyName + '" name="companyName" readonly></div>' //<button type="button" class="btn" id="cancel-selected-company">취소</button>
+					var contractNumTag = '<input type="hidden" id="contractNum" value="' + data.contractNum + '" name="contractNum" class="selected-company">';
+					var unitPriceTag = '<input type="hidden" name="unitPrice" value="' + data.unitPrice + '">';
+					
+					$("div#company-container").children().addClass("hidden");
+					$("div#company-container").append(companyNameTag + contractNumTag + unitPriceTag);
+					
+					$("select#emplNum").find("option[value=" + data.emplNum + "]").prop("selected", true);
+					$("input#scheduledDate").val(data.scheduledDate);
+					$("input#orderQuantity").val(data.orderQuantity);
+				}
+			});
+			
+			
 
 			$("button#order-cancel").on("click", function() {
 				$("div#order-input").remove();
 				$("div.col-company-card").remove();
-				$("div#data-plan").removeClass("hidden");
+				$("div#data-order").removeClass("hidden");
 
 			});
 			
-			remainQuantity();
-			
-			$("button#order-insert").on("click", function(event) {
+			$("button#order-update").on("click", function(event) {
 				var $closeCard = $(event.target).closest("div#order-input");
 				
 				if ($("input#companyName").length == 0) {
@@ -624,14 +642,15 @@
 				} 
 				
 				$.ajax({
-					url : "/api/inputOrder",
+					url : "/api/updateOrder",
 					type : "POST",
+					async : false,
 					data : {
-						"planNum" : planNum,
 						"contractNum" : $closeCard.find("input[name=contractNum]").val(),
 						"scheduledDate" : $closeCard.find("input[name=scheduledDate]").val(),
 						"orderQuantity" : $closeCard.find("input[name=orderQuantity]").val(),
-						"emplNum" : $closeCard.find("select[name=emplNum]").val()
+						"emplNum" : $closeCard.find("select[name=emplNum]").val(),
+						"scheduledNum" : $("span#input-form-scheduledNum").text()
 					},
 					success : function(data) {
 						if (data == -1) {
@@ -653,12 +672,16 @@
 						
 						$("div#order-input").remove();
 						$("div.col-company-card").remove();
-						$("div#data-plan").removeClass("hidden");
+						$("div#data-order").removeClass("hidden");
+						
+						location.reload();
 					}
 				});
 			});
 
-			$("button#company-selector").on("click", function(event) {
+			/* $("button#company-selector").on("click", function(event) {
+				const $companySelectorBtn = $(event.target);
+				
 				if ($("div.col-company-card").length != 0) {
 					$("div.col-company-card").remove();
 					$(event.target).text("업체 확인");
@@ -668,7 +691,7 @@
 						url : "/api/companyInfo",
 						type : "get",
 						data : {
-							"planNum" : $("span#input-form-planNum").text()
+							"scheduledNum" : $("span#input-form-scheduledNum").text()
 						},
 						success : function(data) {
 							if (Object.keys(data).length == 0) {
@@ -693,22 +716,46 @@
 									var contractNum = $selectedCompany.find("input[name=contractNum]").val();
 									var unitPrice = $selectedCompany.find("span#unitPrice").text();
 									
-									var companyNameTag = '<input type="text" id="companyName" class="form-control" value="' + companyName + '" name="companyName" readonly>'
-									var contractNumTag = '<input type="hidden" id="contractNum" value="' + contractNum + '" name="contractNum">';
+									var companyNameTag = '<div class="input-group selected-company"><input type="text" id="companyName" class="form-control" value="' + companyName + '" name="companyName" readonly><button type="button" class="btn" id="cancel-selected-company">취소</button></div>'
+									
+									var contractNumTag = '<input type="hidden" id="contractNum" value="' + contractNum + '" name="contractNum" class="selected-company">';
 									var unitPriceTag = '<input type="hidden" name="unitPrice" value="' + unitPrice + '">';
 									
-									$("div#company-container").children().remove();
+									$("div#company-container").children().addClass("hidden");
 									$("div#company-container").append(companyNameTag + contractNumTag);
 									
+									$.ajax({
+										url : "/api/expectedDate",
+										type : "post",
+										async : false,
+										data : {
+											"contractNum" : contractNum,
+											"planNum" : $("span#input-form-scheduledNum").text()
+										},
+										success : function(data) {
+											$("input#scheduledDate").val(data.expectedDate);
+											$("input#scheduledDate").after('<small class="form-hint" id="hind-date">Lead Time을 고려한 날짜입니다.</small>');
+											
+											$("input#scheduledDate").on("change", function(event) {
+												$("small#hind-date").remove();
+											});
+										}
+									});
+									
 									$("div.col-company-card").remove();
+									
+									$("button#cancel-selected-company").on("click", function() {
+										$(".selected-company").remove();
+										$("div#company-container").children().removeClass("hidden");
+										$companySelectorBtn.text("업체 확인");
+									});
 								});
 							}
 						}
 					});
 				}
-			});
+			}); */
 		});
-		
 	</script>
 
 

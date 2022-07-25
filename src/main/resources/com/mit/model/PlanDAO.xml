@@ -98,8 +98,13 @@
 			, cp.comemail AS comEamil
 			, NVL((SELECT 1 FROM purchase_order p WHERE p.support_num = #{ planNum } AND p.contract_num = ct.contractno), 0) AS existance
 		FROM tbl_contract ct INNER JOIN tbl_company cp ON ct.code = cp.code
-			
 		WHERE ct.partcode = (SELECT s.partcode FROM tbl_support s WHERE s.supportno = ${ planNum })
+	</select>
+	
+	<select id="getPlanNumByScheduledNum" resultType="string">
+		SELECT p.support_num AS planNum
+		FROM purchase_order p
+		WHERE p.scheduled_num = #{ scheduledNum }
 	</select>
 	
 	<insert id="insertOrder">
@@ -145,9 +150,24 @@
 		WHERE supportno = #{ planNum }
 	</select>
 	
+	<select id="getRemainExcept" resultType="com.mit.model.PlanDTO">
+		SELECT NVL(sp.requirement - (SELECT SUM(p.order_quantity) FROM purchase_order p WHERE p.support_num = sp.supportno AND p.scheduled_num != #{ scheduledNum } GROUP BY p.support_num), sp.requirement) AS remainQuantity
+			, sp.deliveryDate AS dueDate
+		FROM tbl_support sp INNER JOIN purchase_order p ON p.support_num = sp.supportno
+        WHERE p.scheduled_num = #{ scheduledNum }
+	</select>
+	
 	<select id="getOrderable" resultType="boolean">
 	<![CDATA[
-		SELECT CASE WHEN (sysdate + ct.partssupply) > (SELECT sp.deliverydate FROM tbl_support sp WHERE sp.supportno = #{ planNum }) THEN 0 ELSE 1 END AS orderable
+		SELECT CASE WHEN (#{ scheduledDate } + ct.partssupply) > (SELECT sp.deliverydate FROM tbl_support sp WHERE sp.supportno = #{ planNum }) THEN 0 ELSE 1 END AS orderable
+	]]>
+		FROM tbl_contract ct
+		WHERE ct.contractno = #{ contractNum }
+	</select>
+	
+	<select id="getUpdatable" resultType="boolean">
+	<![CDATA[
+		SELECT CASE WHEN (#{ scheduledDate } + ct.partssupply) > (SELECT sp.deliverydate FROM tbl_support sp WHERE sp.supportno = (SELECT p.support_num FROM purchase_order p WHERE p.scheduled_num = #{ scheduledNum })) THEN 0 ELSE 1 END AS updatable
 	]]>
 		FROM tbl_contract ct
 		WHERE ct.contractno = #{ contractNum }
@@ -164,5 +184,11 @@
 		FROM purchase_order p INNER JOIN employee e ON p.empl_num = e.empl_num
 			INNER JOIN tbl_support sp ON p.support_num = sp.supportno
 		WHERE p.support_num = #{ planNum } AND p.contract_num = #{ contractNum }
+	</select>
+	
+	<select id="getExpectedDate" resultType="com.mit.model.PlanDTO">
+		SELECT sp.deliverydate - (SELECT ct.partssupply AS leadTime FROM tbl_contract ct WHERE ct.contractno = #{ contractNum }) AS expectedDate
+		FROM tbl_support sp
+		WHERE sp.supportno = #{ planNum }
 	</select>
 </mapper>

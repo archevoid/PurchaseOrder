@@ -192,19 +192,19 @@
 													<td class="sort-completeQuantity">${ progress.completeQuantity }</td>
 													<td class="sort-orderQuantity">${ progress.orderQuantity }</td>
 													<td class="sort-progress"
-														data-progress="${ progress.completeQuantity * 1.0 / progress.orderQuantity * 100 }">
+														data-progress="${ progress.progress }">
 														<div class="row align-items-center">
-															<div class="col-auto">${ progress.completeQuantity * 1.0 / progress.orderQuantity * 100 }%
+															<div class="col-auto">${ progress.progress }%
 															</div>
 															<div class="col">
 																<div class="progress" style="width: 5rem">
 																	<div class="progress-bar"
-																		style="width: ${ progress.completeQuantity * 1.0 / progress.orderQuantity * 100 }%"
+																		style="width: ${ progress.progress }%"
 																		role="progressbar"
-																		aria-valuenow="${ progress.completeQuantity * 1.0 / progress.orderQuantity * 100 }"
+																		aria-valuenow="${ progress.progress }"
 																		aria-valuemin="0" aria-valuemax="100"
 																		aria-label="${ progress.completeQuantity * 1.0 / progress.orderQuantity * 100 }% Complete">
-																		<span class="visually-hidden">${ progress.completeQuantity * 1.0 / progress.orderQuantity * 100 }%
+																		<span class="visually-hidden">${ progress.progress }%
 																			Complete</span>
 																	</div>
 																</div>
