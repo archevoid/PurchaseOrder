@@ -216,7 +216,7 @@
 												    <td class="text-end">
 												        <span class="dropdown">
 												            <button class="btn dropdown-toggle align-text-top" data-bs-boundary="viewport" data-bs-toggle="dropdown">
-												                Actions
+											                	결과
 												            </button>
 												            <div class="dropdown-menu dropdown-menu-end">
 												                <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-report" id="showResultModal"
