@@ -163,7 +163,6 @@ public class PoController {
 		
 		m.addAttribute("orderList", os.searchOrderProgress(orderDto));
 		
-		
 		Long numberOfProgress = os.countProgress(orderDto);
 		
 		m.addAttribute("numberOfProgress", numberOfProgress);
