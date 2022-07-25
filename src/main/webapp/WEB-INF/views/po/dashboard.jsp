@@ -91,6 +91,8 @@
 		});
 
 		$("#prev").on("click", function() {
+			clearCalendar();
+			
 			if (curMonth == 1) {
 				curMonth = 12;
 				curYear--;
@@ -101,13 +103,14 @@
 			$("#year").text(curYear.toString().padStart(4, "0"));
 			$("#month").text(curMonth.toString().padStart(2, "0"));
 
-			clearCalendar();
 			drawCalendar(curYear, curMonth);
 
 			orderList();
 		});
 
 		$("#next").on("click", function() {
+			clearCalendar();
+			
 			if (curMonth == 12) {
 				curMonth = 1;
 				curYear++;
@@ -118,7 +121,6 @@
 			$("#year").text(curYear.toString().padStart(4, "0"));
 			$("#month").text(curMonth.toString().padStart(2, "0"));
 
-			clearCalendar();
 			drawCalendar(curYear, curMonth);
 
 			orderList();
