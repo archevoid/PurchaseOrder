@@ -20,6 +20,8 @@ public class OrderDTO {
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date dueDate;
 	
+	private Long requirement;
+	
 	private String partName;
 	private String partCode;
 	
@@ -61,6 +63,7 @@ public class OrderDTO {
 	
 	/* progress */
 	private Long completeQuantity;
+	private Double progress;
 	
 	
 	private String leadTime;
@@ -90,4 +93,6 @@ public class OrderDTO {
 	
 	private String comEmployee;
 	private String comEmail;
+	
+	private Long remainQuantity;
 }

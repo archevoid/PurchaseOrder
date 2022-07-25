@@ -448,6 +448,7 @@
 				$.ajax({
 					url : "/api/inputOrder",
 					type : "POST",
+					async : false,
 					data : {
 						"planNum" : planNum,
 						"contractNum" : $closeCard.find("input[name=contractNum]").val(),
@@ -476,6 +477,8 @@
 						$("div#order-input").remove();
 						$("div.col-company-card").remove();
 						$("div#data-plan").removeClass("hidden");
+						
+						location.reload();
 					}
 				});
 			});
@@ -523,7 +526,25 @@
 									var unitPriceTag = '<input type="hidden" name="unitPrice" value="' + unitPrice + '">';
 									
 									$("div#company-container").children().addClass("hidden");
-									$("div#company-container").append(companyNameTag + contractNumTag);
+									$("div#company-container").append(companyNameTag + contractNumTag + unitPriceTag);
+									
+									$.ajax({
+										url : "/api/expectedDate",
+										type : "post",
+										async : false,
+										data : {
+											"contractNum" : contractNum,
+											"planNum" : $("span#input-form-planNum").text()
+										},
+										success : function(data) {
+											$("input#scheduledDate").val(data.expectedDate);
+											$("input#scheduledDate").after('<small class="form-hint" id="hind-date">Lead Time을 고려한 날짜입니다.</small>');
+											
+											$("input#scheduledDate").on("change", function(event) {
+												$("small#hind-date").remove();
+											});
+										}
+									});
 									
 									$("div.col-company-card").remove();
 									

@@ -25,6 +25,10 @@ public class PlanService extends com.mit.service.Service {
 		return planDao.getPlan(planDto);
 	}
 	
+	public String getPlanNumByScheduledNum(String scheduledNum) {
+		return planDao.getPlanNumByScheduledNum(scheduledNum);
+	}
+	
 	public Long countPlan(PlanDTO planDto) {
 		return planDao.countPlan(planDto);
 	}
@@ -33,7 +37,9 @@ public class PlanService extends com.mit.service.Service {
 		return planDao.getPartInPlan();
 	}
 	
-	
+	public PlanDTO getRemainExcept(PlanDTO planDto) {
+		return planDao.getRemainExcept(planDto);
+	}
 	
 	public Long[] getAllPlanNum() {
 		return planDao.getAllPlanNum();
@@ -71,7 +77,15 @@ public class PlanService extends com.mit.service.Service {
 		return planDao.getOrderable(planDto);
 	}
 	
+	public Boolean getUpdatable(PlanDTO planDto) {
+		return planDao.getUpdatable(planDto);
+	}
+	
 	public OrderDTO getCurrentOrder(PlanDTO planDto) {
 		return planDao.getCurrentOrder(planDto);
+	}
+	
+	public PlanDTO getExpectedDate(PlanDTO planDto) {
+		return planDao.getExpectedDate(planDto);
 	}
 }

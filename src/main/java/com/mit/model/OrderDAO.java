@@ -24,6 +24,8 @@ public interface OrderDAO {
 	
 	Long countProgress(OrderDTO orderDto);
 	
+	OrderDTO getScheduleInfo(OrderDTO orderDto);
+	
 	
 	List<CompanyDTO> getCompany();
 	

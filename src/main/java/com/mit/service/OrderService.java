@@ -92,6 +92,10 @@ public class OrderService extends NEmailService {
 		return orderDao.getOurCompany();
 	}
 	
+	public OrderDTO getScheduleInfo(OrderDTO orderDto) {
+		return orderDao.getScheduleInfo(orderDto);
+	}
+	
 	public void sendOrder(String emailContent, String[] addressList, FileDataSource fds) throws Exception {
 		superMaker();
 		

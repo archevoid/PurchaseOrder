@@ -492,7 +492,10 @@
 	</div>
 	<script>
 		$("input#sampleQuantityModal, input#inspectionQuantityModal").on("change keyup focus", function(event) {
-			$("input#sampleRatioModal").val($("input#sampleQuantityModal").val() / $("input#inspectionQuantityModal").val() * 100);
+			if (!(isNaN($("input#sampleQuantityModal").val()) || $("input#sampleQuantityModal").val() == ""
+					|| isNaN($("input#inspectionQuantityModal").val()) || $("input#inspectionQuantityModal").val() == "")) {
+				$("input#sampleRatioModal").val($("input#sampleQuantityModal").val() / $("input#inspectionQuantityModal").val() * 100);
+			}
 		});
 	
 		var orderNumVal = -1;
@@ -681,6 +684,7 @@
 			$("input#orderDateModal").val($thisInspection.find("td#orderDate").text());
 			$("input#inspectionDateModal").val($thisInspection.find("td#inspectionDate").text());
 			
+			
 			var orderQuantity;
 			var totalInspectionQuantity;
 			
@@ -707,11 +711,17 @@
 						"orderNum" : $thisInspection.find("td#orderNum").text()
 					},
 					success : function(data) {
-						$("input#progressModal").val(parseInt(data) + parseInt($(inputModal).val()));
+						if ($(inputModal.target).val() == null || $(inputModal.target).val() == "") {
+							$("input#progressModal").val(parseInt(data));
+						} else {
+							if (!isNaN($(inputModal.target).val())) {
+								$("input#progressModal").val(parseInt(data) + (parseInt($(inputModal.target).val()) * 1.0) / orderQuantity * 100);
+							}
+						}
 					}
 				});
 				
-				if (totalInspectionQuantity + parseInt($(inputModal).val()) == orderQuantity) {
+				if ($("input#progressModal").val() >= 100) {
 					$("input#finalInspection").prop("checked", true);
 				} else {
 					$("input#finalInspection").prop("checked", false);
@@ -719,7 +729,9 @@
 			});
 
 			$("input#defectQuantityModal").on("change keyup focus", function() {
-				$("input#defectRatioModal").val((parseInt($(this).val())) * 1.0 / parseInt($("input#sampleQuantityModal").val()) * 100);
+				if (!(isNaN($(this).val()) || isNaN($("input#sampleQuantityModal").val()) || $(this).val() == "")) {
+					$("input#defectRatioModal").val((parseInt($(this).val())) * 1.0 / parseInt($("input#sampleQuantityModal").val()) * 100);
+				}
 			});
 
 			$("button#insertResultBtn").on("click", function() {

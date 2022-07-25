@@ -10,6 +10,9 @@ public interface PlanDAO {
 
 	List<PlanDTO> getPartInPlan();
 	
+	PlanDTO getRemainExcept(PlanDTO planDto);
+	
+	String getPlanNumByScheduledNum(String scheduledNum);
 	
 	Long[] getAllPlanNum();
 	
@@ -29,5 +32,10 @@ public interface PlanDAO {
 	
 	Boolean getOrderable(PlanDTO planDto);
 	
+	Boolean getUpdatable(PlanDTO planDto);
+	
 	OrderDTO getCurrentOrder(PlanDTO planDto);
+	
+	
+	PlanDTO getExpectedDate(PlanDTO planDto);
 }

@@ -49,7 +49,7 @@
 
 	<select id="getOrder" resultType="com.mit.model.OrderDTO">
 		SELECT *
-		FROM (SELECT p.scheduled_num AS  
+		FROM (SELECT p.scheduled_num AS scheduledNum
 				, e.empl_num AS emplNum
 				, e.empl_name AS emplName
 				, e.empl_email AS email
@@ -145,8 +145,8 @@
 	</select>
 	
 	<update id="updateOrder">
-		UPDATE purchase_order SET empl_num = #{ emplNum }, scheduled_data = #{ scheduledDate }
-		WHERE order_num = #{ orderNum }
+		UPDATE purchase_order SET scheduled_date = #{ scheduledDate }, order_quantity = #{ orderQuantity }, empl_num = #{ emplNum }, contract_num = #{ contractNum }
+		WHERE scheduled_num = #{ scheduledNum }
 	</update>
 	
 
@@ -209,7 +209,14 @@
                 WHERE i.order_num = p.order_num AND i.inspection_num IN (SELECT ir.inspection_num FROM inspection_result ir WHERE i.order_num = ir.order_num)
                 GROUP BY i.order_num), 0) AS completeQuantity
             , ROWNUM AS rn
+            <!-- , CASE
+            	WHEN (SELECT COUNT(*) FROM inspection_result ispr WHERE ispr.order_num = ir.order_num) = 0
+            	THEN NVL(ir.progress, 0)
+            	ELSE 0
+            	END AS progress -->
+           	, ir.progress AS progress
 		FROM purchase_order p INNER JOIN employee e ON p.empl_num = e.empl_num
+			LEFT JOIN inspection_result ir ON p.order_num = ir.order_num
 		    INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
 		    INNER JOIN tbl_part pt ON ct.partcode = pt.partcode
 		    INNER JOIN tbl_company cp ON ct.code = cp.code
@@ -225,9 +232,10 @@
 		]]>
 	</select>
 	
-	<select id="countProgress">
+	<select id="countProgress" resultType="long">
 		SELECT COUNT(*)
 		FROM purchase_order p INNER JOIN employee e ON p.empl_num = e.empl_num
+			LEFT JOIN inspection_result ir ON p.order_num = ir.order_num
 		    INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
 		    INNER JOIN tbl_part pt ON ct.partcode = pt.partcode
 		    INNER JOIN tbl_company cp ON ct.code = cp.code
@@ -239,6 +247,7 @@
 	
 	<sql id="searchProgress">
 		<trim prefixOverrides="AND">
+			AND ir.inspection_num = (SELECT MAX(ispr.inspection_num) FROM inspection_result ispr WHERE ispr.order_num = p.order_num)
 			<if test="partName != null">
 				AND pt.partname LIKE '%'||#{ partName }||'%'
 			</if>
@@ -274,4 +283,21 @@
 		</trim>
 	</sql>
 	
+	<select id="getScheduleInfo" resultType="com.mit.model.OrderDTO">
+		SELECT pt.partname AS partName
+			, sp.deliverydate AS dueDate
+			, sp.requirement AS requirement
+			, p.empl_num AS emplNum
+			, (SELECT cp.name AS companyName FROM tbl_company cp WHERE cp.code = ct.code) AS companyName
+			, ct.code AS companyCode
+			, p.scheduled_date AS scheduledDate
+			, p.order_quantity AS orderQuantity
+			, ct.contractno AS contractNum
+			, ct.unitprice AS unitPrice
+			, NVL(sp.requirement - (SELECT SUM(p.order_quantity) FROM purchase_order p WHERE p.support_num = sp.supportno GROUP BY p.support_num), sp.requirement) AS remainQuantity
+		FROM tbl_support sp INNER JOIN tbl_part pt ON sp.partcode = pt.partcode
+			LEFT JOIN purchase_order p ON p.support_num = sp.supportno
+			INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
+		WHERE sp.supportno = (SELECT p.support_num FROM purchase_order p WHERE p.scheduled_num = #{ scheduledNum })
+	</select>
 </mapper>
