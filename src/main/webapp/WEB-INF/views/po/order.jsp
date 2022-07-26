@@ -8,7 +8,7 @@
 <html lang="ko">
 <head>
 <%@ include file="../includes/header.jsp"%>
-<title>계획 검수 - TeamFoS</title>
+<title>발주 - TeamFoS</title>
 
 <c:choose>
 	<c:when test="${ param.pageNum ne null }">

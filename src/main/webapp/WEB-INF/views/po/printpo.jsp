@@ -326,7 +326,7 @@ String[] aboutUs = new String[]{"Team FoS", "", "010-4242-4242", "031-4242-4242"
 				            	<div class="row col-12" id="unit-email-form">
 									<label class="form-label col-3 col-form-label mb-2">발송 이메일</label>
 									<div class="col-9 mb-2">
-										<input type="email" class="form-control email-address" name="email-address" id="company-email-address" placeholder="이메일을 입력하세요" value="${ orderInfo[0].comEmployee }"/>
+										<input type="email" class="form-control email-address" name="email-address" id="company-email-address" placeholder="이메일을 입력하세요" value="${ orderInfo[0].comEmail }"/>
 									</div>
 								</div>
 								<div class="col-12" id="input-form-email">

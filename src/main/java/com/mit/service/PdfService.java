@@ -27,13 +27,13 @@ public class PdfService {
 		XMLWorkerHelper helper = XMLWorkerHelper.getInstance();
 		
 		FontProvider fp = new FontProvider();
-		fp.addFont(projectPath + "/src/main/webapp/resources/fonts/MALGUN.TTF");
+		fp.addFont(projectPath + "/resources/fonts/MALGUN.TTF");
 		
 		ConverterProperties cp = new ConverterProperties();
 		cp.setCharset("utf-8");
 		cp.setFontProvider(fp);
 		
-		html = "<html><head><link href=\"" + projectPath + "/src/main/webapp/resources/css/printpo.css\" rel=\"stylesheet\"></head><body>" + html;
+		html = "<html><head><link href=\"" + projectPath + "/resources/css/printpo.css\" rel=\"stylesheet\"></head><body>" + html;
 		html += "</body></html>";
 		
 		HtmlConverter.convertToPdf(html, os, cp);

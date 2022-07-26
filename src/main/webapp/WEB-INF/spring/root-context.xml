@@ -13,7 +13,7 @@
 	
 	
 	<!-- 파일 저장 경로 -->
-	<bean id="pathOfInspectionFile" class="java.lang.String">
+	<!-- <bean id="pathOfInspectionFile" class="java.lang.String">
 		<constructor-arg value="c:\\img" />
 	</bean>
 	
@@ -23,6 +23,19 @@
 	
 	<bean id="orderPath" class="java.lang.String">
 		<constructor-arg value="/Orders" />
+	</bean> -->
+	
+	<!-- 파일 저장 경로 -->
+	<bean id="pathOfInspectionFile" class="java.lang.String">
+		<constructor-arg value="/opt/tomcat_data/img" />
+	</bean>
+	
+	<bean id="projectPath" class="java.lang.String">
+		<constructor-arg value="/opt/tomcat/webapps/ROOT" />
+	</bean>
+	
+	<bean id="orderPath" class="java.lang.String">
+		<constructor-arg value="/opt/tomcat_data/Orders" />
 	</bean>
 	
 	<!-- SMTP 이메일 / 비밀번호 -->
@@ -35,7 +48,7 @@
 	
 	<!-- Password찾기 페이지 이메일 -->
 	<bean id="FROM_PASSWORD" class="java.lang.String">
-		<constructor-arg value="" />
+		<constructor-arg value="jicmu@naver.com" />
 	</bean>
 	<bean id="FROM_NAME_PASSWORD" class="java.lang.String">
 		<constructor-arg value= "jicmu" />
@@ -54,7 +67,9 @@
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
 		
-		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.0.30:1521:xe" />
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.0.9:1521:xe" />
+		
+		<!-- <property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.0.30:1521:xe" /> -->
 		<property name="username" value="k2" />
 		<property name="password" value="mit" />
 		
