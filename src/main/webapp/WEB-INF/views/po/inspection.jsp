@@ -702,6 +702,14 @@
 			});
 			
 			
+			$("input#progressModal").on("change keyup focus", function(progressModal) {
+				if ($("input#progressModal").val() >= 100) {
+					$("input#finalInspection").prop("checked", true);
+				} else {
+					$("input#finalInspection").prop("checked", false);
+				}
+			});
+			
 			$("input#inspectionQuantityModal").on("change keyup focus", function(inputModal) {
 				$.ajax({
 					url : "/api/maxProgress",

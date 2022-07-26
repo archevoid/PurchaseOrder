@@ -24,7 +24,7 @@
 		<security:intercept-url pattern="/po/partner" access="hasRole('ROLE_PTN')" />
 		<security:intercept-url pattern="/po/*" access="hasRole('ROLE_PD')" />
 		
-		<security:intercept-url pattern="/register" access="permitAll()" method="POST" />
+		<security:intercept-url pattern="/register" access="hasRole('ROLE_PTN')" method="POST" />
 			
 		<security:form-login username-parameter="emplNum" password-parameter="password" login-page="/login" authentication-success-handler-ref="customLoginSuccessHandler"/>
 		
