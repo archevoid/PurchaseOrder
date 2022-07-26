@@ -27,6 +27,7 @@ public abstract class NEmailService extends EmailService {
 			props.put("mail.smtp.port", PORT);
 			props.put("mail.smtp.starttls.enable", true);
 			props.put("mail.smtp.auth", true);
+			props.put("mail.smtp.ssl.protocols", "TLSv1.2");
 			
 			this.session = Session.getDefaultInstance(props);
 		}

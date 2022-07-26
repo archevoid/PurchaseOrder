@@ -74,9 +74,9 @@
 					WHEN (SELECT MAX(ir.close) FROM inspection_result ir WHERE ir.order_num = p.order_num) = 1
 						THEN 4
 				<![CDATA[
+					WHEN (SELECT MAX(i.inspection_date) FROM inspection i WHERE i.order_num = p.order_num) <= sysdate AND sysdate < (SELECT MAX(i.inspection_date) FROM inspection i WHERE i.order_num = p.order_num)
+                        THEN (SELECT MAX(i.inspection_num) + 1000 FROM inspection i WHERE i.order_num = p.order_num)
                     WHEN p.published != 0 THEN 1
-					WHEN (SELECT i.inspection_date FROM inspection i WHERE i.order_num = p.order_num) <= sysdate AND sysdate < (SELECT i.inspection_date FROM inspection i WHERE i.order_num = p.order_num)
-                        THEN (SELECT i.inspection_num + 1000 FROM inspection i WHERE i.inspection_date <= sysdate AND sysdate < i.inspection_date)
 					ELSE 0
 				]]>
 				END AS status
@@ -298,6 +298,6 @@
 		FROM tbl_support sp INNER JOIN tbl_part pt ON sp.partcode = pt.partcode
 			LEFT JOIN purchase_order p ON p.support_num = sp.supportno
 			INNER JOIN tbl_contract ct ON p.contract_num = ct.contractno
-		WHERE sp.supportno = (SELECT p.support_num FROM purchase_order p WHERE p.scheduled_num = #{ scheduledNum })
+		WHERE p.scheduled_num = #{ scheduledNum }
 	</select>
 </mapper>
