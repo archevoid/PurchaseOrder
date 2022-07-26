@@ -537,11 +537,12 @@
 											"planNum" : $("span#input-form-planNum").text()
 										},
 										success : function(data) {
+											$("#hint-date").remove();
 											$("input#scheduledDate").val(data.expectedDate);
-											$("input#scheduledDate").after('<small class="form-hint" id="hind-date">Lead Time을 고려한 날짜입니다.</small>');
+											$("input#scheduledDate").after('<small class="form-hint" id="hint-date">Lead Time을 고려한 날짜입니다.</small>');
 											
 											$("input#scheduledDate").on("change", function(event) {
-												$("small#hind-date").remove();
+												$("small#hint-date").remove();
 											});
 										}
 									});
