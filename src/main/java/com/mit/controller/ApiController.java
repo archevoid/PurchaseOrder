@@ -153,7 +153,8 @@ public class ApiController {
 				dir.mkdirs();
 			}
 			
-			String fileName = os.getOrderNum(orderDto) + "_발주서";
+			// String fileName = os.getOrderNum(orderDto) + "_발주서";
+			String fileName = orderDto.getOrderNum() + "_발주서";
 			fileName += ".pdf";
 			
 			FileOutputStream fos = new FileOutputStream(orderPath + "/" + fileName);
