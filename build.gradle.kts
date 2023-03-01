@@ -23,10 +23,16 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")
+	implementation ("org.springframework.boot:spring-boot-starter-data-jpa")
+	runtimeOnly ("org.mariadb.jdbc:mariadb-java-client")
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
+
+	// https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
+	implementation("com.google.code.findbugs:jsr305:3.0.2")
+
 }
 
 tasks.withType<Test> {
