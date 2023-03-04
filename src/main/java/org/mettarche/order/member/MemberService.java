@@ -1,21 +1,21 @@
 package org.mettarche.order.member;
 
-import org.mettarche.order.member.dto.ActivateDTO;
-import org.mettarche.order.member.dto.MemberDTO;
+import org.mettarche.order.member.dto.ActivateDto;
+import org.mettarche.order.member.dto.MemberDto;
 import org.mettarche.order.member.entity.Member;
 import java.util.List;
 
 public interface MemberService {
 
-    Member enroll(MemberDTO memberDTO);
+    Member enroll(MemberDto memberDTO);
 
-    Member updateUser(MemberDTO memberDTO);
+    Member updateUser(MemberDto memberDTO);
 
-    Member inactivateUser(ActivateDTO activateDTO);
+    Member inactivateUser(ActivateDto activateDTO);
 
-    Member activateUser(ActivateDTO activateDTO);
+    Member activateUser(ActivateDto activateDTO);
 
-    List<MemberDTO> getMembers();
+    List<MemberDto> getMembers();
 
-    MemberDTO getMember(MemberDTO memberDTO);
+    MemberDto getMember(MemberDto memberDTO);
 }

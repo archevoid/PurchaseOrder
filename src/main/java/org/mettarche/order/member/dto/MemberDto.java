@@ -6,7 +6,7 @@ import org.mettarche.order.member.entity.Member;
 
 @Data
 @AllArgsConstructor
-public class MemberDTO {
+public class MemberDto {
 
     private Long userNum;
     private String username;

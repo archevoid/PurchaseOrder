@@ -3,7 +3,7 @@ package org.mettarche.order.member.dto;
 import lombok.Data;
 
 @Data
-public class EmployeeDTO {
+public class EmployeeDto {
 
     private Long departmentNum;
     private Long employeeNum;
