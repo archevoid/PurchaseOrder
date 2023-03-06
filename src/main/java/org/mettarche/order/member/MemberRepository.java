@@ -14,4 +14,6 @@ public interface MemberRepository {
 
     List<Member> findAll();
 
+    Member update(Member member);
+
 }

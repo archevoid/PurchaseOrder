@@ -6,6 +6,7 @@ import org.mettarche.order.member.entity.Member;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +22,7 @@ public class JpaMemberRepository implements MemberRepository {
     public Member save(Member member) {
         em.persist(member);
 
-        return member;
+        return em.find(Member.class, member.getNum());
     }
 
     @Override
@@ -32,6 +33,19 @@ public class JpaMemberRepository implements MemberRepository {
     @Override
     public List<Member> findAll() {
         return em.createQuery("SELECT m FROM Member m", Member.class).getResultList();
+    }
+
+    @Override
+    public Member update(Member member) {
+        Query query = em.createQuery(
+                "UPDATE Member m SET m.id = :id, m.password = :pw, m.activation = :act, m.privileged = :pri WHERE m.num = :num")
+                .setParameter("num", member.getNum());
+
+        if (query.executeUpdate() != 0) {
+            return null;
+        }
+
+        return em.find(Member.class, member.getNum());
     }
 
 }

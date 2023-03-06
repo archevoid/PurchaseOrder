@@ -15,8 +15,18 @@ public class MemberDto {
     private Boolean activation;
 
 
+    public MemberDto(Member member) {
+        this.userNum = member.getNum();
+        this.username = member.getId();
+        this.userpw = member.getPassword();
+        this.privileged = member.getPrivileged();
+        this.activation = member.getActivation();
+    }
+
+
     public Member toEntity() {
         return new Member(userNum, username, userpw, privileged, activation);
     }
+
 
 }

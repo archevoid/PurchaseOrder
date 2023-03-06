@@ -1,6 +1,5 @@
 package org.mettarche.order.member;
 
-import org.mettarche.order.member.dto.ActivateDto;
 import org.mettarche.order.member.dto.MemberDto;
 import org.mettarche.order.member.entity.Member;
 import java.util.List;
@@ -11,9 +10,9 @@ public interface MemberService {
 
     Member updateUser(MemberDto memberDTO);
 
-    Member inactivateUser(ActivateDto activateDTO);
+    Member inactivateUser(MemberDto memberDTO);
 
-    Member activateUser(ActivateDto activateDTO);
+    Member activateUser(MemberDto memberDTO);
 
     List<MemberDto> getMembers();
 
