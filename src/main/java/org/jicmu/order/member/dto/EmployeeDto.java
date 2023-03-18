@@ -1,4 +1,4 @@
-package org.mettarche.order.member.dto;
+package org.jicmu.order.member.dto;
 
 import lombok.Data;
 
