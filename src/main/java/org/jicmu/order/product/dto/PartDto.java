@@ -1,4 +1,4 @@
-package org.mettarche.order.product.dto;
+package org.jicmu.order.product.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

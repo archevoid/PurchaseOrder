@@ -1,7 +1,7 @@
-package org.mettarche.order.member;
+package org.jicmu.order.member;
 
-import org.mettarche.order.member.dto.MemberDto;
-import org.mettarche.order.member.entity.Member;
+import org.jicmu.order.member.dto.MemberDto;
+import org.jicmu.order.member.entity.Member;
 import java.util.List;
 
 public interface MemberService {

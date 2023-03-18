@@ -1,7 +1,7 @@
-package org.mettarche.order.member;
+package org.jicmu.order.member;
 
 
-import org.mettarche.order.member.entity.Member;
+import org.jicmu.order.member.entity.Member;
 
 import java.util.List;
 import java.util.Optional;

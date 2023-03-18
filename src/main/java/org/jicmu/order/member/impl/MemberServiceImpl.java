@@ -1,10 +1,10 @@
-package org.mettarche.order.member.impl;
+package org.jicmu.order.member.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.mettarche.order.member.MemberRepository;
-import org.mettarche.order.member.MemberService;
-import org.mettarche.order.member.dto.MemberDto;
-import org.mettarche.order.member.entity.Member;
+import org.jicmu.order.member.MemberService;
+import org.jicmu.order.member.dto.MemberDto;
+import org.jicmu.order.member.entity.Member;
+import org.jicmu.order.member.MemberRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

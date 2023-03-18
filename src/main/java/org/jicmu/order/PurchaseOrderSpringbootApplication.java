@@ -1,4 +1,4 @@
-package org.mettarche.order;
+package org.jicmu.order;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

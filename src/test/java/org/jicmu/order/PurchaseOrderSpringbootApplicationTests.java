@@ -1,4 +1,4 @@
-package org.mettarche.order;
+package org.jicmu.order;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

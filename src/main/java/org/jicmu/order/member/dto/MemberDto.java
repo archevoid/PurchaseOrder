@@ -1,8 +1,8 @@
-package org.mettarche.order.member.dto;
+package org.jicmu.order.member.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.mettarche.order.member.entity.Member;
+import org.jicmu.order.member.entity.Member;
 
 @Data
 @AllArgsConstructor

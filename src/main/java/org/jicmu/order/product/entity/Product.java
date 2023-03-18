@@ -1,4 +1,4 @@
-package org.mettarche.order.product.entity;
+package org.jicmu.order.product.entity;
 
 import lombok.Getter;
 import lombok.Setter;

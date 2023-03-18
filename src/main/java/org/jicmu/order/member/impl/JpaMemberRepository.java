@@ -1,17 +1,19 @@
-package org.mettarche.order.member.impl;
+package org.jicmu.order.member.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.mettarche.order.member.MemberRepository;
-import org.mettarche.order.member.entity.Member;
+import org.jicmu.order.member.entity.Member;
+import org.jicmu.order.member.MemberRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 
 @Repository
+@Transactional
 @RequiredArgsConstructor
 public class JpaMemberRepository implements MemberRepository {
 
