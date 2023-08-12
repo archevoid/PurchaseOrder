@@ -1,6 +1,7 @@
 # PurchaseOrder
 - 엠아이티능력개발원 팀 프로젝트
   + 구매 발주 시스템 개발
+- 현재 테이블 데이터을 잃어버려 작동이 원활하지 않습니다.
 <br>
 
 ## 개발 환경
@@ -10,9 +11,8 @@
 - DB: oracle 11g
 <br>
 
-## DB ERD
-![erd](https://user-images.githubusercontent.com/106382062/176569381-9e593f08-e08a-418f-8908-3837da476a5c.PNG)
-<br>
+
+
 
 ## Coding Style
 
