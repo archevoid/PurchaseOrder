@@ -54,7 +54,7 @@ public class ApiController {
 	@PostMapping("inputOrder")
 	public int insertOrder(OrderDTO orderDto) {
 		PlanDTO planDto = new PlanDTO();
-		
+
 		planDto.setPlanNum(orderDto.getPlanNum());
 		planDto.setContractNum(Long.parseLong(orderDto.getContractNum()));
 		planDto.setScheduledNum(orderDto.getScheduledNum());

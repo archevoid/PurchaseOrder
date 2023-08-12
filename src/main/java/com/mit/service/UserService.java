@@ -42,8 +42,9 @@ public class UserService extends NEmailService {
 		try {
 			
 			UserDTO dto = new UserDTO();
-			
+
 			dto.setPassword(bCryptPasswordEncoder.encode(password));
+
 			dto.setEmail(email);
 			
 			if(userDao.updatePasswordByEmail(dto) != 0) {

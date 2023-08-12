@@ -33,10 +33,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 			response.sendRedirect("/po/partner");
 			return;
 		} else {
-//			response.sendRedirect("/po/dashboard");
-//			response.sendRedirect("http://192.168.0.104:8888/index/board");
-			response.sendRedirect("http://m-it.iptime.org:4080/index/board");
-			
+			response.sendRedirect("/po/dashboard");
 			return;
 		}
 	}
