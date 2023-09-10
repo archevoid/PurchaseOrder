@@ -5,7 +5,7 @@
 <br>
 
 ## 개발 환경
-- OS: Windows
+- OS: Windows 10
 - IDE: Eclipse 2020-06 (4.16.0) (STS 3.9.15.RELEASE)
 - JDK: Oracle jdk1.8.0_202
 - DB: oracle 11g
